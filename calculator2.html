@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melkamu Wako | Scientific Calculator</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80') no-repeat center center fixed;
+            background-size: cover;
+        }
+        
+        .calculator {
+            width: 380px;
+            border: none;
+            border-radius: 15px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculator::before {
+            content: "MELKAMU WAKO";
+            position: absolute;
+            top: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+        
+        .display-container {
+            position: relative;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .display {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+            font-size: 28px;
+            text-align: right;
+            border: none;
+            background: transparent;
+            color: var(--dark);
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+        
+        .display-history {
+            width: 100%;
+            padding: 5px 15px;
+            font-size: 14px;
+            text-align: right;
+            border: none;
+            background: transparent;
+            color: var(--gray);
+            box-sizing: border-box;
+            height: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 10px;
+        }
+        
+        button {
+            height: 55px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.1s ease;
+            color: var(--dark);
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        button.operator {
+            background: var(--primary);
+            color: white;
+        }
+        
+        button.function {
+            background: var(--secondary);
+            color: white;
+            font-size: 14px;
+        }
+        
+        button.clear {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        button.equals {
+            background: #4CAF50;
+            color: white;
+            grid-column: span 2;
+        }
+        
+        button.history-btn {
+            background: #a0d468;
+            color: white;
+        }
+        
+        button.quadratic-btn {
+            background: #ac92ec;
+            color: white;
+        }
+        
+        .branding {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 12px;
+        }
+        
+        .social-links a {
+            color: var(--primary);
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-2px);
+            color: var(--primary-dark);
+        }
+        
+        .history-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 10;
+            overflow-y: auto;
+        }
+        
+        .history-panel.show {
+            transform: translateX(0);
+        }
+        
+        .history-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+        }
+        
+        .history-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .history-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .close-history {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .quadratic-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        
+        .quadratic-modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .quadratic-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .quadratic-content h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        
+        .quadratic-content input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .quadratic-content button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .quadratic-result {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 480px) {
+            .calculator {
+                width: 90vw;
+                padding: 15px;
+            }
+            
+            button {
+                height: 45px;
+                font-size: 14px;
+            }
+            
+            .history-panel {
+                width: 85vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display-container">
+            <input type="text" class="display-history" id="display-history" readonly>
+            <input type="text" class="display" id="display" readonly>
+        </div>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="deleteLastChar()">⌫</button>
+            <button class="history-btn" onclick="toggleHistory()">HIST</button>
+            <button class="operator" onclick="appendToDisplay('(')">(</button>
+            <button class="operator" onclick="appendToDisplay(')')">)</button>
+            
+            <button class="function" onclick="trigFunction('sin')">sin</button>
+            <button class="function" onclick="trigFunction('cos')">cos</button>
+            <button class="function" onclick="trigFunction('tan')">tan</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+            
+            <button class="function" onclick="inverseTrigFunction('asin')">sin⁻¹</button>
+            <button class="function" onclick="inverseTrigFunction('acos')">cos⁻¹</button>
+            <button class="function" onclick="inverseTrigFunction('atan')">tan⁻¹</button>
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            
+            <button class="function" onclick="appendToDisplay('Math.PI')">π</button>
+            <button class="function" onclick="calculateFunction('Math.log(')">ln</button>
+            <button class="function" onclick="calculateFunction('Math.log10(')">log</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+            
+            <button class="function" onclick="calculateFunction('Math.sqrt(')">√</button>
+            <button class="function" onclick="appendToDisplay('Math.E')">e</button>
+            <button class="function" onclick="calculateFunction('Math.pow(10,')">10ˣ</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            
+            <button class="function" onclick="calculateFunction('Math.pow(')">xʸ</button>
+            <button class="function" onclick="factorial()">x!</button>
+            <button class="function" onclick="calculateFunction('1/')">1/x</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            
+            <button class="quadratic-btn" onclick="showQuadraticSolver()">Quad</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="equals" onclick="calculate()">=</button>
+        </div>
+        <div class="branding">PROFESSIONAL SCIENTIFIC CALCULATOR</div>
+        <div class="social-links">
+            <a href="https://t.me/kidn16" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="https://www.linkedin.com/in/melkamu-wako-536174318/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://youtube.com/@MelkamuWako-f3v" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/ruf.2316/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/melke27" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+    </div>
+    
+    <div class="history-panel" id="history-panel">
+        <button class="close-history" onclick="toggleHistory()">×</button>
+        <div class="history-title">Calculation History</div>
+        <div id="history-list"></div>
+    </div>
+    
+    <div class="quadratic-modal" id="quadratic-modal">
+        <div class="quadratic-content">
+            <h3>Quadratic Equation Solver</h3>
+            <p>ax² + bx + c = 0</p>
+            <input type="number" id="quad-a" placeholder="Enter coefficient a">
+            <input type="number" id="quad-b" placeholder="Enter coefficient b">
+            <input type="number" id="quad-c" placeholder="Enter coefficient c">
+            <button onclick="solveQuadratic()">Solve</button>
+            <button onclick="hideQuadraticSolver()">Close</button>
+            <div class="quadratic-result" id="quadratic-result"></div>
+        </div>
+    </div>
+
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        // DOM elements
+        const display = document.getElementById('display');
+        const displayHistory = document.getElementById('display-history');
+        const historyPanel = document.getElementById('history-panel');
+        const historyList = document.getElementById('history-list');
+        const quadraticModal = document.getElementById('quadratic-modal');
+        const quadResult = document.getElementById('quadratic-result');
+        
+        // Calculator state
+        let calculationHistory = [];
+        let currentExpression = '';
+        let isDegreeMode = true;
+        
+        // Performance optimization
+        let lastInputTime = 0;
+        const inputThrottleTime = 100; // milliseconds
+        
+        // Helper function to throttle rapid inputs
+        function throttleInput(callback) {
+            const now = Date.now();
+            if (now - lastInputTime > inputThrottleTime) {
+                callback();
+                lastInputTime = now;
+            }
+        }
+        
+        function appendToDisplay(value) {
+            throttleInput(() => {
+                display.value += value;
+                currentExpression += value;
+                updateHistoryDisplay();
+            });
+        }
+        
+        function clearDisplay() {
+            display.value = '';
+            currentExpression = '';
+            updateHistoryDisplay();
+        }
+        
+        function deleteLastChar() {
+            throttleInput(() => {
+                display.value = display.value.slice(0, -1);
+                currentExpression = currentExpression.slice(0, -1);
+                updateHistoryDisplay();
+            });
+        }
+        
+        function calculateFunction(func) {
+            throttleInput(() => {
+                display.value += func;
+                currentExpression += func;
+                updateHistoryDisplay();
+            });
+        }
+        
+        function updateHistoryDisplay() {
+            displayHistory.value = currentExpression;
+        }
+        
+        // Optimized trigonometric functions
+        function trigFunction(func) {
+            throttleInput(() => {
+                if (display.value === '') {
+                    display.value = `${func}(`;
+                    currentExpression = `${func}(`;
+                } else {
+                    if (isDegreeMode) {
+                        display.value = `${func}(${display.value}°`;
+                        currentExpression = `Math.${func}(${currentExpression} * Math.PI / 180`;
+                    } else {
+                        display.value = `${func}(${display.value}`;
+                        currentExpression = `Math.${func}(${currentExpression}`;
+                    }
+                }
+                updateHistoryDisplay();
+            });
+        }
+        
+        function inverseTrigFunction(func) {
+            throttleInput(() => {
+                if (display.value === '') {
+                    display.value = `${func}⁻¹(`;
+                    currentExpression = `${func}⁻¹(`;
+                } else {
+                    if (isDegreeMode) {
+                        display.value = `${func}⁻¹(${display.value})°`;
+                        currentExpression = `(Math.${func}(${currentExpression}) * 180 / Math.PI`;
+                    } else {
+                        display.value = `${func}⁻¹(${display.value}`;
+                        currentExpression = `Math.${func}(${currentExpression}`;
+                    }
+                }
+                updateHistoryDisplay();
+            });
+        }
+        
+        function toggleAngleMode() {
+            isDegreeMode = !isDegreeMode;
+        }
+        
+        // Optimized factorial calculation
+        function factorial() {
+            try {
+                const num = parseFloat(display.value);
+                if (isNaN(num)) throw new Error('Invalid input');
+                if (num < 0) throw new Error('Negative number');
+                if (num % 1 !== 0) throw new Error('Non-integer');
+                if (num > 170) throw new Error('Too large'); // Max before Infinity
+                
+                let result = 1;
+                for (let i = 2; i <= num; i++) {
+                    result *= i;
+                }
+                
+                addToHistory(`${num}! = ${result}`);
+                display.value = result;
+                currentExpression = result.toString();
+                updateHistoryDisplay();
+            } catch (error) {
+                display.value = error.message;
+                setTimeout(clearDisplay, 1500);
+            }
+        }
+        
+        function percentage() {
+            try {
+                const expression = display.value;
+                const result = eval(expression) / 100;
+                
+                addToHistory(`${expression}% = ${result}`);
+                display.value = result;
+                currentExpression = result.toString();
+                updateHistoryDisplay();
+            } catch (error) {
+                display.value = 'Error';
+                setTimeout(clearDisplay, 1000);
+            }
+        }
+        
+        // Optimized calculation function
+        function calculate() {
+            try {
+                let expression = display.value
+                    .replace(/×/g, '*')
+                    .replace(/(\d+)\(/g, '$1*(')
+                    .replace(/\)(\d+)/g, ')*$1')
+                    .replace(/\)\(/g, ')*(')
+                    .replace(/sin⁻¹\(/g, 'Math.asin(')
+                    .replace(/cos⁻¹\(/g, 'Math.acos(')
+                    .replace(/tan⁻¹\(/g, 'Math.atan(')
+                    .replace(/sin\(/g, 'Math.sin(')
+                    .replace(/cos\(/g, 'Math.cos(')
+                    .replace(/tan\(/g, 'Math.tan(');
+                
+                const result = eval(expression);
+                
+                if (isNaN(result) || !isFinite(result)) {
+                    throw new Error('Invalid calculation');
+                }
+                
+                addToHistory(`${display.value} = ${result}`);
+                display.value = result;
+                currentExpression = result.toString();
+                updateHistoryDisplay();
+            } catch (error) {
+                display.value = 'Error';
+                setTimeout(clearDisplay, 1000);
+            }
+        }
+        
+        function addToHistory(entry) {
+            calculationHistory.unshift(entry);
+            if (calculationHistory.length > 10) {
+                calculationHistory.pop();
+            }
+            updateHistoryList();
+        }
+        
+        function updateHistoryList() {
+            // Use document fragment for better performance
+            const fragment = document.createDocumentFragment();
+            
+            calculationHistory.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.textContent = item;
+                historyItem.onclick = () => {
+                    const parts = item.split(' = ');
+                    if (parts.length === 2) {
+                        display.value = parts[1];
+                        currentExpression = parts[1];
+                        updateHistoryDisplay();
+                    }
+                };
+                fragment.appendChild(historyItem);
+            });
+            
+            // Clear and update in one operation
+            historyList.innerHTML = '';
+            historyList.appendChild(fragment);
+        }
+        
+        function toggleHistory() {
+            historyPanel.classList.toggle('show');
+        }
+        
+        function showQuadraticSolver() {
+            quadraticModal.classList.add('show');
+        }
+        
+        function hideQuadraticSolver() {
+            quadraticModal.classList.remove('show');
+            quadResult.innerHTML = '';
+        }
+        
+        function solveQuadratic() {
+            const a = parseFloat(document.getElementById('quad-a').value);
+            const b = parseFloat(document.getElementById('quad-b').value);
+            const c = parseFloat(document.getElementById('quad-c').value);
+            
+            if (isNaN(a) || isNaN(b) || isNaN(c)) {
+                quadResult.innerHTML = 'Please enter valid coefficients';
+                return;
+            }
+            
+            if (a === 0) {
+                quadResult.innerHTML = 'Coefficient "a" cannot be zero';
+                return;
+            }
+            
+            const discriminant = b * b - 4 * a * c;
+            let resultText = '';
+            
+            if (discriminant > 0) {
+                const root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                const root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                resultText = `Roots are real and different:<br>
+                             x₁ = ${root1.toFixed(4)}<br>
+                             x₂ = ${root2.toFixed(4)}`;
+            } else if (discriminant === 0) {
+                const root = -b / (2 * a);
+                resultText = `Roots are real and same:<br>
+                             x = ${root.toFixed(4)}`;
+            } else {
+                const realPart = (-b / (2 * a)).toFixed(4);
+                const imagPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(4);
+                resultText = `Roots are complex:<br>
+                             x₁ = ${realPart} + ${imagPart}i<br>
+                             x₂ = ${realPart} - ${imagPart}i`;
+            }
+            
+            quadResult.innerHTML = resultText;
+            addToHistory(`Quadratic: ${a}x² + ${b}x + ${c} = 0 → ${resultText.replace(/<br>/g, ' ')}`);
+        }
+        
+        // Optimized keyboard support
+        const keyHandlers = {
+            'Enter': calculate,
+            '=': calculate,
+            'Escape': clearDisplay,
+            'Backspace': deleteLastChar,
+            'x': () => appendToDisplay('*'),
+            'X': () => appendToDisplay('*'),
+            '^': () => appendToDisplay('Math.pow('),
+            'h': toggleHistory,
+            'H': toggleHistory,
+            'q': showQuadraticSolver,
+            'Q': showQuadraticSolver
+        };
+        
+        document.addEventListener('keydown', (event) => {
+            const key = event.key;
+            
+            if (/[0-9\.\+\-\*\/\(\)]/.test(key)) {
+                throttleInput(() => appendToDisplay(key));
+            } else if (keyHandlers[key]) {
+                event.preventDefault();
+                keyHandlers[key]();
+            }
+        });
+    </script>
+</body>
+</html>
