@@ -1,0 +1,71 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.navbar {
+  background: #1a1a1a;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 24px;
+}
+
+.navbar-logo {
+  color: #fff;
+  text-decoration: none;
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  height: 80px;
+  padding: 0 1rem;
+}
+
+.nav-links {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  height: 100%;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.nav-links:hover {
+  color: #00ff00;
+  transition: all 0.3s ease;
+}
+
+/* Ensure iframes don't have scrollbars unless necessary */
+iframe {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+} 
