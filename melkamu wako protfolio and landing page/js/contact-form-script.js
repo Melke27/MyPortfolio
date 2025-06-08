@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.disabled = true;
 
             try {
-                const response = await fetch('http://localhost:5000/api/contact', {
+                const response = await fetch('https://myportfolio-1-fg5a.onrender.com/api/contact', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
