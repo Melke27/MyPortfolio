@@ -1,4 +1,6 @@
 # Jekyll configuration
+source: .
+destination: _site
 exclude:
   # Dependencies
   - node_modules
@@ -53,4 +55,26 @@ defaults:
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
-  - jekyll-sitemap 
+  - jekyll-sitemap
+
+# Sass configuration
+sass:
+  style: compressed
+  load_paths:
+    - assets/css
+
+# Include static files
+include:
+  - assets
+  - assets/css
+  - assets/js
+  - assets/img
+  - assets/lib
+
+# Keep files
+keep_files:
+  - assets
+  - assets/css
+  - assets/js
+  - assets/img
+  - assets/lib 
