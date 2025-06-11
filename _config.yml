@@ -1,6 +1,6 @@
 # Jekyll configuration
-source: docs
-destination: docs/_site
+source: .
+destination: _site
 exclude:
   # Dependencies
   - node_modules
