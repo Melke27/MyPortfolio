@@ -18,9 +18,6 @@ dist/
 build/
 .next/
 _site/
-.sass-cache/
-.jekyll-cache/
-.jekyll-metadata
 
 # IDE files
 .idea/
@@ -44,13 +41,4 @@ Thumbs.db
 
 # Cache directories
 .cache/
-.temp/
-
-# Jekyll
-.jekyll-cache/
-.jekyll-metadata
-_site/
-.sass-cache/
-
-# GitHub Pages
-.github/ 
+.temp/ 

@@ -1,24 +1,21 @@
 # Jekyll configuration
-source: .
-destination: _site
+source: docs
+destination: docs/_site
 exclude:
   # Dependencies
   - node_modules
-  - frontend/node_modules
-  - backend/node_modules
-  - package.json
-  - package-lock.json
-  - yarn.lock
-  
-  # Development files
-  - .git
-  - .gitignore
-  - .env*
-  - README.md
   - frontend
   - backend
   - calculator2.html
   - "melkamu wako protfolio and landing page"
+  - .git
+  - .gitignore
+  - README.md
+  - _config.yml
+  - .nojekyll
+  
+  # Development files
+  - .env*
   
   # Asset files
   - "*.pdf"
@@ -39,6 +36,10 @@ theme: jekyll-theme-minimal
 baseurl: ""
 url: "https://melke27.github.io"
 
+# Disable Jekyll processing
+plugins: []
+sass: {}
+
 # Collections
 collections:
   data:
@@ -50,18 +51,6 @@ defaults:
       path: ""
     values:
       layout: "default"
-
-# Plugins
-plugins:
-  - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-sitemap
-
-# Sass configuration
-sass:
-  style: compressed
-  load_paths:
-    - assets/css
 
 # Include static files
 include:
