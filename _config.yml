@@ -1,0 +1,42 @@
+# Jekyll configuration
+exclude:
+  - node_modules
+  - frontend/node_modules
+  - backend/node_modules
+  - .git
+  - .gitignore
+  - README.md
+  - package.json
+  - package-lock.json
+  - yarn.lock
+  - .env
+  - .env.local
+  - .env.development
+  - .env.test
+  - .env.production
+  - frontend
+  - backend
+  - calculator2.html
+  - "melkamu wako protfolio and landing page"
+  - "*.pdf"
+  - "*.txt"
+  - scss
+  - mail
+
+# Build settings
+markdown: kramdown
+theme: jekyll-theme-minimal
+baseurl: ""
+url: "https://melke27.github.io"
+
+# Collections
+collections:
+  data:
+    output: true
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default" 
