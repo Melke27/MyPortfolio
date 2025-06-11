@@ -46,6 +46,7 @@
 
         <!-- Customized Bootstrap Stylesheet -->
         <link href="assets/css/style.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet">
         
         <!-- Canonical URL -->
         <link rel="canonical" href="https://yourdomain.com" />
@@ -79,7 +80,7 @@
                         <a class="mx-2" href="https://youtube.com/@MelkamuWako-f3v" target="_blank" aria-label="YouTube" data-toggle="tooltip" title="YouTube"><i class="fab fa-youtube"></i></a>
                     </div>
                     <div class="d-flex align-items-end justify-content-between">
-                        <a href="melkamu wako protfolio and landing page/resume.pdf" class="btn btn-block border-right download-btn" download="Melkamu_Wako_Resume.pdf">
+                        <a href="assets/resume.pdf" class="btn btn-block border-right download-btn" download="Melkamu_Wako_Resume.pdf">
                             <i class="fas fa-download mr-2"></i>Download CV
                         </a>
                         <a href="#contact" class="btn btn-block btn-scroll contact-btn">
@@ -140,7 +141,48 @@
                                 </p>
                                 <div class="skills-chart mt-5">
                                     <h5 class="mb-3">My Skills Distribution</h5>
-                                    <canvas id="skillsChart" width="400" height="200"></canvas>
+                                    <div class="skills-distribution">
+                                        <div class="skill-category">
+                                            <div class="skill-header">
+                                                <i class="fas fa-code text-primary"></i>
+                                                <h6>Frontend Development</h6>
+                                                <span class="skill-percentage">35%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 35%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="skill-category">
+                                            <div class="skill-header">
+                                                <i class="fas fa-server text-success"></i>
+                                                <h6>Backend Development</h6>
+                                                <span class="skill-percentage">25%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="skill-category">
+                                            <div class="skill-header">
+                                                <i class="fas fa-laptop-code text-info"></i>
+                                                <h6>Programming Languages</h6>
+                                                <span class="skill-percentage">25%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 25%"></div>
+                                            </div>
+                                        </div>
+                                        <div class="skill-category">
+                                            <div class="skill-header">
+                                                <i class="fas fa-tools text-warning"></i>
+                                                <h6>Tools & Others</h6>
+                                                <span class="skill-percentage">15%</span>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 15%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +234,7 @@
                                 </div>
                                 <div class="mt-4">
                                     <a href="#contact" class="btn btn-primary mr-2"><i class="fas fa-paper-plane mr-2"></i>Contact Me</a>
-                                    <a href="melkamu wako protfolio and landing page/resume.pdf" class="btn btn-outline-primary" download><i class="fas fa-download mr-2"></i>Download CV</a>
+                                    <a href="assets/resume.pdf" class="btn btn-outline-primary" download><i class="fas fa-download mr-2"></i>Download CV</a>
                                 </div>
                             </div>
                         </div>
@@ -507,7 +549,7 @@
                                 </ul>
                             </div>
                                 <div class="certification-footer">
-                                    <a href="#" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
+                                    <a href="assets/certificates/alx-certificate.pdf" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
                                     <a href="https://savanna.alxafrica.com" class="btn btn-outline-primary" target="_blank">Verify</a>
                         </div>
                             </div>
@@ -516,7 +558,7 @@
                         <div class="col-md-6 mb-4">
                             <div class="certification-card">
                                 <div class="certification-header">
-                                    <img src="img/udacity-logo.png" alt="Udacity Logo" class="certification-logo">
+                                    <img src="assets/img/udacity-logo.png" alt="Udacity Logo" class="certification-logo">
                                     <div class="certification-title">
                                         <h5>Programming Fundamentals Nanodegree</h5>
                                 <p class="text-muted">Issued: September 2024</p>
@@ -526,24 +568,23 @@
                                     <p>Key skills and knowledge gained:</p>
                                     <ul>
                                         <li>Core programming concepts</li>
-                                        <li>Introduction to html,CSS and JavaScript</html></li>
+                                        <li>Introduction to HTML, CSS and JavaScript</li>
                                         <li>Object-oriented programming</li>
                                         <li>Version control with Git</li>
                                         <li>Problem-solving techniques</li>
                                 </ul>
                             </div>
                                 <div class="certification-footer">
-                                    <a href="#" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
+                                    <a href="assets/certificates/udacity-certificate.pdf" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
                                     <a href="https://www.udacity.com" class="btn btn-outline-primary" target="_blank">Verify</a>
                         </div>
                             </div>
                         </div>
                         
-                        <!-- New Certification: Cisco Introduction to Cybersecurity -->
                         <div class="col-md-6 mb-4">
                             <div class="certification-card">
                                 <div class="certification-header">
-                                    <img src="img/coursera-logo.png" alt="Coursera Logo" class="certification-logo">
+                                    <img src="assets/img/coursera-logo.png" alt="Coursera Logo" class="certification-logo">
                                     <div class="certification-title">
                                         <h5>Foundations of Coding Full-Stack</h5>
                                 <p class="text-muted">Issued: June 2025</p>
@@ -552,40 +593,42 @@
                                 <div class="certification-body">
                                     <p>Completed the Foundations of Coding Full-Stack program, gaining expertise in:</p>
                                     <ul>
-                                        <li>Computational Thinking & Algorithms</li>
-                                        <li>Full-Stack Web Development (Frontend & Backend)</li>
-                                        <li>Git & Version Control</li>
-                                        <li>Programming Principles (C#, Pseudocode)</li>
-                                </ul>
+                                        <li>Full-stack development fundamentals</li>
+                                        <li>Frontend and backend integration</li>
+                                        <li>Database management</li>
+                                        <li>API development</li>
+                                    </ul>
                                 </div>
                                 <div class="certification-footer">
-                                    <a href="melkamu wako protfolio and landing page/resume.pdf" target="_blank" class="btn btn-primary mr-2">View Certificate</a>
-                                    <a href="https://www.coursera.org/account/accomplishments/verify/XPZHL0UYC5KT" target="_blank" class="btn btn-outline-primary">Verify</a>
+                                    <a href="assets/certificates/coursera-certificate.pdf" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
+                                    <a href="https://www.coursera.org/account/accomplishments/verify/XPZHL0UYC5KT" class="btn btn-outline-primary" target="_blank">Verify</a>
                                 </div>
                             </div>
                         </div>
                         
-                        <!-- New Certification: Cisco Introduction to Cybersecurity -->
+                        <!-- New Certification: CISCO Introduction to Cybersecurity -->
                         <div class="col-md-6 mb-4">
                             <div class="certification-card">
                                 <div class="certification-header">
-                                    <img src="img/cisco-logo.png" alt="Cisco Networking Academy Logo" class="certification-logo">
+                                    <img src="assets/img/cisco-logo.png" alt="CISCO Logo" class="certification-logo">
                                     <div class="certification-title">
                                         <h5>CISCO Introduction to Cybersecurity</h5>
-                                        <p class="text-muted">Issued: [Date, if known]</p>
+                                        <p class="text-muted">Issued: November 2023</p>
                                     </div>
                                 </div>
                                 <div class="certification-body">
                                     <p>Gained foundational knowledge in cybersecurity, including:</p>
                                     <ul>
-                                        <li>Cybersecurity principles</li>
+                                        <li>Cybersecurity principles and concepts</li>
                                         <li>Threats, vulnerabilities, and attacks</li>
                                         <li>Network security basics</li>
-                                        <li>Data protection and privacy</li>
+                                        <li>Cryptography fundamentals</li>
+                                        <li>Security best practices</li>
                                     </ul>
                                 </div>
                                 <div class="certification-footer">
-                                    <a href="https://www.linkedin.com/in/melkamu-wako-536174318/" target="_blank" class="btn btn-outline-primary">Verify on LinkedIn</a>
+                                    <a href="assets/certificates/cisco-cybersecurity.pdf" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
+                                    <a href="https://www.linkedin.com/in/melkamu-wako-2a5496228" class="btn btn-outline-primary" target="_blank">Verify on LinkedIn</a>
                                 </div>
                             </div>
                         </div>
@@ -1172,7 +1215,7 @@
                             <p><i class="fa fa-envelope mr-2"></i>melkamuwako5@gmail.com</p>
                             <p><i class="fa fa-phone-alt mr-2"></i>+251 965595251</p>
                                 <div class="mt-4">
-                                    <a href="melkamu wako protfolio and landing page/resume.pdf" class="btn btn-primary mr-2" download><i class="fas fa-download mr-2"></i>Download CV</a>
+                                    <a href="assets/resume.pdf" class="btn btn-primary mr-2" download><i class="fas fa-download mr-2"></i>Download CV</a>
                                 </div>
                             </div>
                         </div>
@@ -1207,7 +1250,6 @@
         <script src="lib/owlcarousel/owl.carousel.min.js"></script>
         <script src="lib/isotope/isotope.pkgd.min.js"></script>
         <script src="lib/lightbox/js/lightbox.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!-- Contact Javascript File -->
         <script src="mail/jqBootstrapValidation.min.js"></script>
@@ -1249,33 +1291,6 @@
                 
                 // Initialize tooltips
                 $('[data-toggle="tooltip"]').tooltip();
-                
-                // Skills chart
-                const ctx = document.getElementById('skillsChart').getContext('2d');
-                const skillsChart = new Chart(ctx, {
-                    type: 'radar',
-                    data: {
-                        labels: ['Frontend', 'Backend', 'Algorithms', 'Problem Solving', 'UI/UX', 'Database'],
-                        datasets: [{
-                            label: 'Skills Level',
-                            data: [90, 70, 85, 88, 80, 65],
-                            backgroundColor: 'rgba(13, 110, 253, 0.2)',
-                            borderColor: 'rgba(13, 110, 253, 1)',
-                            borderWidth: 2,
-                            pointBackgroundColor: 'rgba(13, 110, 253, 1)',
-                            pointRadius: 4
-                        }]
-                    },
-                    options: {
-                        scale: {
-                            ticks: {
-                                beginAtZero: true,
-                                max: 100,
-                                stepSize: 20
-                            }
-                        }
-                    }
-                });
                 
                 // Project filter
                 $('.project-filter button').on('click', function() {

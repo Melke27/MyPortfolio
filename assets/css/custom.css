@@ -1,0 +1,59 @@
+/* Skills Distribution Styles */
+.skills-distribution {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.skill-category {
+    margin-bottom: 20px;
+}
+
+.skill-category:last-child {
+    margin-bottom: 0;
+}
+
+.skill-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.skill-header i {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+.skill-header h6 {
+    margin: 0;
+    flex-grow: 1;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.skill-percentage {
+    font-weight: 600;
+    color: #666;
+}
+
+.progress {
+    height: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 1s ease-in-out;
+}
+
+/* Animation for progress bars */
+@keyframes progressAnimation {
+    from { width: 0; }
+    to { width: var(--target-width); }
+}
+
+.progress-bar {
+    animation: progressAnimation 1s ease-in-out forwards;
+} 
