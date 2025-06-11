@@ -99,38 +99,72 @@
 
         // Skills Chart initialization
         var initSkillsChart = function() {
-            var ctx = document.getElementById('skillsChart');
-            if (ctx) {
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Frontend', 'Backend', 'Languages', 'Tools'],
-                        datasets: [{
-                            data: [35, 25, 25, 15],
-                            backgroundColor: [
-                                '#4e73df',
-                                '#1cc88a',
-                                '#36b9cc',
-                                '#f6c23e'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                fontColor: '#333',
-                                fontSize: 12
-                            }
-                        },
-                        animation: {
-                            animateScale: true,
-                            animateRotate: true
-                        }
-                    }
+            var skillsContainer = document.querySelector('.skills-chart');
+            if (skillsContainer) {
+                // Remove the canvas element
+                var canvas = document.getElementById('skillsChart');
+                if (canvas) {
+                    canvas.remove();
+                }
+
+                // Create static skills distribution
+                var staticSkills = `
+                    <div class="skills-distribution">
+                        <div class="skill-category">
+                            <div class="skill-header">
+                                <i class="fas fa-code text-primary"></i>
+                                <h6>Frontend Development</h6>
+                                <span class="skill-percentage">35%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 35%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <div class="skill-header">
+                                <i class="fas fa-server text-success"></i>
+                                <h6>Backend Development</h6>
+                                <span class="skill-percentage">25%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <div class="skill-header">
+                                <i class="fas fa-laptop-code text-info"></i>
+                                <h6>Programming Languages</h6>
+                                <span class="skill-percentage">25%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 25%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <div class="skill-header">
+                                <i class="fas fa-tools text-warning"></i>
+                                <h6>Tools & Others</h6>
+                                <span class="skill-percentage">15%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Add the static skills distribution
+                skillsContainer.innerHTML += staticSkills;
+
+                // Add animation to progress bars
+                var progressBars = skillsContainer.querySelectorAll('.progress-bar');
+                progressBars.forEach(function(bar) {
+                    var width = bar.style.width;
+                    bar.style.width = '0';
+                    setTimeout(function() {
+                        bar.style.transition = 'width 1s ease-in-out';
+                        bar.style.width = width;
+                    }, 100);
                 });
             }
         };

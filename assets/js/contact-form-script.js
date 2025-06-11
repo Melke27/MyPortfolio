@@ -47,23 +47,56 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.disabled = true;
 
             try {
-                const response = await fetch('https://myportfolio-1-fg5a.onrender.com/api/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
+                // Try local backend first, then fallback to deployed version
+                const backendUrls = [
+                    'http://localhost:5000/api/contact',
+                    'https://myportfolio-1-fg5a.onrender.com/api/contact'
+                ];
+
+                let response = null;
+                let error = null;
+
+                // Try each URL until one works
+                for (const url of backendUrls) {
+                    try {
+                        response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(formData),
+                        });
+                        if (response.ok) break;
+                    } catch (e) {
+                        error = e;
+                        continue;
+                    }
+                }
+
+                if (!response || !response.ok) {
+                    throw error || new Error('Failed to connect to server');
+                }
 
                 const result = await response.json();
-                alert(result.message);
+                
+                // Show success message
+                const successDiv = document.getElementById('success');
+                if (successDiv) {
+                    successDiv.innerHTML = '<div class="alert alert-success">Message sent successfully!</div>';
+                    setTimeout(() => {
+                        successDiv.innerHTML = '';
+                    }, 5000);
+                }
 
                 if (response.ok) {
                     contactForm.reset();
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Failed to send message. Please try again later.');
+                const successDiv = document.getElementById('success');
+                if (successDiv) {
+                    successDiv.innerHTML = '<div class="alert alert-danger">Failed to send message. Please try again later.</div>';
+                }
             } finally {
                 submitButton.innerHTML = originalButtonText;
                 submitButton.disabled = false;
