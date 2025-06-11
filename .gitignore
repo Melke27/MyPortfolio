@@ -41,4 +41,7 @@ Thumbs.db
 
 # Cache directories
 .cache/
-.temp/ 
+.temp/
+
+# GitHub Pages workflow
+.github/workflows/
