@@ -1081,8 +1081,9 @@
                         </div>
                         <div class="col-md-7 mb-4">
                             <div class="contact-form">
-                                <div id="success"></div>
-                                <form name="contact" id="contactForm" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                                <div id="success" class="alert alert-success" style="display: none;"></div>
+                                <div id="error" class="alert alert-danger" style="display: none;"></div>
+                                <form name="contact" id="contactForm" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleSubmit(event)">
                                     <input type="hidden" name="form-name" value="contact" />
                                     <div class="form-row">
                                         <div class="control-group col-sm-6">
@@ -1349,6 +1350,48 @@
                     return false;
                 });
             });
+
+            function handleSubmit(event) {
+                event.preventDefault();
+                const form = event.target;
+                const successDiv = document.getElementById('success');
+                const errorDiv = document.getElementById('error');
+                const submitButton = document.getElementById('sendMessageButton');
+
+                // Disable submit button and show loading state
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
+
+                // Submit the form
+                fetch('/', {
+                    method: 'POST',
+                    body: new FormData(form)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Show success message
+                        successDiv.textContent = 'Thank you! Your message has been sent successfully.';
+                        successDiv.style.display = 'block';
+                        errorDiv.style.display = 'none';
+                        form.reset();
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                })
+                .catch(error => {
+                    // Show error message
+                    errorDiv.textContent = 'Sorry, there was an error sending your message. Please try again later.';
+                    errorDiv.style.display = 'block';
+                    successDiv.style.display = 'none';
+                })
+                .finally(() => {
+                    // Re-enable submit button
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Send Message';
+                });
+
+                return false;
+            }
         </script>
     </body>
 </html> 
