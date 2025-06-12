@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 for (const url of backendUrls) {
                     try {
                         response = await fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(formData),
-                        });
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
                         if (response.ok) break;
                     } catch (e) {
                         error = e;
