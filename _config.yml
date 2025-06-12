@@ -34,7 +34,7 @@ exclude:
 markdown: kramdown
 theme: jekyll-theme-minimal
 baseurl: ""
-url: "https://melke27.github.io"
+url: "https://melkamuwako27.netlify.app"
 
 # Disable Jekyll processing
 plugins: []

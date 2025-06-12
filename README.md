@@ -36,7 +36,7 @@ portfolio/
 
 ## 🔗 Live Demo
 
-Visit my portfolio at: [https://melke27.github.io/MyPortfolio](https://melke27.github.io/MyPortfolio)
+Visit my portfolio at: [https://melkamuwako27.netlify.app](https://melkamuwako27.netlify.app)
 
 ## 📫 Contact
 
