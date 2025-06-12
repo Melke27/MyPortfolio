@@ -941,11 +941,254 @@
                     }
                 </style>
                 <!-- Technical Expertise End -->
+
+                <!-- Blog Section -->
+                <div class="container bg-white py-5" id="blog">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">Latest <span class="text-primary">Blog Posts</span></h2>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="blog-card">
+                                <div class="blog-img">
+                                    <img src="assets/img/blog1.jpg" alt="Blog Post 1">
+                                    <div class="blog-date">15 Oct 2024</div>
+                                </div>
+                                <div class="blog-content">
+                                    <h5>Mastering Algorithms in C++</h5>
+                                    <p>Exploring efficient algorithm design techniques and their implementation in C++ for competitive programming.</p>
+                                    <a href="#" class="btn btn-sm btn-primary">Read More</a>
+                                    <div class="blog-meta">
+                                        <span><i class="far fa-eye"></i> 245</span>
+                                        <span><i class="far fa-comments"></i> 12</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="blog-card">
+                                <div class="blog-img">
+                                    <img src="assets/img/blog-2.jpg" alt="Blog Post 2">
+                                </div>
+                                <div class="blog-content">
+                                    <small class="text-muted">5 Sep 2024</small>
+                                    <h5>React Hooks Explained</h5>
+                                    <p>A comprehensive guide to React Hooks and how they can simplify your functional components.</p>
+                                    <a href="#" class="btn btn-primary btn-sm">Read More</a>
+                                    <div class="blog-meta">
+                                        <span><i class="far fa-eye"></i> 189</span>
+                                        <span><i class="far fa-comments"></i> 4</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="blog-card">
+                                <div class="blog-img">
+                                    <img src="assets/img/blog3.jpg" alt="Blog Post 3">
+                                    <div class="blog-date">22 Aug 2024</div>
+                                </div>
+                                <div class="blog-content">
+                                    <h5>Python for Data Structures</h5>
+                                    <p>Implementing common data structures in Python and comparing their performance characteristics.</p>
+                                    <a href="#" class="btn btn-sm btn-primary">Read More</a>
+                                    <div class="blog-meta">
+                                        <span><i class="far fa-eye"></i> 312</span>
+                                        <span><i class="far fa-comments"></i> 15</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center mt-3">
+                            <a href="#" class="btn btn-outline-primary">View All Posts</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog End -->
+
+                <!-- Contact Start -->
+                <div class="container bg-white py-5" id="contact">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">Get In <span class="text-primary">Touch</span></h2>
+                        </div>
+                        <div class="col-md-7 mb-4">
+                            <div class="contact-form">
+                                <div id="success" class="alert alert-success" style="display: none;"></div>
+                                <div id="error" class="alert alert-danger" style="display: none;"></div>
+                                <form name="contact" id="contactForm" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleSubmit(event)">
+                                    <input type="hidden" name="form-name" value="contact" />
+                                    <div class="form-row">
+                                        <div class="control-group col-sm-6">
+                                            <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name"
+                                                required="required" data-validation-required-message="Please enter your name" />
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                        <div class="control-group col-sm-6">
+                                            <input type="email" class="form-control p-4" id="email" name="email" placeholder="Your Email"
+                                                required="required" data-validation-required-message="Please enter your email" />
+                                            <p class="help-block text-danger"></p>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <input type="text" class="form-control p-4" id="subject" name="subject" placeholder="Subject"
+                                            required="required" data-validation-required-message="Please enter a subject" />
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="control-group">
+                                        <textarea class="form-control py-3 px-4" rows="5" id="message" name="message" placeholder="Message"
+                                            required="required"
+                                            data-validation-required-message="Please enter your message"></textarea>
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary py-3 px-4" type="submit" id="sendMessageButton">
+                                            <i class="fas fa-paper-plane mr-2"></i>Send Message
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-5 mb-4">
+                            <div class="contact-info">
+                                <h4 class="mb-4">Contact Information</h4>
+                                <p class="mb-4">I'm currently available for freelance work and collaborations. Feel free to reach out for any inquiries or just to say hello!</p>
+                                
+                                <div class="contact-details">
+                                    <div class="contact-item">
+                                        <div class="contact-icon">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <div class="contact-text">
+                                            <h5>Location</h5>
+                                            <p>N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-item">
+                                        <div class="contact-icon">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="contact-text">
+                                            <h5>Email</h5>
+                                            <a href="mailto:melkamuwako5@gmail.com">melkamuwako5@gmail.com</a>
+                                        </div>
+                                    </div>
+                                    <div class="contact-item">
+                                        <div class="contact-icon">
+                                            <i class="fas fa-phone-alt"></i>
+                                        </div>
+                                        <div class="contact-text">
+                                            <h5>Phone</h5>
+                                            <a href="tel:+251965595251">+251 965595251</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="social-contact mt-4">
+                                    <h5 class="mb-3">Connect With Me</h5>
+                                    <div class="d-flex">
+                                        <a class="btn btn-outline-primary btn-square mr-2" href="https://t.me/kidn16" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                                        <a class="btn btn-outline-primary btn-square mr-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BuIEBB2OnSR%2BvVmDSU1TR6g%3D%3D" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                        <a class="btn btn-outline-primary btn-square mr-2" href="https://github.com/melke27" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                        <a class="btn btn-outline-primary btn-square mr-2" href="https://www.instagram.com/ruf.2316/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                                        <a class="btn btn-outline-primary btn-square" href="https://youtube.com/@MelkamuWako-f3v" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Contact End -->
+
+                <!-- Map Section -->
+                <div class="container-fluid px-0">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.238030215121!2d38.76395031478615!3d9.040876393525708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f1a4e5a98f%3A0x8e5a4a1a1a1a1a1a!2sAddis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+                
+                <!-- Newsletter Section -->
+                <div class="container-fluid bg-primary newsletter-section">
+                    <div class="container py-5">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 mb-4 mb-lg-0">
+                                <h3 class="text-white mb-0">Subscribe to My Newsletter</h3>
+                                <p class="text-white mb-0">Get the latest updates, articles and resources directly to your inbox.</p>
+                            </div>
+                            <div class="col-lg-6">
+                                <form class="newsletter-form" name="newsletter-subscribe" data-netlify="true">
+                                    <div class="input-group">
+                                        <input type="email" class="form-control" placeholder="Your Email Address" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-dark" type="submit">Subscribe</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" id="newsletterCheck" required>
+                                        <label class="form-check-label text-white" for="newsletterCheck">
+                                            I agree to receive emails (you can unsubscribe anytime)
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Start -->
+                <footer class="container-fluid bg-dark text-white py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 mb-4 mb-lg-0">
+                                <h5 class="text-primary mb-4">About Me</h5>
+                                <p>Computer Science student and passionate developer dedicated to creating innovative solutions and beautiful digital experiences.</p>
+                                <div class="d-flex pt-2">
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://t.me/kidn16" target="_blank"><i class="fab fa-telegram"></i></a>
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BuIEBB2OnSR%2BvVmDSU1TR6g%3D%3D" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://github.com/melke27" target="_blank"><i class="fab fa-github"></i></a>
+                                    <a class="btn btn-outline-light btn-social" href="https://youtube.com/@MelkamuWako-f3v" target="_blank"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4 mb-lg-0">
+                                <h5 class="text-primary mb-4">Quick Links</h5>
+                                <div class="d-flex flex-column justify-content-start">
+                                    <a class="text-white mb-2" href="#home"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                                    <a class="text-white mb-2" href="#about"><i class="fa fa-angle-right mr-2"></i>About</a>
+                                    <a class="text-white mb-2" href="#skills"><i class="fa fa-angle-right mr-2"></i>Skills</a>
+                                    <a class="text-white mb-2" href="#projects"><i class="fa fa-angle-right mr-2"></i>Projects</a>
+                                    <a class="text-white mb-2" href="#contact"><i class="fa fa-angle-right mr-2"></i>Contact</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <h5 class="text-primary mb-4">Contact Info</h5>
+                                <p><i class="fa fa-map-marker-alt mr-2"></i>N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
+                                <p><i class="fa fa-envelope mr-2"></i>melkamuwako5@gmail.com</p>
+                                <p><i class="fa fa-phone-alt mr-2"></i>+251 965595251</p>
+                                <div class="mt-4">
+                                    <a href="assets/resume/Melkamu_Wako_Resume.pdf" class="btn btn-primary mr-2" download><i class="fas fa-download mr-2"></i>Download CV</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <div class="col-md-6 text-center text-md-left">
+                                <p class="m-0">&copy; <span id="year"></span> Melkamu Wako. All Rights Reserved.</p>
+                            </div>
+                            <div class="col-md-6 text-center text-md-right">
+                                <div class="footer-links">
+                                    <a class="text-white mr-3" href="privacy.html">Privacy Policy</a>
+                                    <a class="text-white mr-3" href="terms.html">Terms of Service</a>
+                                    <a class="text-white" href="sitemap.html">Sitemap</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- Footer End -->
             </div>
         </div>
 
         <!-- Back to Top -->
-        <a href="#" class="back-to-top"><i class="fa fa-arrow-up"></i></a>
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
