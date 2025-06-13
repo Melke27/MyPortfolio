@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../../')));
+app.use(express.static(path.join(__dirname, '..')));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio', {
@@ -211,7 +211,7 @@ app.post('/api/subscribe', async (req, res) => {
 
 // Serve frontend for all other routes (SPA fallback)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../index.html'));
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
 // Error handling middleware
