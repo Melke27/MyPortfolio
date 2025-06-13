@@ -46,6 +46,9 @@ const subscriberSchema = new mongoose.Schema({
 
 const Subscriber = mongoose.model('Subscriber', subscriberSchema);
 
+// Import blog routes
+const blogRoutes = require('./routes/blogRoutes');
+
 // Email configuration
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -56,6 +59,8 @@ const transporter = nodemailer.createTransport({
 });
 
 // Routes
+app.use('/api/blogposts', blogRoutes);
+
 app.post('/api/contact', async (req, res) => {
     try {
         console.log('Received contact form submission:', req.body);

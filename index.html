@@ -8,6 +8,89 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="assets/css/style.css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            /* Custom styles for blog section to match the image */
+            #blog .title {
+                display: flex;
+                align-items: center;
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #212529; /* Dark gray for "Latest" */
+            }
+
+            #blog .title span {
+                color: #8BC34A; /* Green for "Blog Posts" */
+                margin-left: 0.5rem;
+            }
+
+            #blog .title::before {
+                content: '';
+                flex-grow: 1;
+                height: 3px;
+                background-color: #8BC34A; /* Green line */
+                margin-right: 1rem;
+            }
+
+            #blog .card {
+                border: 1px solid #e0e0e0;
+                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            }
+
+            #blog .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            #blog .card-img-top {
+                height: 200px; /* Fixed height for consistent image size */
+                object-fit: cover;
+                width: 100%;
+            }
+
+            #blog .card-body {
+                padding: 1.5rem;
+            }
+
+            #blog .card-title {
+                font-size: 1.5rem;
+                color: #212529;
+                margin-bottom: 0.5rem;
+            }
+
+            #blog .card-text {
+                font-size: 0.95rem;
+                color: #6c757d;
+                line-height: 1.6;
+            }
+
+            #blog .btn-success {
+                background-color: #8BC34A;
+                border-color: #8BC34A;
+                color: #fff;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                border-radius: 5px;
+            }
+
+            #blog .btn-success:hover {
+                background-color: #7CB342;
+                border-color: #7CB342;
+            }
+
+            #blog .btn-outline-primary {
+                border-color: #8BC34A;
+                color: #8BC34A;
+            }
+
+            #blog .btn-outline-primary:hover {
+                background-color: #8BC34A;
+                color: #fff;
+            }
+
+            #blog .text-muted i {
+                margin-right: 0.2rem;
+            }
+        </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
         <div class="wrapper">
@@ -256,6 +339,24 @@
                     </div>
                 </div>
                 <!-- About End -->
+
+                <!-- Blog Start -->
+                <div class="container bg-white py-5" id="blog">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">Latest <span class="text-primary">Blog Posts</span></h2>
+                        </div>
+                        <div class="col-12">
+                            <div class="row" id="blog-posts-container">
+                                <!-- Blog posts will be loaded here by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="col-12 text-center mt-4">
+                            <a href="#" class="btn btn-outline-primary px-4 py-2" id="view-all-posts-btn">View All Posts</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog End -->
 
                 <!-- Skills Start -->
                 <div class="container bg-white py-5" id="skills">
@@ -942,70 +1043,6 @@
                 </style>
                 <!-- Technical Expertise End -->
 
-                <!-- Blog Section -->
-                <div class="container bg-white py-5" id="blog">
-                    <div class="row px-3">
-                        <div class="col-12">
-                            <h2 class="title position-relative pb-2 mb-4">Latest <span class="text-primary">Blog Posts</span></h2>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="assets/img/blog1.jpg" alt="Blog Post 1">
-                                    <div class="blog-date">15 Oct 2024</div>
-                                </div>
-                                <div class="blog-content">
-                                    <h5>Mastering Algorithms in C++</h5>
-                                    <p>Exploring efficient algorithm design techniques and their implementation in C++ for competitive programming.</p>
-                                    <a href="#" class="btn btn-sm btn-primary">Read More</a>
-                                    <div class="blog-meta">
-                                        <span><i class="far fa-eye"></i> 245</span>
-                                        <span><i class="far fa-comments"></i> 12</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="assets/img/blog-2.jpg" alt="Blog Post 2">
-                                </div>
-                                <div class="blog-content">
-                                    <small class="text-muted">5 Sep 2024</small>
-                                    <h5>React Hooks Explained</h5>
-                                    <p>A comprehensive guide to React Hooks and how they can simplify your functional components.</p>
-                                    <a href="#" class="btn btn-primary btn-sm">Read More</a>
-                                    <div class="blog-meta">
-                                        <span><i class="far fa-eye"></i> 189</span>
-                                        <span><i class="far fa-comments"></i> 4</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="assets/img/blog3.jpg" alt="Blog Post 3">
-                                    <div class="blog-date">22 Aug 2024</div>
-                                </div>
-                                <div class="blog-content">
-                                    <h5>Python for Data Structures</h5>
-                                    <p>Implementing common data structures in Python and comparing their performance characteristics.</p>
-                                    <a href="#" class="btn btn-sm btn-primary">Read More</a>
-                                    <div class="blog-meta">
-                                        <span><i class="far fa-eye"></i> 312</span>
-                                        <span><i class="far fa-comments"></i> 15</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 text-center mt-3">
-                            <a href="#" class="btn btn-outline-primary">View All Posts</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Blog End -->
-
                 <!-- Contact Start -->
                 <div class="container bg-white py-5" id="contact">
                     <div class="row px-3">
@@ -1474,6 +1511,67 @@
                 } catch (error) {
                     console.error('Error initializing chart:', error);
                 }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const blogPostsContainer = document.getElementById('blog-posts-container');
+                const viewAllPostsBtn = document.getElementById('view-all-posts-btn');
+
+                async function fetchBlogPosts() {
+                    try {
+                        const response = await fetch('http://localhost:5000/api/blogposts');
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        const posts = await response.json();
+                        
+                        // Display only the first 3 posts as per the image
+                        const postsToDisplay = posts.slice(0, 3);
+
+                        blogPostsContainer.innerHTML = ''; // Clear existing content
+
+                        postsToDisplay.forEach(post => {
+                            const postDate = new Date(post.date);
+                            const formattedDate = postDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+
+                            const postHtml = `
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+                                        <img class="card-img-top" src="${post.imageUrl}" alt="${post.title}">
+                                        <div class="card-body">
+                                            <small class="text-muted"><i class="far fa-calendar-alt me-2"></i>${formattedDate}</small>
+                                            <h5 class="card-title font-weight-bold mt-2">${post.title}</h5>
+                                            <p class="card-text text-muted">${post.description}</p>
+                                            <a href="/blog/${post.slug}" class="btn btn-success btn-sm mt-2">Read More</a>
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <small class="text-muted"><i class="far fa-eye me-1"></i> ${post.views}</small>
+                                                <small class="text-muted"><i class="far fa-comment-alt me-1"></i> ${post.commentsCount}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            blogPostsContainer.innerHTML += postHtml;
+                        });
+
+                        // Hide "View All Posts" button if there are 3 or fewer posts
+                        if (posts.length <= 3) {
+                            viewAllPostsBtn.style.display = 'none';
+                        } else {
+                            // Optionally, link this button to a /blog page later
+                            viewAllPostsBtn.href = '/blog'; // Placeholder for a dedicated blog page
+                        }
+
+                    } catch (error) {
+                        console.error('Error fetching blog posts:', error);
+                        blogPostsContainer.innerHTML = '<p class="text-danger">Failed to load blog posts. Please try again later.</p>';
+                        viewAllPostsBtn.style.display = 'none';
+                    }
+                }
+
+                fetchBlogPosts();
             });
         </script>
     </body>
