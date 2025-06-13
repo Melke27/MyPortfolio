@@ -307,6 +307,52 @@
                 color: #6c757d;
                 line-height: 1.5;
             }
+
+            /* Styles for FAQ Section */
+            #faq {
+                background-color: #f8f9fa; /* Consistent light background */
+                padding: 60px 0;
+            }
+
+            #faq .section-title {
+                margin-bottom: 45px;
+            }
+
+            #faq .accordion-item {
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                overflow: hidden; /* Ensures border-radius is applied correctly */
+            }
+
+            #faq .accordion-button {
+                background-color: #fff;
+                color: #343a40;
+                font-size: 1.15rem;
+                font-weight: 600;
+                padding: 18px 25px;
+                text-align: left;
+                border: none;
+                box-shadow: none; /* Remove default button shadow */
+                transition: background-color 0.3s ease;
+            }
+
+            #faq .accordion-button:not(.collapsed) {
+                color: #007bff; /* Primary color when expanded */
+                background-color: #e9f5ff; /* Light blue background when expanded */
+            }
+
+            #faq .accordion-button::after {
+                color: #007bff; /* Arrow color */
+            }
+
+            #faq .accordion-body {
+                padding: 20px 25px;
+                background-color: #fcfcfc;
+                color: #6c757d;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
         </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
@@ -1360,6 +1406,30 @@
                 </section>
                 <!-- My Tech Stack End -->
 
+                <!-- FAQ Start -->
+                <section id="faq" class="section-padding">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title text-center mb-5">
+                                    <h2>Frequently Asked <span class="text-primary">Questions</span></h2>
+                                    <p>Find quick answers to common questions</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="accordion" id="faqAccordion">
+                                    <!-- FAQ content will be loaded here by JavaScript -->
+                                    <p id="faq-loading-message" class="text-center text-muted">Loading FAQs...</p>
+                                    <p id="faq-error-message" class="text-center text-danger" style="display: none;">Failed to load FAQs. Please try again later.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- FAQ End -->
+
                 <!-- Contact Start -->
                 <div class="container bg-white py-5" id="contact">
                     <div class="row px-3">
@@ -1666,7 +1736,7 @@
                     const posts = [
                         {
                             title: "Understanding Data Structures",
-                            imageUrl: "assets/img/blockchain.jpg", // Placeholder for latest tech
+                            imageUrl: "https://via.placeholder.com/350x200?text=Blockchain+Tech", // Online placeholder
                             description: "A deep dive into essential data structures like arrays, linked lists, and trees.",
                             date: "2024-03-10T12:00:00Z",
                             slug: "understanding-data-structures",
@@ -1675,7 +1745,7 @@
                         },
                         {
                             title: "The Power of Responsive Web Design",
-                            imageUrl: "assets/img/ai_ml.jpg", // Placeholder for latest tech
+                            imageUrl: "https://via.placeholder.com/350x200?text=AI+and+ML", // Online placeholder
                             description: "Learn how to create websites that look great on any device, from desktop to mobile.",
                             date: "2024-02-28T12:00:00Z",
                             slug: "responsive-web-design",
@@ -1684,7 +1754,7 @@
                         },
                         {
                             title: "Introduction to Cybersecurity Basics",
-                            imageUrl: "assets/img/cyber_security.jpg", // Placeholder for latest tech
+                            imageUrl: "https://via.placeholder.com/350x200?text=Cybersecurity", // Online placeholder
                             description: "Essential concepts and practices for beginners to stay safe in the digital world.",
                             date: "2024-01-15T12:00:00Z",
                             slug: "cybersecurity-basics",
@@ -1752,6 +1822,63 @@
                             submitButton.innerHTML = 'Send Message';
                         }, 1000); // 1 second delay for simulation
                     });
+                }
+            });
+        </script>
+
+        <script>
+            // Dynamic FAQ Loading Script
+            document.addEventListener('DOMContentLoaded', async () => {
+                const faqAccordion = document.getElementById('faqAccordion');
+                const faqLoadingMessage = document.getElementById('faq-loading-message');
+                const faqErrorMessage = document.getElementById('faq-error-message');
+
+                if (!faqAccordion) return;
+
+                faqLoadingMessage.style.display = 'block';
+                faqErrorMessage.style.display = 'none';
+
+                try {
+                    const response = await fetch('http://localhost:5002/api/faqs');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const faqs = await response.json();
+
+                    faqLoadingMessage.style.display = 'none';
+                    faqAccordion.innerHTML = ''; // Clear loading message
+
+                    if (faqs.length === 0) {
+                        faqAccordion.innerHTML = '<p class="text-center text-muted">No FAQs available at the moment.</p>';
+                        return;
+                    }
+
+                    faqs.forEach((faq, index) => {
+                        const headingId = `heading${faq.id || index + 1}`;
+                        const collapseId = `collapse${faq.id || index + 1}`;
+
+                        const faqHtml = `
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="${headingId}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false" aria-controls="${collapseId}">
+                                        ${faq.question}
+                                    </button>
+                                </h2>
+                                <div id="${collapseId}" class="accordion-collapse collapse" aria-labelledby="${headingId}" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        ${faq.answer}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        faqAccordion.innerHTML += faqHtml;
+                    });
+
+                } catch (error) {
+                    console.error('Error fetching FAQs:', error);
+                    faqLoadingMessage.style.display = 'none';
+                    faqErrorMessage.style.display = 'block';
+                    faqErrorMessage.textContent = 'Failed to load FAQs. Please ensure your backend is running at http://localhost:5002/api/faqs and returns valid JSON.';
                 }
             });
         </script>
