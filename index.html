@@ -1521,7 +1521,7 @@
 
                 async function fetchBlogPosts() {
                     try {
-                        const response = await fetch('http://localhost:5000/api/blogposts');
+                        const response = await fetch('http://localhost:5001/api/blogposts');
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
                         }
