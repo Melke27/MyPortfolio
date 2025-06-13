@@ -1252,6 +1252,11 @@
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
+        <!-- Dark Mode Toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -1263,8 +1268,43 @@
         <script src="lib/isotope/isotope.pkgd.min.js"></script>
         <script src="lib/lightbox/js/lightbox.min.js"></script>
 
-        <!-- Contact Javascript File -->
-        <!-- Removed Custom Contact Form JavaScript for Netlify Forms Compatibility -->
+        <!-- Dark Mode Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const themeToggle = document.getElementById('themeToggle');
+                const themeIcon = themeToggle.querySelector('i');
+                
+                // Check for saved theme preference
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                    updateThemeIcon(savedTheme);
+                }
+
+                // Toggle theme
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateThemeIcon(newTheme);
+                });
+
+                function updateThemeIcon(theme) {
+                    themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+
+                // Add smooth transition when changing theme
+                const style = document.createElement('style');
+                style.textContent = `
+                    * {
+                        transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+                    }
+                `;
+                document.head.appendChild(style);
+            });
+        </script>
 
         <!-- Template Javascript -->
         <script src="assets/js/main.js"></script>
