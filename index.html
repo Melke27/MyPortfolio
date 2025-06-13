@@ -10,25 +10,44 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
             /* Custom styles for blog section to match the image */
-            #blog .title {
+            #blog .blog-header {
                 display: flex;
-                align-items: center;
+                align-items: center; /* Vertically align lines and text */
+                margin-bottom: 2rem; /* Space below the entire heading section */
+            }
+
+            #blog .blog-lines {
+                display: flex;
+                flex-direction: column; /* Stack lines vertically */
+                align-items: flex-start; /* Align lines to the left within their container */
+                margin-right: 1rem; /* Space between lines and text */
+            }
+
+            #blog .blog-line-long,
+            #blog .blog-line-short {
+                height: 3px;
+                background-color: #8BC34A; /* Green line */
+            }
+
+            #blog .blog-line-long {
+                width: 300px; /* Length of the longer line */
+                margin-bottom: 5px; /* Space between the two lines */
+            }
+
+            #blog .blog-line-short {
+                width: 150px; /* Length of the shorter line */
+            }
+
+            #blog .blog-title {
                 font-size: 2.5rem;
                 font-weight: 700;
                 color: #212529; /* Dark gray for "Latest" */
+                margin-bottom: 0; /* Remove default h2 margin */
             }
 
-            #blog .title span {
+            #blog .blog-posts-green {
                 color: #8BC34A; /* Green for "Blog Posts" */
                 margin-left: 0.5rem;
-            }
-
-            #blog .title::before {
-                content: '';
-                flex-grow: 1;
-                height: 3px;
-                background-color: #8BC34A; /* Green line */
-                margin-right: 1rem;
             }
 
             #blog .card {
@@ -344,7 +363,13 @@
                 <div class="container bg-white py-5" id="blog">
                     <div class="row px-3">
                         <div class="col-12">
-                            <h2 class="title position-relative pb-2 mb-4">Latest <span class="text-primary">Blog Posts</span></h2>
+                            <div class="blog-header">
+                                <div class="blog-lines">
+                                    <div class="blog-line-long"></div>
+                                    <div class="blog-line-short"></div>
+                                </div>
+                                <h2 class="blog-title">Latest <span class="blog-posts-green">Blog Posts</span></h2>
+                            </div>
                         </div>
                         <div class="col-12">
                             <div class="row" id="blog-posts-container">
