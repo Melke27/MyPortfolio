@@ -13,7 +13,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../melkamu wako protfolio and landing page')));
+app.use(express.static(path.join(__dirname, '../../')));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio', {
@@ -209,9 +209,9 @@ app.post('/api/subscribe', async (req, res) => {
     }
 });
 
-// Serve frontend
+// Serve frontend for all other routes (SPA fallback)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../melkamu wako protfolio and landing page/melkamu wako landing page.html'));
+    res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
 // Error handling middleware
