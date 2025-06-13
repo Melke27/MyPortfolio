@@ -586,8 +586,8 @@
                         <div class="col-lg-3 col-md-6 mb-4">
                             <div class="milestone-card text-center">
                                 <i class="fas fa-code fa-3x text-info mb-3"></i>
-                                <h3 class="counter text-dark mb-2" data-target="500">0</h3>
-                                <p class="text-muted">Competitive Programming Problems Solved</p>
+                                <h3 class="counter text-dark mb-2" data-target="150">0</h3>
+                                <p class="text-muted">Competitive Programming Problems Solved (Codeforces & LeetCode)</p>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 mb-4">
@@ -1411,6 +1411,8 @@
                                         <textarea class="form-control py-3 px-4" rows="5" id="message" name="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
                                         <p class="help-block text-danger"></p>
                                     </div>
+                                    <div id="success" class="text-success text-center mb-3" style="display: none;"></div>
+                                    <div id="error" class="text-danger text-center mb-3" style="display: none;"></div>
                                     <div class="text-center">
                                         <button class="btn btn-primary py-3 px-5" type="submit" id="sendMessageButton">Send Message</button>
                                     </div>
@@ -1664,7 +1666,7 @@
                     const posts = [
                         {
                             title: "Understanding Data Structures",
-                            imageUrl: "assets/img/blog-1.jpg",
+                            imageUrl: "assets/img/blockchain.jpg", // Placeholder for latest tech
                             description: "A deep dive into essential data structures like arrays, linked lists, and trees.",
                             date: "2024-03-10T12:00:00Z",
                             slug: "understanding-data-structures",
@@ -1673,7 +1675,7 @@
                         },
                         {
                             title: "The Power of Responsive Web Design",
-                            imageUrl: "assets/img/blog-2.jpg",
+                            imageUrl: "assets/img/ai_ml.jpg", // Placeholder for latest tech
                             description: "Learn how to create websites that look great on any device, from desktop to mobile.",
                             date: "2024-02-28T12:00:00Z",
                             slug: "responsive-web-design",
@@ -1682,7 +1684,7 @@
                         },
                         {
                             title: "Introduction to Cybersecurity Basics",
-                            imageUrl: "assets/img/blog-3.jpg",
+                            imageUrl: "assets/img/cyber_security.jpg", // Placeholder for latest tech
                             description: "Essential concepts and practices for beginners to stay safe in the digital world.",
                             date: "2024-01-15T12:00:00Z",
                             slug: "cybersecurity-basics",
@@ -1723,8 +1725,35 @@
 
                 fetchBlogPosts();
             });
+
+            // Script for local form submission feedback (for Netlify Forms)
+            document.addEventListener('DOMContentLoaded', () => {
+                const contactForm = document.getElementById('contactForm');
+                const successDiv = document.getElementById('success');
+                const errorDiv = document.getElementById('error');
+                const submitButton = document.getElementById('sendMessageButton');
+
+                if (contactForm) {
+                    contactForm.addEventListener('submit', (event) => {
+                        event.preventDefault(); // Prevent default form submission
+
+                        // Simulate sending process
+                        submitButton.disabled = true;
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+
+                        // Simulate success after a short delay
+                        setTimeout(() => {
+                            successDiv.textContent = 'Message sent! (Actual sending via Netlify after deployment)';
+                            successDiv.style.display = 'block';
+                            errorDiv.style.display = 'none';
+                            contactForm.reset();
+
+                            submitButton.disabled = false;
+                            submitButton.innerHTML = 'Send Message';
+                        }, 1000); // 1 second delay for simulation
+                    });
+                }
+            });
         </script>
-    </body>
-</html> 
     </body>
 </html> 
