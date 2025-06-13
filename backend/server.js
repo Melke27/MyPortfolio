@@ -13,6 +13,8 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the root directory
 app.use(express.static(path.join(__dirname, '..')));
 
 // MongoDB Connection
@@ -20,9 +22,9 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => console.log('MongoDB Connected'))
+.then(() => console.log('Connected to MongoDB'))
 .catch(err => {
-    console.error('MongoDB Connection Error:', err);
+    console.error('MongoDB connection error:', err);
     process.exit(1); // Exit if cannot connect to database
 });
 
@@ -59,11 +61,23 @@ const transporter = nodemailer.createTransport({
 });
 
 // Routes
-app.use('/api/blogposts', blogRoutes);
+app.use('/api', blogRoutes);
+
+// Serve blog post template for individual blog posts
+app.get('/blog/:slug', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'blog-post.html'));
+});
 
 // Serve index.html for the root path
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'index.html'));
+    const filePath = path.join(__dirname, '..', 'index.html');
+    console.log(`Attempting to serve index.html from: ${filePath}`);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error('Error serving index.html:', err);
+            res.status(500).send('Error loading main page.');
+        }
+    });
 });
 
 app.post('/api/contact', async (req, res) => {
@@ -216,7 +230,14 @@ app.post('/api/subscribe', async (req, res) => {
 
 // Serve frontend for all other routes (SPA fallback)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'index.html'));
+    const filePath = path.join(__dirname, '..', 'index.html');
+    console.log(`Attempting to serve SPA fallback for ${req.url} from: ${filePath}`);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error(`Error serving SPA fallback for ${req.url}:`, err);
+            res.status(404).send('Page not found.'); // Sending a 404 for fallback errors
+        }
+    });
 });
 
 // Error handling middleware

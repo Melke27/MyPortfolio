@@ -16,58 +16,125 @@ const seedDatabase = async () => {
         await BlogPost.deleteMany({});
         console.log('Existing blog posts cleared');
 
-        const dummyBlogPosts = [
+        const blogPosts = [
             {
-                title: 'My First Blog Post',
-                slug: 'my-first-blog-post',
-                author: 'Melkamu Wako',
-                imageUrl: 'https://via.placeholder.com/600x400/8BC34A/FFFFFF?text=Blog+Post+1',
-                description: 'This is a short description of my very first blog post.',
-                content: '<h1>Welcome to my first blog post!</h1><p>This is the full content of the first blog post. It discusses the initial steps of setting up a blog and the excitement of sharing thoughts online.</p>',
-                views: 120,
-                commentsCount: 5,
-                tags: ['web development', 'personal', 'tutorial'],
-                category: 'Development'
+                title: "Understanding JavaScript Closures",
+                slug: "understanding-javascript-closures",
+                description: "A comprehensive guide to understanding JavaScript closures, their practical applications, and common use cases.",
+                content: `
+                    <h2>What are JavaScript Closures?</h2>
+                    <p>A closure is the combination of a function and the lexical environment within which that function was declared. This environment consists of any local variables that were in-scope at the time the closure was created.</p>
+                    
+                    <h2>Why are Closures Important?</h2>
+                    <p>Closures are fundamental to JavaScript and are used in many common programming patterns. They allow for data privacy and function factories, among other things.</p>
+                    
+                    <h2>Practical Example</h2>
+                    <pre><code>
+    function createCounter() {
+        let count = 0;
+        return {
+            increment: function() {
+                count++;
+                return count;
+            },
+            decrement: function() {
+                count--;
+                return count;
+            },
+            getCount: function() {
+                return count;
+            }
+        };
+    }
+
+    const counter = createCounter();
+    console.log(counter.increment()); // 1
+    console.log(counter.increment()); // 2
+    console.log(counter.decrement()); // 1
+                    </code></pre>
+                    
+                    <h2>Common Use Cases</h2>
+                    <ul>
+                        <li>Data Privacy</li>
+                        <li>Function Factories</li>
+                        <li>Event Handlers</li>
+                        <li>Currying</li>
+                    </ul>
+                `,
+                imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: new Date("2024-03-15"),
+                author: {
+                    name: "Melkamu Wako",
+                    imageUrl: "assets/img/MELKAMU.jpg",
+                    bio: "Full-stack developer and technical writer passionate about JavaScript and web development."
+                },
+                tags: ["JavaScript", "Closures", "Web Development", "Programming"],
+                views: 1250,
+                commentsCount: 8
             },
             {
-                title: 'Understanding JavaScript Closures',
-                slug: 'understanding-javascript-closures',
-                author: 'Melkamu Wako',
-                imageUrl: 'https://via.placeholder.com/600x400/8BC34A/FFFFFF?text=Blog+Post+2',
-                description: 'A deep dive into how JavaScript closures work and their practical applications.',
-                content: '<h1>JavaScript Closures Explained</h1><p>Closures are a fundamental concept in JavaScript. This post breaks down what they are, why they are useful, and provides code examples.</p>',
-                views: 250,
-                commentsCount: 12,
-                tags: ['javascript', 'programming', 'frontend'],
-                category: 'Programming'
+                title: "Mastering React Hooks",
+                slug: "mastering-react-hooks",
+                description: "Learn how to effectively use React Hooks to manage state and side effects in your applications.",
+                content: `
+                    <h2>Introduction to React Hooks</h2>
+                    <p>React Hooks are functions that let you "hook into" React state and lifecycle features from function components.</p>
+                    
+                    <h2>Common Hooks</h2>
+                    <ul>
+                        <li>useState</li>
+                        <li>useEffect</li>
+                        <li>useContext</li>
+                        <li>useReducer</li>
+                    </ul>
+                    
+                    <h2>Best Practices</h2>
+                    <p>Learn the best practices for using hooks in your React applications.</p>
+                `,
+                imageUrl: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: new Date("2024-03-10"),
+                author: {
+                    name: "Melkamu Wako",
+                    imageUrl: "assets/img/MELKAMU.jpg",
+                    bio: "Full-stack developer and technical writer passionate about JavaScript and web development."
+                },
+                tags: ["React", "JavaScript", "Web Development"],
+                views: 980,
+                commentsCount: 5
             },
             {
-                title: 'Getting Started with Node.js',
-                slug: 'getting-started-with-nodejs',
-                author: 'Melkamu Wako',
-                imageUrl: 'https://via.placeholder.com/600x400/8BC34A/FFFFFF?text=Blog+Post+3',
-                description: 'A beginner-friendly guide to setting up and running your first Node.js application.',
-                content: '<h1>Node.js for Beginners</h1><p>This guide covers the basics of Node.js, including installation, setting up a simple server, and handling requests.</p>',
-                views: 180,
-                commentsCount: 8,
-                tags: ['nodejs', 'backend', 'web development'],
-                category: 'Development'
-            },
-            {
-                title: 'The Importance of Responsive Web Design',
-                slug: 'importance-of-responsive-web-design',
-                author: 'Melkamu Wako',
-                imageUrl: 'https://via.placeholder.com/600x400/8BC34A/FFFFFF?text=Blog+Post+4',
-                description: 'Why responsive design is crucial for modern web development and how to implement it.',
-                content: '<h1>Responsive Web Design</h1><p>Learn about the principles of responsive web design and techniques to make your websites look great on all devices.</p>',
-                views: 300,
-                commentsCount: 15,
-                tags: ['web design', 'frontend', 'css'],
-                category: 'Design'
+                title: "Building RESTful APIs with Node.js",
+                slug: "building-restful-apis",
+                description: "A comprehensive guide to building scalable and maintainable RESTful APIs using Node.js and Express.",
+                content: `
+                    <h2>What is a RESTful API?</h2>
+                    <p>REST (Representational State Transfer) is an architectural style for designing networked applications.</p>
+                    
+                    <h2>Key Principles</h2>
+                    <ul>
+                        <li>Client-Server Architecture</li>
+                        <li>Stateless</li>
+                        <li>Cacheable</li>
+                        <li>Uniform Interface</li>
+                    </ul>
+                    
+                    <h2>Implementation with Node.js</h2>
+                    <p>Learn how to implement RESTful APIs using Node.js and Express.</p>
+                `,
+                imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                date: new Date("2024-03-05"),
+                author: {
+                    name: "Melkamu Wako",
+                    imageUrl: "assets/img/MELKAMU.jpg",
+                    bio: "Full-stack developer and technical writer passionate about JavaScript and web development."
+                },
+                tags: ["Node.js", "API", "Backend", "JavaScript"],
+                views: 750,
+                commentsCount: 3
             }
         ];
 
-        await BlogPost.insertMany(dummyBlogPosts);
+        await BlogPost.insertMany(blogPosts);
         console.log('Dummy blog posts inserted');
 
     } catch (error) {
