@@ -8,17 +8,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="assets/css/style.css">
         
-        <!-- jQuery and Bootstrap Bundle -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        
-        <!-- Libraries from assets/lib -->
-        <script src="assets/lib/easing/easing.min.js"></script>
-        <script src="assets/lib/waypoints/waypoints.min.js"></script>
-        <script src="assets/lib/owlcarousel/owl.carousel.min.js"></script>
-        <script src="assets/lib/isotope/isotope.pkgd.min.js"></script>
-        <script src="assets/lib/lightbox/js/lightbox.min.js"></script>
-        <script src="assets/lib/typed/typed.min.js"></script>
+        <!-- Chart.js CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!-- Dark Mode Script -->
         <script>
@@ -234,6 +225,87 @@
             }
             .expertise-list li:last-child {
                 margin-bottom: 0;
+            }
+
+            /* Styles for Milestones & Achievements Section */
+            #milestones {
+                background-color: #f8f9fa; /* Light background matching other sections */
+                padding: 60px 0;
+            }
+
+            .milestone-card {
+                background: #fff;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease-in-out;
+                height: 100%; /* Ensure cards are same height */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .milestone-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            }
+
+            .milestone-card i {
+                color: #007bff; /* Primary color for icons */
+            }
+
+            .milestone-card h3.counter {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #212529; /* Dark text for numbers */
+                margin-top: 15px;
+            }
+
+            .milestone-card p {
+                font-size: 1rem;
+                color: #6c757d; /* Muted text for descriptions */
+            }
+
+            /* Styles for My Tech Stack Section */
+            #tech-stack {
+                background-color: #f0f2f5; /* A slightly different background to distinguish */
+                padding: 60px 0;
+            }
+
+            .tech-card {
+                background: #fff;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease-in-out;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .tech-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            }
+
+            .tech-card i, .tech-card img {
+                margin-bottom: 15px;
+            }
+
+            .tech-card h4 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #343a40;
+                margin-bottom: 10px;
+            }
+
+            .tech-card p {
+                font-size: 0.95rem;
+                color: #6c757d;
+                line-height: 1.5;
             }
         </style>
     </head>
@@ -490,6 +562,44 @@
                     </div>
                 </div>
                 <!-- About End -->
+
+                <!-- Milestones & Achievements Start -->
+                <div class="container bg-white py-5" id="milestones">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">My <span class="text-primary">Milestones & Achievements</span></h2>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="milestone-card text-center">
+                                <i class="fas fa-award fa-3x text-primary mb-3"></i>
+                                <h3 class="counter text-dark mb-2" data-target="2">0</h3>
+                                <p class="text-muted">Years of Experience</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="milestone-card text-center">
+                                <i class="fas fa-project-diagram fa-3x text-success mb-3"></i>
+                                <h3 class="counter text-dark mb-2" data-target="10">0</h3>
+                                <p class="text-muted">Projects Completed</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="milestone-card text-center">
+                                <i class="fas fa-code fa-3x text-info mb-3"></i>
+                                <h3 class="counter text-dark mb-2" data-target="500">0</h3>
+                                <p class="text-muted">Competitive Programming Problems Solved</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="milestone-card text-center">
+                                <i class="fas fa-certificate fa-3x text-warning mb-3"></i>
+                                <h3 class="counter text-dark mb-2" data-target="4">0</h3>
+                                <p class="text-muted">Certifications Earned</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Milestones & Achievements End -->
 
                 <!-- Blog Start -->
                 <div class="container bg-white py-5" id="blog">
@@ -1169,6 +1279,87 @@
                 </section>
                 <!-- Technical Expertise Section End -->
 
+                <!-- My Tech Stack Start -->
+                <section id="tech-stack" class="section-padding">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title text-center">
+                                    <h2>My <span class="text-primary">Tech Stack</span></h2>
+                                    <p>Technologies and tools I love to work with</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Tech Stack Item 1: React -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-react fa-4x text-info mb-3"></i>
+                                    <h4>React</h4>
+                                    <p class="text-muted">Building dynamic and responsive user interfaces.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 2: Node.js -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-node-js fa-4x text-success mb-3"></i>
+                                    <h4>Node.js</h4>
+                                    <p class="text-muted">Scalable server-side applications and RESTful APIs.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 3: Python -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-python fa-4x text-warning mb-3"></i>
+                                    <h4>Python</h4>
+                                    <p class="text-muted">Backend logic, data analysis, and automation scripts.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 4: MongoDB -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fas fa-database fa-4x text-danger mb-3"></i>
+                                    <h4>MongoDB</h4>
+                                    <p class="text-muted">Flexible NoSQL database solutions.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 5: Docker -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-docker fa-4x text-primary mb-3"></i>
+                                    <h4>Docker</h4>
+                                    <p class="text-muted">Containerization for consistent development and deployment.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 6: Git/GitHub -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-github fa-4x text-dark mb-3"></i>
+                                    <h4>Git & GitHub</h4>
+                                    <p class="text-muted">Version control and collaborative coding.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 7: Cloud Platform Placeholder -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <img src="assets/img/tech_placeholder.png" alt="Cloud Platform" class="img-fluid mb-3" style="width: 60px; height: 60px;">
+                                    <h4>Cloud Platforms</h4>
+                                    <p class="text-muted">Deploying and managing scalable applications.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 8: VS Code -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <img src="assets/img/tech_placeholder.png" alt="VS Code" class="img-fluid mb-3" style="width: 60px; height: 60px;">
+                                    <h4>VS Code</h4>
+                                    <p class="text-muted">My preferred IDE for efficient development.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- My Tech Stack End -->
+
                 <!-- Contact Start -->
                 <div class="container bg-white py-5" id="contact">
                     <div class="row px-3">
@@ -1203,7 +1394,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="contact-form">
-                                <form id="contactForm" onsubmit="return handleSubmit(event)">
+                                <form name="contact" id="contactForm" method="POST" data-netlify="true">
                                     <div class="control-group">
                                         <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name" required="required" data-validation-required-message="Please enter your name" />
                                         <p class="help-block text-danger"></p>
@@ -1220,8 +1411,6 @@
                                         <textarea class="form-control py-3 px-4" rows="5" id="message" name="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
                                         <p class="help-block text-danger"></p>
                                     </div>
-                                    <div id="success" class="text-success text-center mb-3" style="display: none;"></div>
-                                    <div id="error" class="text-danger text-center mb-3" style="display: none;"></div>
                                     <div class="text-center">
                                         <button class="btn btn-primary py-3 px-5" type="submit" id="sendMessageButton">Send Message</button>
                                     </div>
@@ -1416,48 +1605,6 @@
                     return false;
                 });
             });
-
-            function handleSubmit(event) {
-                event.preventDefault();
-                const form = event.target;
-                const successDiv = document.getElementById('success');
-                const errorDiv = document.getElementById('error');
-                const submitButton = document.getElementById('sendMessageButton');
-
-                // Disable submit button and show loading state
-                submitButton.disabled = true;
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-
-                // Submit the form
-                fetch('/', {
-                    method: 'POST',
-                    body: new FormData(form)
-                })
-                .then(response => {
-                        if (response.ok) {
-                        // Show success message
-                        successDiv.textContent = 'Thank you! Your message has been sent successfully.';
-                        successDiv.style.display = 'block';
-                        errorDiv.style.display = 'none';
-                        form.reset();
-                        } else {
-                        throw new Error('Network response was not ok');
-                    }
-                })
-                .catch(error => {
-                    // Show error message
-                    errorDiv.textContent = 'Sorry, there was an error sending your message. Please try again later.';
-                    errorDiv.style.display = 'block';
-                    successDiv.style.display = 'none';
-                })
-                .finally(() => {
-                    // Re-enable submit button
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Send Message';
-                });
-
-                return false;
-            }
         </script>
 
         <script>
@@ -1514,65 +1661,70 @@
                 const viewAllPostsBtn = document.getElementById('view-all-posts-btn');
 
                 async function fetchBlogPosts() {
-                    try {
-                        const response = await fetch('http://localhost:5001/api/blogposts');
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
+                    const posts = [
+                        {
+                            title: "Understanding Data Structures",
+                            imageUrl: "assets/img/blog-1.jpg",
+                            description: "A deep dive into essential data structures like arrays, linked lists, and trees.",
+                            date: "2024-03-10T12:00:00Z",
+                            slug: "understanding-data-structures",
+                            views: 1200,
+                            commentsCount: 15
+                        },
+                        {
+                            title: "The Power of Responsive Web Design",
+                            imageUrl: "assets/img/blog-2.jpg",
+                            description: "Learn how to create websites that look great on any device, from desktop to mobile.",
+                            date: "2024-02-28T12:00:00Z",
+                            slug: "responsive-web-design",
+                            views: 950,
+                            commentsCount: 8
+                        },
+                        {
+                            title: "Introduction to Cybersecurity Basics",
+                            imageUrl: "assets/img/blog-3.jpg",
+                            description: "Essential concepts and practices for beginners to stay safe in the digital world.",
+                            date: "2024-01-15T12:00:00Z",
+                            slug: "cybersecurity-basics",
+                            views: 1500,
+                            commentsCount: 22
                         }
-                        const posts = await response.json();
-                        
-                        // Display only the first 3 posts as per the image
-                        const postsToDisplay = posts.slice(0, 3);
+                    ];
 
-                        blogPostsContainer.innerHTML = ''; // Clear existing content
+                    blogPostsContainer.innerHTML = ''; // Clear existing content
 
-                        postsToDisplay.forEach(post => {
-                            const postDate = new Date(post.date);
-                            const formattedDate = postDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                    posts.forEach(post => {
+                        const postDate = new Date(post.date);
+                        const formattedDate = postDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 
-                            const postHtml = `
-                                <div class="col-lg-4 col-md-6 mb-4">
-                                    <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
-                                        <img class="card-img-top" src="${post.imageUrl}" alt="${post.title}">
-                                        <div class="card-body">
-                                            <small class="text-muted"><i class="far fa-calendar-alt me-2"></i>${formattedDate}</small>
-                                            <h5 class="card-title font-weight-bold mt-2">${post.title}</h5>
-                                            <p class="card-text text-muted">${post.description}</p>
-                                            <a href="/blog/${post.slug}" class="btn btn-success btn-sm mt-2">Read More</a>
-                                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <small class="text-muted"><i class="far fa-eye me-1"></i> ${post.views}</small>
-                                                <small class="text-muted"><i class="far fa-comment-alt me-1"></i> ${post.commentsCount}</small>
-                                            </div>
+                        const postHtml = `
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+                                    <img class="card-img-top" src="${post.imageUrl}" alt="${post.title}">
+                                    <div class="card-body">
+                                        <small class="text-muted"><i class="far fa-calendar-alt me-2"></i>${formattedDate}</small>
+                                        <h5 class="card-title font-weight-bold mt-2">${post.title}</h5>
+                                        <p class="card-text text-muted">${post.description}</p>
+                                        <a href="/blog/${post.slug}" class="btn btn-success btn-sm mt-2">Read More</a>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <small class="text-muted"><i class="far fa-eye me-1"></i> ${post.views}</small>
+                                            <small class="text-muted"><i class="far fa-comment-alt me-1"></i> ${post.commentsCount}</small>
                                         </div>
                                     </div>
                                 </div>
-                            `;
-                            blogPostsContainer.innerHTML += postHtml;
-                        });
+                            </div>
+                        `;
+                        blogPostsContainer.innerHTML += postHtml;
+                    });
 
-                        // Hide "View All Posts" button if there are 3 or fewer posts
-                        if (posts.length <= 3) {
-                            viewAllPostsBtn.style.display = 'none';
-                        } else {
-                            // Optionally, link this button to a /blog page later
-                            viewAllPostsBtn.href = '/blog'; // Placeholder for a dedicated blog page
-                        }
-
-                    } catch (error) {
-                        console.error('Error fetching blog posts:', error);
-                        // Detailed error logging
-                        if (error instanceof TypeError) {
-                            console.error('Network error:', error.message, 'Are you sure the backend server is running and accessible at http://localhost:5001?');
-                        } else if (error.message.startsWith('HTTP error!')) {
-                            console.error('HTTP error details:', error.message);
-                        }
-                        blogPostsContainer.innerHTML = '<p class="text-danger">Failed to load blog posts. Please try again later.</p>';
-                        viewAllPostsBtn.style.display = 'none';
-                    }
+                    // Always hide "View All Posts" button if using static content or no more than 3 posts
+                    viewAllPostsBtn.style.display = 'none';
                 }
 
                 fetchBlogPosts();
             });
         </script>
+    </body>
+</html> 
     </body>
 </html> 
