@@ -162,6 +162,79 @@
             #blog .text-muted i {
                 margin-right: 0.2rem;
             }
+
+            /* Styles for Technical Expertise Section */
+            #expertise {
+                padding: 60px 0; /* Adjust padding as needed */
+                background-color: #f8f9fa; /* Light background for the section, matching the overall page light background */
+            }
+
+            #expertise .section-title {
+                margin-bottom: 45px;
+            }
+
+            #expertise .section-title h2 {
+                font-size: 2.8rem;
+                font-weight: 700;
+                color: #343a40; /* Dark gray for "Technical Expertise" */
+            }
+
+            #expertise .section-title p {
+                font-size: 1.1rem;
+                color: #6c757d; /* Lighter gray for subtitle */
+            }
+
+            .expertise-card {
+                background: #fff;
+                border-radius: 10px;
+                padding: 40px 20px; /* Adjusted padding to match image */
+                text-align: center;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+                transition: all 0.3s ease-in-out;
+                height: 100%; /* Ensure cards are same height */
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+            }
+
+            .expertise-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            }
+
+            .expertise-icon {
+                font-size: 3.5rem; /* Larger icon size */
+                color: #007bff; /* Primary blue for icons, as seen in the image */
+                margin-bottom: 20px;
+            }
+
+            .expertise-card h4 {
+                font-size: 1.8rem;
+                font-weight: 600;
+                color: #343a40; /* Dark gray for card titles */
+                margin-bottom: 25px; /* Space below title */
+            }
+
+            .expertise-list {
+                list-style: none; /* Remove default bullet points */
+                padding: 0;
+                margin: 0;
+                text-align: center; /* Center list items */
+                width: 100%; /* Ensure list takes full width */
+            }
+
+            .expertise-list li {
+                font-size: 1.05rem;
+                color: #6c757d; /* Lighter text color for list items */
+                margin-bottom: 10px; /* Spacing between items */
+                padding: 0;
+                border-bottom: none;
+                line-height: 1.5;
+            }
+            .expertise-list li:last-child {
+                margin-bottom: 0;
+            }
         </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
@@ -255,90 +328,88 @@
 
                                 <div class="skills-chart mt-5">
                                     <h5 class="mb-3">My Skills Distribution</h5>
-                                    <div class="skills-distribution">
-                                        <div class="skill-category">
-                                            <div class="skill-header">
-                                                <i class="fas fa-code text-primary"></i>
-                                                <h6>Competitive Programming</h6>
-                                                <span class="skill-percentage">25%</span>
+                                    <div class="skills-chart-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center">
+                                        <div class="chart-legend mb-3 mb-lg-0 me-4">
+                                            <div class="legend-item">
+                                                <span class="color-box bg-primary"></span>
+                                                <span class="legend-text">Competitive Programming</span>
                                             </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 25%"></div>
+                                            <div class="legend-item">
+                                                <span class="color-box bg-success"></span>
+                                                <span class="legend-text">Full-Stack Development</span>
                                             </div>
-                                        </div>
-                                        <div class="skill-category">
-                                            <div class="skill-header">
-                                                <i class="fas fa-laptop-code text-success"></i>
-                                                <h6>Full-Stack Development</h6>
-                                                <span class="skill-percentage">30%</span>
+                                            <div class="legend-item">
+                                                <span class="color-box bg-info"></span>
+                                                <span class="legend-text">Database Management</span>
                                             </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-success" role="progressbar" style="width: 30%"></div>
+                                            <div class="legend-item">
+                                                <span class="color-box bg-warning"></span>
+                                                <span class="legend-text">Cybersecurity</span>
                                             </div>
-                                            <div class="skill-subcategories mt-2">
-                                                <div class="subcategory">
-                                                    <small>Frontend (15%)</small>
-                                                    <div class="progress" style="height: 5px;">
-                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 15%"></div>
-                                                    </div>
-                                                    <small class="text-muted">HTML, CSS, JavaScript, React</small>
-                                                </div>
-                                                <div class="subcategory mt-2">
-                                                    <small>Backend (15%)</small>
-                                                    <div class="progress" style="height: 5px;">
-                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 15%"></div>
-                                                    </div>
-                                                    <small class="text-muted">Node.js, Java, RESTful APIs</small>
-                                                </div>
+                                            <div class="legend-item">
+                                                <span class="color-box bg-danger"></span>
+                                                <span class="legend-text">Robotics & Automation</span>
                                             </div>
                                         </div>
-                                        <div class="skill-category">
-                                            <div class="skill-header">
-                                                <i class="fas fa-database text-info"></i>
-                                                <h6>Database Management</h6>
-                                                <span class="skill-percentage">15%</span>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 15%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="skill-category">
-                                            <div class="skill-header">
-                                                <i class="fas fa-shield-alt text-warning"></i>
-                                                <h6>Cybersecurity</h6>
-                                                <span class="skill-percentage">15%</span>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 15%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="skill-category">
-                                            <div class="skill-header">
-                                                <i class="fas fa-robot text-danger"></i>
-                                                <h6>Robotics & Automation</h6>
-                                                <span class="skill-percentage">15%</span>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 15%"></div>
-                                            </div>
-                                        </div>
+                                        <canvas id="skillsPieChart" class="flex-grow-1" style="max-width: 400px; max-height: 400px;"></canvas>
                                     </div>
                                 </div>
 
                                 <style>
-                                    .skill-subcategories {
-                                        padding-left: 15px;
-                                        border-left: 2px solid #e9ecef;
+                                    .skills-chart-container {
+                                        gap: 20px;
                                     }
-                                    .subcategory {
-                                        margin-bottom: 10px;
+                                    .chart-legend {
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 10px;
                                     }
-                                    .subcategory small {
-                                        display: block;
-                                        margin-bottom: 2px;
+                                    .legend-item {
+                                        display: flex;
+                                        align-items: center;
+                                        font-size: 0.95rem;
+                                        color: #333; /* Adjust color as needed */
                                     }
-                                    .text-muted {
-                                        font-size: 0.8em;
+                                    .color-box {
+                                        width: 18px;
+                                        height: 18px;
+                                        margin-right: 8px;
+                                        border-radius: 4px;
+                                    }
+                                    /* Additional colors for subcategories if needed, but not in the main legend */
+                                    .bg-purple { background-color: #6f42c1; } /* Example, if needed */
+                                    .bg-dark { background-color: #343a40; } /* Example, if needed */
+
+                                    /* Ensure canvas takes available space, but with limits */
+                                    #skillsPieChart {
+                                        flex-basis: 0; /* Allows it to shrink below max-width */
+                                        min-width: 250px; /* Ensure it's not too small on narrow screens */
+                                    }
+
+                                    /* Responsive adjustments for the chart legend and container */
+                                    @media (max-width: 991.98px) { /* On medium devices and smaller */
+                                        .skills-chart-container {
+                                            flex-direction: column; /* Stack legend and chart vertically */
+                                            align-items: center; /* Center items when stacked */
+                                        }
+                                        .chart-legend {
+                                            flex-direction: row; /* Keep legend items in a row if space allows */
+                                            flex-wrap: wrap; /* Allow legend items to wrap */
+                                            justify-content: center;
+                                            margin-right: 0 !important; /* Remove right margin when stacked */
+                                        }
+                                        .legend-item {
+                                            margin-bottom: 5px; /* Add some space between wrapped items */
+                                        }
+                                    }
+                                    @media (max-width: 575.98px) { /* On extra small devices */
+                                        .legend-item {
+                                            font-size: 0.85rem;
+                                        }
+                                        .color-box {
+                                            width: 15px;
+                                            height: 15px;
+                                        }
                                     }
                                 </style>
 
@@ -1060,37 +1131,6 @@
                                         <li>RESTful API Design</li>
                                         <li>Database Management</li>
                                         <li>Authentication & Authorization</li>
-                                        <li>Deployment & Hosting</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 mb-4">
-                                <div class="expertise-card">
-                                    <div class="expertise-icon">
-                                        <i class="fas fa-code"></i>
-                                    </div>
-                                    <h4>Programming Languages</h4>
-                                    <ul class="expertise-list">
-                                        <li>JavaScript (ES6+)</li>
-                                        <li>Python</li>
-                                        <li>Java</li>
-                                        <li>C++</li>
-                                        <li>SQL</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 mb-4">
-                                <div class="expertise-card">
-                                    <div class="expertise-icon">
-                                        <i class="fas fa-laptop-code"></i>
-                                    </div>
-                                    <h4>Frontend Development</h4>
-                                    <ul class="expertise-list">
-                                        <li>HTML5 & CSS3</li>
-                                        <li>React.js</li>
-                                        <li>Bootstrap</li>
-                                        <li>Responsive Design</li>
-                                        <li>UI/UX Principles</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1099,27 +1139,13 @@
                                     <div class="expertise-icon">
                                         <i class="fas fa-database"></i>
                                     </div>
-                                    <h4>Databases</h4>
+                                    <h4>Database & Storage</h4>
                                     <ul class="expertise-list">
-                                        <li>MongoDB</li>
-                                        <li>MySQL</li>
-                                        <li>SQLite</li>
-                                        <li>PostgreSQL (Basic)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 mb-4">
-                                <div class="expertise-card">
-                                    <div class="expertise-icon">
-                                        <i class="fas fa-cloud"></i>
-                                    </div>
-                                    <h4>Cloud & DevOps</h4>
-                                    <ul class="expertise-list">
-                                        <li>Git & GitHub</li>
-                                        <li>Heroku</li>
-                                        <li>Netlify</li>
-                                        <li>Vercel</li>
-                                        <li>Docker (Basic)</li>
+                                        <li>MySQL & MongoDB</li>
+                                        <li>SQLite & PostgreSQL</li>
+                                        <li>Data Modeling</li>
+                                        <li>Query Optimization</li>
+                                        <li>Data Security</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1128,12 +1154,13 @@
                                     <div class="expertise-icon">
                                         <i class="fas fa-shield-alt"></i>
                                     </div>
-                                    <h4>Cybersecurity</h4>
+                                    <h4>Security & Performance</h4>
                                     <ul class="expertise-list">
-                                        <li>Network Security</li>
-                                        <li>Ethical Hacking (Basics)</li>
-                                        <li>Web Security</li>
-                                        <li>Cryptography</li>
+                                        <li>API Security</li>
+                                        <li>Data Encryption</li>
+                                        <li>Performance Optimization</li>
+                                        <li>Error Handling</li>
+                                        <li>Logging & Monitoring</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1470,11 +1497,7 @@
                             maintainAspectRatio: false,
                             plugins: {
                                 legend: {
-                                    position: 'right',
-                                    labels: {
-                                        boxWidth: 15,
-                                        padding: 15
-                                    }
+                                    display: false // Hide the Chart.js legend as we are using a custom HTML legend
                                 }
                             }
                         }
