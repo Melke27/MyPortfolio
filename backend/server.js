@@ -61,6 +61,11 @@ const transporter = nodemailer.createTransport({
 // Routes
 app.use('/api/blogposts', blogRoutes);
 
+// Serve index.html for the root path
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
+});
+
 app.post('/api/contact', async (req, res) => {
     try {
         console.log('Received contact form submission:', req.body);
