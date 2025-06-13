@@ -7,7 +7,60 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="assets/css/style.css">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <!-- jQuery and Bootstrap Bundle -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        
+        <!-- Libraries from assets/lib -->
+        <script src="assets/lib/easing/easing.min.js"></script>
+        <script src="assets/lib/waypoints/waypoints.min.js"></script>
+        <script src="assets/lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="assets/lib/isotope/isotope.pkgd.min.js"></script>
+        <script src="assets/lib/lightbox/js/lightbox.min.js"></script>
+        <script src="assets/lib/typed/typed.min.js"></script>
+
+        <!-- Dark Mode Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const themeToggle = document.getElementById('themeToggle');
+                const themeIcon = themeToggle.querySelector('i');
+                
+                // Check for saved theme preference
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                    updateThemeIcon(savedTheme);
+                }
+
+                // Toggle theme
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateThemeIcon(newTheme);
+                });
+
+                function updateThemeIcon(theme) {
+                    themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+
+                // Add smooth transition when changing theme
+                const style = document.createElement('style');
+                style.textContent = `
+                    * {
+                        transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+                    }
+                `;
+                document.head.appendChild(style);
+            });
+        </script>
+
+        <!-- Template Javascript -->
+        <script src="assets/js/main.js"></script>
+
         <style>
             /* Custom styles for blog section to match the image */
             #blog .blog-header {
@@ -112,6 +165,14 @@
         </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
+        <!-- Spinner Start -->
+        <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div> -->
+        <!-- Spinner End -->
+
         <div class="wrapper">
             <!-- Sidebar Navigation -->
             <div class="sidebar">
@@ -351,7 +412,7 @@
                                 </div>
                                 <div class="mt-4">
                                     <a href="#contact" class="btn btn-primary mr-2"><i class="fas fa-paper-plane mr-2"></i>Contact Me</a>
-                                    <a href="assets/resume/resume.pdf" class="btn btn-outline-primary" download><i class="fas fa-download mr-2"></i>Download CV</a>
+                                    <a href="assets/resume/resume.pdf" class="btn btn-outline-primary" download><i class="fas fa-download mr-2"></i>Download CV</i></a>
                                 </div>
                             </div>
                         </div>
@@ -999,6 +1060,37 @@
                                         <li>RESTful API Design</li>
                                         <li>Database Management</li>
                                         <li>Authentication & Authorization</li>
+                                        <li>Deployment & Hosting</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="expertise-card">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <h4>Programming Languages</h4>
+                                    <ul class="expertise-list">
+                                        <li>JavaScript (ES6+)</li>
+                                        <li>Python</li>
+                                        <li>Java</li>
+                                        <li>C++</li>
+                                        <li>SQL</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="expertise-card">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-laptop-code"></i>
+                                    </div>
+                                    <h4>Frontend Development</h4>
+                                    <ul class="expertise-list">
+                                        <li>HTML5 & CSS3</li>
+                                        <li>React.js</li>
+                                        <li>Bootstrap</li>
+                                        <li>Responsive Design</li>
+                                        <li>UI/UX Principles</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1007,13 +1099,27 @@
                                     <div class="expertise-icon">
                                         <i class="fas fa-database"></i>
                                     </div>
-                                    <h4>Database & Storage</h4>
+                                    <h4>Databases</h4>
                                     <ul class="expertise-list">
-                                        <li>MySQL & MongoDB</li>
-                                        <li>SQLite & PostgreSQL</li>
-                                        <li>Data Modeling</li>
-                                        <li>Query Optimization</li>
-                                        <li>Data Security</li>
+                                        <li>MongoDB</li>
+                                        <li>MySQL</li>
+                                        <li>SQLite</li>
+                                        <li>PostgreSQL (Basic)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="expertise-card">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-cloud"></i>
+                                    </div>
+                                    <h4>Cloud & DevOps</h4>
+                                    <ul class="expertise-list">
+                                        <li>Git & GitHub</li>
+                                        <li>Heroku</li>
+                                        <li>Netlify</li>
+                                        <li>Vercel</li>
+                                        <li>Docker (Basic)</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1022,51 +1128,19 @@
                                     <div class="expertise-icon">
                                         <i class="fas fa-shield-alt"></i>
                                     </div>
-                                    <h4>Security & Performance</h4>
+                                    <h4>Cybersecurity</h4>
                                     <ul class="expertise-list">
-                                        <li>API Security</li>
-                                        <li>Data Encryption</li>
-                                        <li>Performance Optimization</li>
-                                        <li>Error Handling</li>
-                                        <li>Logging & Monitoring</li>
+                                        <li>Network Security</li>
+                                        <li>Ethical Hacking (Basics)</li>
+                                        <li>Web Security</li>
+                                        <li>Cryptography</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-
-                <style>
-                    .expertise-card {
-                        background: #fff;
-                        padding: 30px;
-                        border-radius: 10px;
-                        box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-                        height: 100%;
-                        transition: transform 0.3s ease;
-                    }
-                    .expertise-card:hover {
-                        transform: translateY(-5px);
-                    }
-                    .expertise-icon {
-                        font-size: 2.5rem;
-                        color: #007bff;
-                        margin-bottom: 20px;
-                    }
-                    .expertise-list {
-                        list-style: none;
-                        padding: 0;
-                        margin: 0;
-                    }
-                    .expertise-list li {
-                        padding: 8px 0;
-                        border-bottom: 1px solid #eee;
-                    }
-                    .expertise-list li:last-child {
-                        border-bottom: none;
-                    }
-                </style>
-                <!-- Technical Expertise End -->
+                <!-- Technical Expertise Section End -->
 
                 <!-- Contact Start -->
                 <div class="container bg-white py-5" id="contact">
@@ -1074,136 +1148,24 @@
                         <div class="col-12">
                             <h2 class="title position-relative pb-2 mb-4">Get In <span class="text-primary">Touch</span></h2>
                         </div>
-                        <div class="col-md-7 mb-4">
-                            <div class="contact-form">
-                                <div id="success" class="alert alert-success" style="display: none;"></div>
-                                <div id="error" class="alert alert-danger" style="display: none;"></div>
-                                <form name="contact" id="contactForm" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleSubmit(event)">
-                                    <input type="hidden" name="form-name" value="contact" />
-                                    <div class="form-row">
-                                        <div class="control-group col-sm-6">
-                                            <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name"
-                                                required="required" data-validation-required-message="Please enter your name" />
-                                            <p class="help-block text-danger"></p>
-                                        </div>
-                                        <div class="control-group col-sm-6">
-                                            <input type="email" class="form-control p-4" id="email" name="email" placeholder="Your Email"
-                                                required="required" data-validation-required-message="Please enter your email" />
-                                            <p class="help-block text-danger"></p>
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <input type="text" class="form-control p-4" id="subject" name="subject" placeholder="Subject"
-                                            required="required" data-validation-required-message="Please enter a subject" />
-                                        <p class="help-block text-danger"></p>
-                                    </div>
-                                    <div class="control-group">
-                                        <textarea class="form-control py-3 px-4" rows="5" id="message" name="message" placeholder="Message"
-                                            required="required"
-                                            data-validation-required-message="Please enter your message"></textarea>
-                                        <p class="help-block text-danger"></p>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-primary py-3 px-4" type="submit" id="sendMessageButton">
-                                            <i class="fas fa-paper-plane mr-2"></i>Send Message
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-5 mb-4">
+                        <div class="col-lg-6 mb-5 mb-lg-0">
                             <div class="contact-info">
-                                <h4 class="mb-4">Contact Information</h4>
-                                <p class="mb-4">I'm currently available for freelance work and collaborations. Feel free to reach out for any inquiries or just to say hello!</p>
-                                
-                                <div class="contact-details">
-                                    <div class="contact-item">
-                                        <div class="contact-icon">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                        </div>
-                                        <div class="contact-text">
-                                            <h5>Location</h5>
-                                            <p>N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
-                                        </div>
-                                    </div>
-                                    <div class="contact-item">
-                                        <div class="contact-icon">
-                                            <i class="fas fa-envelope"></i>
-                                        </div>
-                                        <div class="contact-text">
-                                            <h5>Email</h5>
-                                            <a href="mailto:melkamuwako5@gmail.com">melkamuwako5@gmail.com</a>
-                                        </div>
-                                    </div>
-                                    <div class="contact-item">
-                                        <div class="contact-icon">
-                                            <i class="fas fa-phone-alt"></i>
-                                        </div>
-                                        <div class="contact-text">
-                                            <h5>Phone</h5>
-                                            <a href="tel:+251965595251">+251 965595251</a>
-                                        </div>
-                                    </div>
+                                <p class="mb-4">Feel free to reach out to me for any inquiries, collaborations, or just to say hello. I'm always open to new opportunities and discussions.</p>
+                                <div class="d-flex mb-3">
+                                    <i class="fa fa-map-marker-alt text-primary mr-3"></i>
+                                    <h5 class="font-weight-bold mb-0">Address</h5>
+                                    <p class="mb-0">N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
                                 </div>
-                                
-                                <div class="social-contact mt-4">
-                                    <h5 class="mb-3">Connect With Me</h5>
-                                    <div class="d-flex">
-                                        <a class="btn btn-outline-primary btn-square mr-2" href="https://t.me/kidn16" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
-                                        <a class="btn btn-outline-primary btn-square mr-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BuIEBB2OnSR%2BvVmDSU1TR6g%3D%3D" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                                        <a class="btn btn-outline-primary btn-square mr-2" href="https://github.com/melke27" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                                        <a class="btn btn-outline-primary btn-square mr-2" href="https://www.instagram.com/ruf.2316/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                                        <a class="btn btn-outline-primary btn-square" href="https://youtube.com/@MelkamuWako-f3v" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                                    </div>
+                                <div class="d-flex mb-3">
+                                    <i class="fa fa-envelope text-primary mr-3"></i>
+                                    <h5 class="font-weight-bold mb-0">Email</h5>
+                                    <p class="mb-0">melkamuwako5@gmail.com</p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Contact End -->
-
-                <!-- Map Section -->
-                <div class="container-fluid px-0">
-                    <div class="map-container">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.238030215121!2d38.76395031478615!3d9.040876393525708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f1a4e5a98f%3A0x8e5a4a1a1a1a1a1a!2sAddis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                </div>
-                
-                <!-- Newsletter Section -->
-                <div class="container-fluid bg-primary newsletter-section">
-                    <div class="container py-5">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 mb-4 mb-lg-0">
-                                <h3 class="text-white mb-0">Subscribe to My Newsletter</h3>
-                                <p class="text-white mb-0">Get the latest updates, articles and resources directly to your inbox.</p>
-                            </div>
-                            <div class="col-lg-6">
-                                <form class="newsletter-form" name="newsletter-subscribe" data-netlify="true">
-                                    <div class="input-group">
-                                        <input type="email" class="form-control" placeholder="Your Email Address" required>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-dark" type="submit">Subscribe</button>
-                                        </div>
-                                    </div>
-                                    <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" id="newsletterCheck" required>
-                                        <label class="form-check-label text-white" for="newsletterCheck">
-                                            I agree to receive emails (you can unsubscribe anytime)
-                                        </label>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer Start -->
-                <footer class="container-fluid bg-dark text-white py-5">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-4 mb-4 mb-lg-0">
-                                <h5 class="text-primary mb-4">About Me</h5>
-                                <p>Computer Science student and passionate developer dedicated to creating innovative solutions and beautiful digital experiences.</p>
+                                <div class="d-flex mb-3">
+                                    <i class="fa fa-phone-alt text-primary mr-3"></i>
+                                    <h5 class="font-weight-bold mb-0">Phone</h5>
+                                    <p class="mb-0">+251 965595251</p>
+                                </div>
                                 <div class="d-flex pt-2">
                                     <a class="btn btn-outline-light btn-social mr-2" href="https://t.me/kidn16" target="_blank"><i class="fab fa-telegram"></i></a>
                                     <a class="btn btn-outline-light btn-social mr-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BuIEBB2OnSR%2BvVmDSU1TR6g%3D%3D" target="_blank"><i class="fab fa-linkedin-in"></i></a>
@@ -1211,41 +1173,38 @@
                                     <a class="btn btn-outline-light btn-social" href="https://youtube.com/@MelkamuWako-f3v" target="_blank"><i class="fab fa-youtube"></i></a>
                                 </div>
                             </div>
-                            <div class="col-lg-4 mb-4 mb-lg-0">
-                                <h5 class="text-primary mb-4">Quick Links</h5>
-                                <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-white mb-2" href="#home"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                    <a class="text-white mb-2" href="#about"><i class="fa fa-angle-right mr-2"></i>About</a>
-                                    <a class="text-white mb-2" href="#skills"><i class="fa fa-angle-right mr-2"></i>Skills</a>
-                                    <a class="text-white mb-2" href="#projects"><i class="fa fa-angle-right mr-2"></i>Projects</a>
-                                    <a class="text-white mb-2" href="#contact"><i class="fa fa-angle-right mr-2"></i>Contact</a>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <h5 class="text-primary mb-4">Contact Info</h5>
-                                <p><i class="fa fa-map-marker-alt mr-2"></i>N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
-                                <p><i class="fa fa-envelope mr-2"></i>melkamuwako5@gmail.com</p>
-                                <p><i class="fa fa-phone-alt mr-2"></i>+251 965595251</p>
-                                <div class="mt-4">
-                                    <a href="assets/resume/Melkamu_Wako_Resume.pdf" class="btn btn-primary mr-2" download><i class="fas fa-download mr-2"></i>Download CV</a>
-                                </div>
-                            </div>
                         </div>
-                        <div class="row pt-3">
-                            <div class="col-md-6 text-center text-md-left">
-                                <p class="m-0">&copy; <span id="year"></span> Melkamu Wako. All Rights Reserved.</p>
-                            </div>
-                            <div class="col-md-6 text-center text-md-right">
-                                <div class="footer-links">
-                                    <a class="text-white mr-3" href="privacy.html">Privacy Policy</a>
-                                    <a class="text-white mr-3" href="terms.html">Terms of Service</a>
-                                    <a class="text-white" href="sitemap.html">Sitemap</a>
-                                </div>
+                        <div class="col-lg-6">
+                            <div class="contact-form">
+                                <form id="contactForm" onsubmit="return handleSubmit(event)">
+                                    <div class="control-group">
+                                        <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name" required="required" data-validation-required-message="Please enter your name" />
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="control-group">
+                                        <input type="email" class="form-control p-4" id="email" name="email" placeholder="Your Email" required="required" data-validation-required-message="Please enter your email" />
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="control-group">
+                                        <input type="text" class="form-control p-4" id="subject" name="subject" placeholder="Subject" />
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="control-group">
+                                        <textarea class="form-control py-3 px-4" rows="5" id="message" name="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div id="success" class="text-success text-center mb-3" style="display: none;"></div>
+                                    <div id="error" class="text-danger text-center mb-3" style="display: none;"></div>
+                                    <div class="text-center">
+                                        <button class="btn btn-primary py-3 px-5" type="submit" id="sendMessageButton">Send Message</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                </footer>
-                <!-- Footer End -->
+                </div>
+                <!-- Contact End -->
+
             </div>
         </div>
 
@@ -1257,54 +1216,15 @@
             <i class="fas fa-moon"></i>
         </button>
 
-        <!-- jQuery and Bootstrap Bundle (Bootstrap JS requires jQuery and Popper.js) -->
+        <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        
-        <!-- Libraries from assets/lib -->
         <script src="assets/lib/easing/easing.min.js"></script>
         <script src="assets/lib/waypoints/waypoints.min.js"></script>
         <script src="assets/lib/owlcarousel/owl.carousel.min.js"></script>
         <script src="assets/lib/isotope/isotope.pkgd.min.js"></script>
         <script src="assets/lib/lightbox/js/lightbox.min.js"></script>
-
-        <!-- Dark Mode Script -->
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const themeToggle = document.getElementById('themeToggle');
-                const themeIcon = themeToggle.querySelector('i');
-                
-                // Check for saved theme preference
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme) {
-                    document.documentElement.setAttribute('data-theme', savedTheme);
-                    updateThemeIcon(savedTheme);
-                }
-
-                // Toggle theme
-                themeToggle.addEventListener('click', () => {
-                    const currentTheme = document.documentElement.getAttribute('data-theme');
-                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                    
-                    document.documentElement.setAttribute('data-theme', newTheme);
-                    localStorage.setItem('theme', newTheme);
-                    updateThemeIcon(newTheme);
-                });
-
-                function updateThemeIcon(theme) {
-                    themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-                }
-
-                // Add smooth transition when changing theme
-                const style = document.createElement('style');
-                style.textContent = `
-                    * {
-                        transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
-                    }
-                `;
-                document.head.appendChild(style);
-            });
-        </script>
+        <script src="assets/lib/typed/typed.min.js"></script>
 
         <!-- Template Javascript -->
         <script src="assets/js/main.js"></script>
@@ -1428,104 +1348,6 @@
                 return false;
             }
         </script>
-
-        <div class="skills-diagram mt-5">
-            <h5 class="mb-4">Skills Visualization</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="pie-chart-container">
-                        <canvas id="skillsPieChart"></canvas>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="skills-breakdown">
-                        <div class="breakdown-item">
-                            <div class="d-flex justify-content-between">
-                                <span>Competitive Programming</span>
-                                <span>25%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-primary" style="width: 25%"></div>
-                            </div>
-                        </div>
-                        <div class="breakdown-item">
-                            <div class="d-flex justify-content-between">
-                                <span>Full-Stack Development</span>
-                                <span>30%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" style="width: 30%"></div>
-                            </div>
-                            <div class="sub-breakdown">
-                                <div class="d-flex justify-content-between">
-                                    <small>Frontend (15%)</small>
-                                    <small>HTML, CSS, JS, React</small>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <small>Backend (15%)</small>
-                                    <small>Node.js, Java, APIs</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="breakdown-item">
-                            <div class="d-flex justify-content-between">
-                                <span>Database Management</span>
-                                <span>15%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-info" style="width: 15%"></div>
-                            </div>
-                        </div>
-                        <div class="breakdown-item">
-                            <div class="d-flex justify-content-between">
-                                <span>Cybersecurity</span>
-                                <span>15%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-warning" style="width: 15%"></div>
-                            </div>
-                        </div>
-                        <div class="breakdown-item">
-                            <div class="d-flex justify-content-between">
-                                <span>Robotics & Automation</span>
-                                <span>15%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-danger" style="width: 15%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <style>
-            .skills-diagram {
-                background: #f8f9fa;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .pie-chart-container {
-                height: 300px;
-                position: relative;
-            }
-            .skills-breakdown {
-                padding: 15px;
-            }
-            .breakdown-item {
-                margin-bottom: 15px;
-            }
-            .sub-breakdown {
-                padding-left: 15px;
-                margin-top: 5px;
-                border-left: 2px solid #e9ecef;
-            }
-            .progress {
-                height: 8px;
-                margin-top: 5px;
-            }
-        </style>
 
         <script>
             // Wait for the DOM to be fully loaded
