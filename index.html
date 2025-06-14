@@ -673,51 +673,16 @@
                                 <h2 class="blog-title">Latest <span class="blog-posts-green">Blog Posts</span></h2>
                             </div>
                         </div>
+
+                        <!-- Blog Posts Container -->
                         <div class="col-12">
                             <div class="row" id="blog-posts-container">
-                                <div class="col-md-4 mb-4">
-                                    <div class="card">
-                                        <img src="https://via.placeholder.com/400x250?text=Blog+Post+1" class="card-img-top" alt="Blog Post 1">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Understanding Modern Web Development</h5>
-                                            <p class="card-text">Dive into the essentials of modern web development, covering the latest frameworks and best practices...</p>
-                                            <a href="#" class="btn btn-success">Read More</a>
-                                        </div>
-                                        <div class="card-footer text-muted">
-                                            <small><i class="far fa-calendar-alt me-2"></i>Jan 15, 2024</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <div class="card">
-                                        <img src="https://via.placeholder.com/400x250?text=Blog+Post+2" class="card-img-top" alt="Blog Post 2">
-                                        <div class="card-body">
-                                            <h5 class="card-title">The Power of Data Structures in Algorithms</h5>
-                                            <p class="card-text">Explore how efficient data structures can optimize your algorithms and solve complex problems...</p>
-                                            <a href="#" class="btn btn-success">Read More</a>
-                                        </div>
-                                        <div class="card-footer text-muted">
-                                            <small><i class="far fa-calendar-alt me-2"></i>Feb 01, 2024</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <div class="card">
-                                        <img src="https://via.placeholder.com/400x250?text=Blog+Post+3" class="card-img-top" alt="Blog Post 3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Getting Started with Cloud Computing</h5>
-                                            <p class="card-text">A beginner's guide to cloud platforms, services, and how to deploy your first application...</p>
-                                            <a href="#" class="btn btn-success">Read More</a>
-                                        </div>
-                                        <div class="card-footer text-muted">
-                                            <small><i class="far fa-calendar-alt me-2"></i>Mar 10, 2024</small>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- Blog posts will be populated here by JavaScript -->
                             </div>
                         </div>
+
                         <div class="col-12 text-center mt-4">
-                            <a href="#" class="btn btn-outline-primary px-4 py-2" id="view-all-posts-btn">View All Posts</a>
+                            <a href="#" id="view-all-posts-btn" class="btn btn-outline-primary">View All Posts</a>
                         </div>
                     </div>
                 </div>
@@ -1598,7 +1563,7 @@
                 <div class="container-fluid px-0">
                     <div class="map-container">
                         <!-- Google Maps JavaScript API (replace YOUR_GOOGLE_MAPS_API_KEY with your actual key) -->
-                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
+                        <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script> -->
                         <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.238030215121!2d38.76395031478615!3d9.040876393525708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f1a4e5a98f%3A0x8e5a4a1a1a1a1a1a!2sAddis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
                             width="100%" 
@@ -1784,7 +1749,7 @@
                     const posts = [
                         {
                             title: "Understanding Modern Web Development",
-                            imageUrl: "https://via.placeholder.com/400x250?text=Blog+Post+1",
+                            imageUrl: "https://via.placeholder.com/400x250/007bff/ffffff?text=Web+Dev", // Distinct placeholder
                             description: "Dive into the essentials of modern web development, covering the latest frameworks and best practices...",
                             date: "2024-03-10T12:00:00Z",
                             slug: "understanding-data-structures",
@@ -1793,7 +1758,7 @@
                         },
                         {
                             title: "The Power of Data Structures in Algorithms",
-                            imageUrl: "https://via.placeholder.com/400x250?text=Blog+Post+2",
+                            imageUrl: "https://via.placeholder.com/400x250/28a745/ffffff?text=Data+Structures", // Distinct placeholder
                             description: "Explore how efficient data structures can optimize your algorithms and solve complex problems...",
                             date: "2024-02-28T12:00:00Z",
                             slug: "responsive-web-design",
@@ -1802,7 +1767,7 @@
                         },
                         {
                             title: "Getting Started with Cloud Computing",
-                            imageUrl: "https://via.placeholder.com/400x250?text=Blog+Post+3",
+                            imageUrl: "https://via.placeholder.com/400x250/17a2b8/ffffff?text=Cloud+Computing", // Distinct placeholder
                             description: "A beginner\'s guide to cloud platforms, services, and how to deploy your first application...",
                             date: "2024-01-15T12:00:00Z",
                             slug: "cybersecurity-basics",
@@ -1811,7 +1776,7 @@
                         },
                         {
                             title: "My New Project: NAMS",
-                            imageUrl: "assets/img/nams.png",
+                            imageUrl: "https://via.placeholder.com/400x250/ffc107/ffffff?text=NAMS+Project", // Distinct placeholder
                             description: "A detailed look into my latest project, NAMS, highlighting its features and development process...",
                             date: "2024-07-20T10:00:00Z",
                             slug: "my-new-project-nams",
@@ -1820,7 +1785,7 @@
                         },
                         {
                             title: "Exploring AI in Everyday Applications",
-                            imageUrl: "https://via.placeholder.com/400x250?text=AI+Blog+Post",
+                            imageUrl: "https://via.placeholder.com/400x250/dc3545/ffffff?text=AI+Applications", // Distinct placeholder
                             description: "Discover how artificial intelligence is transforming daily life and its potential future impacts...",
                             date: "2024-07-15T14:30:00Z",
                             slug: "exploring-ai",
@@ -1836,7 +1801,7 @@
                         const formattedDate = postDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
 
                         const postHtml = `
-                            <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="col-lg-4 col-md-6 mb-4"> <!-- Reverted to static grid item -->
                                 <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
                                     <img class="card-img-top" src="${post.imageUrl}" alt="${post.title}">
                                     <div class="card-body">
@@ -1857,6 +1822,8 @@
 
                     // Always hide "View All Posts" button if using static content or no more than 3 posts
                     viewAllPostsBtn.style.display = 'none';
+
+                    // Removed Owl Carousel initialization
                 }
 
                 fetchBlogPosts();
