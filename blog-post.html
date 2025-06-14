@@ -227,7 +227,7 @@
             const slug = window.location.pathname.split('/').pop();
 
             try {
-                const response = await fetch(`http://localhost:5001/api/blogposts/${slug}`);
+                const response = await fetch(`/api/blogposts/${slug}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
