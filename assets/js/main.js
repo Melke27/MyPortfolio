@@ -3,8 +3,11 @@
 
     // Document ready wrapper for all code
     $(document).ready(function() {
-        // Initialize tooltips
-        $('[data-toggle="tooltip"]').tooltip();
+        // Initialize tooltips for Bootstrap 5
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
 
         // Smooth scrolling to section with improved offset calculation
         $(".btn-scroll").on('click', function (event) {
@@ -97,79 +100,6 @@
         };
         initTestimonialsCarousel();
 
-        // Skills Chart initialization
-        var initSkillsChart = function() {
-            var skillsContainer = document.querySelector('.skills-chart');
-            if (skillsContainer) {
-                // Remove the canvas element
-                var canvas = document.getElementById('skillsChart');
-                if (canvas) {
-                    canvas.remove();
-                }
-
-                // Create static skills distribution
-                var staticSkills = `
-                    <div class="skills-distribution">
-                        <div class="skill-category">
-                            <div class="skill-header">
-                                <i class="fas fa-code text-primary"></i>
-                                <h6>Frontend Development</h6>
-                                <span class="skill-percentage">35%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 35%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <div class="skill-header">
-                                <i class="fas fa-server text-success"></i>
-                                <h6>Backend Development</h6>
-                                <span class="skill-percentage">25%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <div class="skill-header">
-                                <i class="fas fa-laptop-code text-info"></i>
-                                <h6>Programming Languages</h6>
-                                <span class="skill-percentage">25%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 25%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <div class="skill-header">
-                                <i class="fas fa-tools text-warning"></i>
-                                <h6>Tools & Others</h6>
-                                <span class="skill-percentage">15%</span>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 15%"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                // Add the static skills distribution
-                skillsContainer.innerHTML += staticSkills;
-
-                // Add animation to progress bars
-                var progressBars = skillsContainer.querySelectorAll('.progress-bar');
-                progressBars.forEach(function(bar) {
-                    var width = bar.style.width;
-                    bar.style.width = '0';
-                    setTimeout(function() {
-                        bar.style.transition = 'width 1s ease-in-out';
-                        bar.style.width = width;
-                    }, 100);
-                });
-            }
-        };
-        initSkillsChart();
-
         // Back to top button functionality
         var initBackToTop = function() {
             var $backToTop = $('.back-to-top');
@@ -233,6 +163,37 @@
             }
         };
         initNewsletter();
+
+        // Initialize counters
+        var initCounters = function() {
+            $('.counter').each(function() {
+                var $this = $(this);
+                var countTo = $this.attr('data-count');
+                
+                $({ countNum: 0 }).animate({
+                    countNum: countTo
+                }, {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function() {
+                        $this.text(Math.floor(this.countNum));
+                    },
+                    complete: function() {
+                        $this.text(this.countNum);
+                    }
+                });
+            });
+        };
+
+        // Initialize counters when they come into view
+        var waypoint = new Waypoint({
+            element: document.getElementById('milestones'),
+            handler: function() {
+                initCounters();
+                this.destroy();
+            },
+            offset: '80%'
+        });
     });
 
 })(jQuery);
