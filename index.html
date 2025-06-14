@@ -1688,9 +1688,6 @@
         <script src="assets/lib/lightbox/js/lightbox.min.js"></script>
         <script src="assets/lib/typed/typed.min.js"></script>
 
-        <!-- Template Javascript -->
-        <script src="assets/js/main.js"></script>
-
         <!-- Custom Scripts -->
         <script>
             // Set current year in footer
@@ -1701,76 +1698,15 @@
                 var typed_strings = $('.typed-text').text();
                 var typed = new Typed('.typed-text-output', {
                     strings: typed_strings.split(', '),
-                    typeSpeed: 50,
-                    backSpeed: 10,
+                    typeSpeed: 100,
+                    backSpeed: 20,
                     smartBackspace: false,
                     loop: true
                 });
             }
-            
-            // Counter animation for statistics
-            $(document).ready(function(){
-                $('.counter').each(function () {
-                    $(this).prop('Counter', 0).animate({
-                        Counter: $(this).data('target')
-                    }, {
-                        duration: 2000,
-                        easing: 'swing',
-                        step: function (now) {
-                            $(this).text(Math.ceil(now));
-                        }
-                    });
-                });
-                
-                // Initialize tooltips
-                $('[data-toggle="tooltip"]').tooltip();
-                
-                // Project filter
-                $('.project-filter button').on('click', function() {
-                    $('.project-filter button').removeClass('active');
-                    $(this).addClass('active');
-                    
-                    const filter = $(this).data('filter');
-                    $('.project-container').isotope({ filter: filter });
-                });
-                
-                // Initialize isotope for project filtering
-                $('.project-container').isotope({
-                    itemSelector: '.project-item',
-                    layoutMode: 'fitRows'
-                });
-                
-                // Smooth scrolling for anchor links
-                $('a[href*="#"]').on('click', function(e) {
-                    e.preventDefault();
-                    
-                    $('html, body').animate(
-                        {
-                            scrollTop: $($(this).attr('href')).offset().top,
-                        },
-                        500,
-                        'linear'
-                    );
-                });
-                
-                // Back to top button
-                $(window).scroll(function() {
-                    if ($(this).scrollTop() > 300) {
-                        $('.back-to-top').fadeIn('slow');
-                        } else {
-                        $('.back-to-top').fadeOut('slow');
-                    }
-                });
-                
-                $('.back-to-top').click(function() {
-                    $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
-                    return false;
-                });
-            });
         </script>
-
         <script>
-            // Wait for the DOM to be fully loaded
+            // Wait for the DOM to be fully loaded (for skillsPieChart)
             window.addEventListener('load', function() {
                 try {
                     const ctx = document.getElementById('skillsPieChart');
@@ -1816,8 +1752,8 @@
                 }
             });
         </script>
-
         <script>
+            // Blog posts population script (no backend fetching)
             document.addEventListener('DOMContentLoaded', () => {
                 const blogPostsContainer = document.getElementById('blog-posts-container');
                 const viewAllPostsBtn = document.getElementById('view-all-posts-btn');
@@ -1825,27 +1761,27 @@
                 async function fetchBlogPosts() {
                     const posts = [
                         {
-                            title: "Understanding Data Structures",
-                            imageUrl: "https://via.placeholder.com/350x200?text=Blockchain+Tech", // Online placeholder
-                            description: "A deep dive into essential data structures like arrays, linked lists, and trees.",
+                            title: "Understanding Modern Web Development",
+                            imageUrl: "https://via.placeholder.com/400x250?text=Blog+Post+1",
+                            description: "Dive into the essentials of modern web development, covering the latest frameworks and best practices...",
                             date: "2024-03-10T12:00:00Z",
                             slug: "understanding-data-structures",
                             views: 1200,
                             commentsCount: 15
                         },
                         {
-                            title: "The Power of Responsive Web Design",
-                            imageUrl: "https://via.placeholder.com/350x200?text=AI+and+ML", // Online placeholder
-                            description: "Learn how to create websites that look great on any device, from desktop to mobile.",
+                            title: "The Power of Data Structures in Algorithms",
+                            imageUrl: "https://via.placeholder.com/400x250?text=Blog+Post+2",
+                            description: "Explore how efficient data structures can optimize your algorithms and solve complex problems...",
                             date: "2024-02-28T12:00:00Z",
                             slug: "responsive-web-design",
                             views: 950,
                             commentsCount: 8
                         },
                         {
-                            title: "Introduction to Cybersecurity Basics",
-                            imageUrl: "https://via.placeholder.com/350x200?text=Cybersecurity", // Online placeholder
-                            description: "Essential concepts and practices for beginners to stay safe in the digital world.",
+                            title: "Getting Started with Cloud Computing",
+                            imageUrl: "https://via.placeholder.com/400x250?text=Blog+Post+3",
+                            description: "A beginner's guide to cloud platforms, services, and how to deploy your first application...",
                             date: "2024-01-15T12:00:00Z",
                             slug: "cybersecurity-basics",
                             views: 1500,
@@ -1899,7 +1835,7 @@
 
                         // Simulate sending process
                         submitButton.disabled = true;
-                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+                        submitButton.innerHTML = '<i class=\"fas fa-spinner fa-spin me-2\"></i>Sending...';
 
                         // Simulate success after a short delay
                         setTimeout(() => {
@@ -1916,61 +1852,8 @@
             });
         </script>
 
-        <script>
-            // Dynamic FAQ Loading Script
-            document.addEventListener('DOMContentLoaded', async () => {
-                const faqAccordion = document.getElementById('faqAccordion');
-                const faqLoadingMessage = document.getElementById('faq-loading-message');
-                const faqErrorMessage = document.getElementById('faq-error-message');
+        <!-- Template Javascript -->
+        <script src="assets/js/main.js"></script>
 
-                if (!faqAccordion) return;
-
-                faqLoadingMessage.style.display = 'block';
-                faqErrorMessage.style.display = 'none';
-
-                try {
-                    const response = await fetch('http://localhost:5002/api/faqs');
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const faqs = await response.json();
-
-                    faqLoadingMessage.style.display = 'none';
-                    faqAccordion.innerHTML = ''; // Clear loading message
-
-                    if (faqs.length === 0) {
-                        faqAccordion.innerHTML = '<p class="text-center text-muted">No FAQs available at the moment.</p>';
-                        return;
-                    }
-
-                    faqs.forEach((faq, index) => {
-                        const headingId = `heading${faq.id || index + 1}`;
-                        const collapseId = `collapse${faq.id || index + 1}`;
-
-                        const faqHtml = `
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="${headingId}">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="false" aria-controls="${collapseId}">
-                                        ${faq.question}
-                                    </button>
-                                </h2>
-                                <div id="${collapseId}" class="accordion-collapse collapse" aria-labelledby="${headingId}" data-bs-parent="#faqAccordion">
-                                    <div class="accordion-body">
-                                        ${faq.answer}
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        faqAccordion.innerHTML += faqHtml;
-                    });
-
-                } catch (error) {
-                    console.error('Error fetching FAQs:', error);
-                    faqLoadingMessage.style.display = 'none';
-                    faqErrorMessage.style.display = 'block';
-                    faqErrorMessage.textContent = 'Failed to load FAQs. Please ensure your backend is running at http://localhost:5002/api/faqs and returns valid JSON.';
-                }
-            });
-        </script>
     </body>
 </html> 
