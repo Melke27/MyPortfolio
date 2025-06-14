@@ -120,6 +120,7 @@ app.post('/api/contact', async (req, res) => {
         console.log('Contact form saved successfully');
 
         // Send email notification
+        /*
         try {
             await transporter.sendMail({
                 from: process.env.EMAIL_USER,
@@ -139,6 +140,7 @@ app.post('/api/contact', async (req, res) => {
             console.error('Error sending email:', emailError);
             // Don't fail the request if email fails
         }
+        */
         
         res.status(201).json({ 
             success: true, 
@@ -209,6 +211,7 @@ app.post('/api/subscribe', async (req, res) => {
         await newSubscriber.save();
 
         // Optional: Send a confirmation email to the subscriber
+        /*
         try {
             await transporter.sendMail({
                 from: process.env.EMAIL_USER,
@@ -225,6 +228,7 @@ app.post('/api/subscribe', async (req, res) => {
             console.error('Error sending confirmation email:', emailError);
             // Do not fail the subscription if confirmation email fails
         }
+        */
 
         res.status(201).json({ success: true, message: 'Subscription successful!' });
     } catch (error) {
