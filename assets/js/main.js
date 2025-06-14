@@ -117,25 +117,46 @@
         };
         initBackToTop();
 
-        // Form validation and submission
+        // Contact form handling
         var initContactForm = function() {
             var $contactForm = $('#contactForm');
             if ($contactForm.length) {
                 $contactForm.submit(function(e) {
                     e.preventDefault();
-                    var $submitButton = $('#sendMessageButton');
+                    var $submitButton = $(this).find('button[type="submit"]');
                     var originalText = $submitButton.text();
                     
                     $submitButton.prop('disabled', true).text('Sending...');
                     
-                    // Add your form submission logic here
-                    // For example, using fetch or $.ajax
-                    
-                    setTimeout(function() {
-                        $submitButton.prop('disabled', false).text(originalText);
-                        $('#success').html('<div class="alert alert-success">Message sent successfully!</div>');
-                        $contactForm[0].reset();
-                    }, 1000);
+                    var formData = {
+                        name: $('#name').val(),
+                        email: $('#email').val(),
+                        subject: $('#subject').val(),
+                        message: $('#message').val()
+                    };
+
+                    $.ajax({
+                        url: '/api/contact',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(formData),
+                        success: function(response) {
+                            $('#success').html('Message sent successfully!').show();
+                            $('#error').hide();
+                            $contactForm[0].reset();
+                        },
+                        error: function(xhr) {
+                            var errorMessage = 'Failed to send message. Please try again.';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            $('#error').html(errorMessage).show();
+                            $('#success').hide();
+                        },
+                        complete: function() {
+                            $submitButton.prop('disabled', false).text(originalText);
+                        }
+                    });
                 });
             }
         };
@@ -152,13 +173,32 @@
                     
                     $submitButton.prop('disabled', true).text('Subscribing...');
                     
-                    // Add your newsletter subscription logic here
-                    
-                    setTimeout(function() {
-                        $submitButton.prop('disabled', false).text(originalText);
-                        $('#newsletterSuccess').html('Thank you for subscribing!').show();
-                        $newsletterForm[0].reset();
-                    }, 1000);
+                    var formData = {
+                        email: $('#newsletterEmail').val()
+                    };
+
+                    $.ajax({
+                        url: '/api/subscribe',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(formData),
+                        success: function(response) {
+                            $('#newsletterSuccess').html('Thank you for subscribing!').show();
+                            $('#newsletterError').hide();
+                            $newsletterForm[0].reset();
+                        },
+                        error: function(xhr) {
+                            var errorMessage = 'Failed to subscribe. Please try again.';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = xhr.responseJSON.message;
+                            }
+                            $('#newsletterError').html(errorMessage).show();
+                            $('#newsletterSuccess').hide();
+                        },
+                        complete: function() {
+                            $submitButton.prop('disabled', false).text(originalText);
+                        }
+                    });
                 });
             }
         };

@@ -444,6 +444,27 @@
                                 
                                 <p>My commitment to cybersecurity is demonstrated through ongoing training with Cisco Networking Academy, focusing on ethical hacking, network security, and cyber defense. This dedication to security complements my goal of becoming a safe, ethical, and effective technical professional.</p>
 
+                                <div class="contact-info-block mb-4">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <p><i class="fa fa-map-marker-alt text-green mr-2"></i><span class="text-green">Location:</span><br/> Addis Ababa, Ethiopia</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p><i class="fa fa-code text-green mr-2"></i><span class="text-green">Experience:</span><br/> 2+ Years</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p><i class="fa fa-envelope text-green mr-2"></i><span class="text-green">Email:</span><br/> melkamuwako5@gmail.com</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p><i class="fa fa-phone-alt text-green mr-2"></i><span class="text-green">Phone:</span><br/> +251 965595251</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center justify-content-lg-start mt-3">
+                                        <a href="#contact" class="btn btn-green py-2 px-4 mr-3"><i class="fas fa-paper-plane mr-2"></i>Contact Me</a>
+                                        <a href="assets/resume/resume.pdf" class="btn btn-outline-green py-2 px-4" download="Melkamu_Wako_Resume.pdf"><i class="fas fa-download mr-2"></i>Download CV</a>
+                                    </div>
+                                </div>
+
                                 <div class="skills-chart mt-5">
                                     <h5 class="mb-3">My Skills Distribution</h5>
                                     <div class="skills-chart-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center">
@@ -1530,7 +1551,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="contact-form">
-                                <form name="contact" id="contactForm" method="POST" data-netlify="true">
+                                <form name="contact" id="contactForm" method="POST">
                                     <div class="control-group">
                                         <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name" required="required" data-validation-required-message="Please enter your name" />
                                         <p class="help-block text-danger"></p>
@@ -1585,9 +1606,9 @@
                                 <p class="text-white mb-0">Get the latest updates, articles and resources directly to your inbox.</p>
                             </div>
                             <div class="col-lg-6">
-                                <form class="newsletter-form" name="newsletter-subscribe" data-netlify="true">
+                                <form class="newsletter-form" id="newsletterForm">
                                     <div class="input-group">
-                                        <input type="email" class="form-control" placeholder="Your Email Address" required>
+                                        <input type="email" class="form-control" id="newsletterEmail" placeholder="Your Email Address" required>
                                         <div class="input-group-append">
                                             <button class="btn btn-dark" type="submit">Subscribe</button>
                                         </div>
@@ -1598,6 +1619,8 @@
                                             I agree to receive emails (you can unsubscribe anytime)
                                         </label>
                                     </div>
+                                    <div id="newsletterSuccess" class="text-white mt-2" style="display: none;"></div>
+                                    <div id="newsletterError" class="text-white mt-2" style="display: none;"></div>
                                 </form>
                             </div>
                         </div>
@@ -1703,33 +1726,56 @@
                     }
 
                     new Chart(ctx, {
-                        type: 'pie',
+                        type: 'radar', // Changed to radar chart
                         data: {
                             labels: [
-                                'Competitive Programming',
-                                'Full-Stack Development',
-                                'Database Management',
-                                'Cybersecurity',
-                                'Robotics & Automation'
+                                'Frontend',
+                                'Backend',
+                                'Algorithms',
+                                'Problem Solving',
+                                'UI/UX',
+                                'Database'
                             ],
                             datasets: [{
-                                data: [25, 30, 15, 15, 15],
-                                backgroundColor: [
-                                    '#007bff', // primary
-                                    '#28a745', // success
-                                    '#17a2b8', // info
-                                    '#ffc107', // warning
-                                    '#dc3545'  // danger
-                                ],
-                                borderWidth: 1
+                                label: 'Skills Level',
+                                data: [90, 70, 75, 60, 80, 70], // Approximate values from image
+                                backgroundColor: 'rgba(0, 123, 255, 0.2)', // Light blue fill
+                                borderColor: '#007bff', // Blue line
+                                pointBackgroundColor: '#007bff', // Blue points
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#007bff',
+                                borderWidth: 2
                             }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
+                            elements: {
+                                line: {
+                                    borderWidth: 3
+                                }
+                            },
+                            scales: {
+                                r: {
+                                    angleLines: {
+                                        display: true // Display radar lines
+                                    },
+                                    suggestedMin: 0,
+                                    suggestedMax: 100, // Max value on the scale
+                                    ticks: {
+                                        display: true, // Display tick labels
+                                        beginAtZero: true,
+                                        stepSize: 20 // Adjust step size as needed
+                                    },
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.1)' // Light grid lines
+                                    }
+                                }
+                            },
                             plugins: {
                                 legend: {
-                                    display: false // Hide the Chart.js legend as we are using a custom HTML legend
+                                    display: true // Show the Chart.js legend
                                 }
                             }
                         }
@@ -1740,93 +1786,67 @@
             });
         </script>
         <script>
-            // Blog posts population script (no backend fetching)
-            document.addEventListener('DOMContentLoaded', () => {
+            // Blog posts population script
+            document.addEventListener('DOMContentLoaded', async () => {
                 const blogPostsContainer = document.getElementById('blog-posts-container');
                 const viewAllPostsBtn = document.getElementById('view-all-posts-btn');
 
                 async function fetchBlogPosts() {
-                    const posts = [
-                        {
-                            title: "Understanding Modern Web Development",
-                            imageUrl: "https://via.placeholder.com/400x250/007bff/ffffff?text=Web+Dev", // Distinct placeholder
-                            description: "Dive into the essentials of modern web development, covering the latest frameworks and best practices...",
-                            date: "2024-03-10T12:00:00Z",
-                            slug: "understanding-data-structures",
-                            views: 1200,
-                            commentsCount: 15
-                        },
-                        {
-                            title: "The Power of Data Structures in Algorithms",
-                            imageUrl: "https://via.placeholder.com/400x250/28a745/ffffff?text=Data+Structures", // Distinct placeholder
-                            description: "Explore how efficient data structures can optimize your algorithms and solve complex problems...",
-                            date: "2024-02-28T12:00:00Z",
-                            slug: "responsive-web-design",
-                            views: 950,
-                            commentsCount: 8
-                        },
-                        {
-                            title: "Getting Started with Cloud Computing",
-                            imageUrl: "https://via.placeholder.com/400x250/17a2b8/ffffff?text=Cloud+Computing", // Distinct placeholder
-                            description: "A beginner\'s guide to cloud platforms, services, and how to deploy your first application...",
-                            date: "2024-01-15T12:00:00Z",
-                            slug: "cybersecurity-basics",
-                            views: 1500,
-                            commentsCount: 22
-                        },
-                        {
-                            title: "My New Project: NAMS",
-                            imageUrl: "https://via.placeholder.com/400x250/ffc107/ffffff?text=NAMS+Project", // Distinct placeholder
-                            description: "A detailed look into my latest project, NAMS, highlighting its features and development process...",
-                            date: "2024-07-20T10:00:00Z",
-                            slug: "my-new-project-nams",
-                            views: 50,
-                            commentsCount: 2
-                        },
-                        {
-                            title: "Exploring AI in Everyday Applications",
-                            imageUrl: "https://via.placeholder.com/400x250/dc3545/ffffff?text=AI+Applications", // Distinct placeholder
-                            description: "Discover how artificial intelligence is transforming daily life and its potential future impacts...",
-                            date: "2024-07-15T14:30:00Z",
-                            slug: "exploring-ai",
-                            views: 75,
-                            commentsCount: 5
+                    try {
+                        const response = await fetch('http://localhost:5001/api/blogposts');
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
                         }
-                    ];
+                        const posts = await response.json();
 
-                    blogPostsContainer.innerHTML = ''; // Clear existing content
+                        blogPostsContainer.innerHTML = ''; // Clear existing content
 
-                    posts.forEach(post => {
-                        const postDate = new Date(post.date);
-                        const formattedDate = postDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+                        // Display only the first 3 posts
+                        const recentPosts = posts.slice(0, 3);
 
-                        const postHtml = `
-                            <div class="col-lg-4 col-md-6 mb-4"> <!-- Reverted to static grid item -->
-                                <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
-                                    <img class="card-img-top" src="${post.imageUrl}" alt="${post.title}">
-                                    <div class="card-body">
-                                        <small class="text-muted"><i class="far fa-calendar-alt me-2"></i>${formattedDate}</small>
-                                        <h5 class="card-title font-weight-bold mt-2">${post.title}</h5>
-                                        <p class="card-text text-muted">${post.description}</p>
-                                        <a href="/blog/${post.slug}" class="btn btn-success btn-sm mt-2">Read More</a>
-                                        <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <small class="text-muted"><i class="far fa-eye me-1"></i> ${post.views}</small>
-                                            <small class="text-muted"><i class="far fa-comment-alt me-1"></i> ${post.commentsCount}</small>
+                        recentPosts.forEach(post => {
+                            const postDate = new Date(post.date);
+                            const formattedDate = postDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+
+                            const postHtml = `
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card border-0 shadow-sm rounded-lg overflow-hidden">
+                                        <img class="card-img-top" src="${post.imageUrl}" alt="${post.title}" onerror="this.src='https://via.placeholder.com/400x250/8BC34A/ffffff?text=Blog+Post'">
+                                        <div class="card-body">
+                                            <small class="text-muted"><i class="far fa-calendar-alt me-2"></i>${formattedDate}</small>
+                                            <h5 class="card-title font-weight-bold mt-2">${post.title}</h5>
+                                            <p class="card-text text-muted">${post.description}</p>
+                                            <a href="/blog/${post.slug}" class="btn btn-success btn-sm mt-2">Read More</a>
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <small class="text-muted"><i class="far fa-eye me-1"></i> ${post.views}</small>
+                                                <small class="text-muted"><i class="far fa-comment-alt me-1"></i> ${post.commentsCount}</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            `;
+                            blogPostsContainer.innerHTML += postHtml;
+                        });
+
+                        // Show "View All Posts" button if there are more than 3 posts
+                        viewAllPostsBtn.style.display = posts.length > 3 ? 'inline-block' : 'none';
+                        viewAllPostsBtn.href = '/blog'; // Link to blog listing page
+
+                    } catch (error) {
+                        console.error('Error fetching blog posts:', error);
+                        blogPostsContainer.innerHTML = `
+                            <div class="col-12">
+                                <div class="alert alert-danger">
+                                    Failed to load blog posts. Please try again later.
+                                </div>
                             </div>
                         `;
-                        blogPostsContainer.innerHTML += postHtml;
-                    });
-
-                    // Always hide "View All Posts" button if using static content or no more than 3 posts
-                    viewAllPostsBtn.style.display = 'none';
-
-                    // Removed Owl Carousel initialization
+                        viewAllPostsBtn.style.display = 'none';
+                    }
                 }
 
-                fetchBlogPosts();
+                // Fetch blog posts when the page loads
+                await fetchBlogPosts();
             });
 
             // Script for local form submission feedback (for Netlify Forms)

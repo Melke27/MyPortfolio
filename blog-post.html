@@ -251,7 +251,12 @@
                             <span class="ms-3"><i class="far fa-comment-alt"></i>${post.commentsCount} comments</span>
                         </div>
                     </header>
-                    <img src="${post.imageUrl}" alt="${post.title}" class="blog-post-image">
+                    <div class="blog-post-image-container">
+                        <img src="${post.imageUrl}" 
+                             alt="${post.title}" 
+                             class="blog-post-image"
+                             onerror="this.src='https://via.placeholder.com/800x400/8BC34A/ffffff?text=Blog+Post'">
+                    </div>
                     <div class="blog-post-content">
                         ${post.content}
                     </div>
