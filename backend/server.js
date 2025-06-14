@@ -68,23 +68,6 @@ const transporter = nodemailer.createTransport({
 // Routes
 app.use('/api', blogRoutes);
 
-// Serve blog post template for individual blog posts
-app.get('/blog/:slug', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'blog-post.html'));
-});
-
-// Serve index.html for the root path
-app.get('/', (req, res) => {
-    const filePath = path.join(__dirname, '..', 'index.html');
-    console.log(`Attempting to serve index.html from: ${filePath}`);
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            console.error('Error serving index.html:', err);
-            res.status(500).send('Error loading main page.');
-        }
-    });
-});
-
 app.post('/api/contact', async (req, res) => {
     try {
         console.log('Received contact form submission:', req.body);
@@ -235,18 +218,6 @@ app.post('/api/subscribe', async (req, res) => {
         console.error('Error subscribing:', error);
         res.status(500).json({ success: false, message: 'Subscription failed. Please try again later.' });
     }
-});
-
-// Serve frontend for all other routes (SPA fallback)
-app.get('*', (req, res) => {
-    const filePath = path.join(__dirname, '..', 'index.html');
-    console.log(`Attempting to serve SPA fallback for ${req.url} from: ${filePath}`);
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            console.error(`Error serving SPA fallback for ${req.url}:`, err);
-            res.status(404).send('Page not found.'); // Sending a 404 for fallback errors
-        }
-    });
 });
 
 // Error handling middleware
