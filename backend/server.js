@@ -76,6 +76,7 @@ app.post('/api/contact', async (req, res) => {
         
         // Validate required fields
         if (!name || !email || !message) {
+            console.error('Validation Error: Missing required fields');
             return res.status(400).json({
                 success: false,
                 message: 'Name, email, and message are required'
@@ -85,6 +86,7 @@ app.post('/api/contact', async (req, res) => {
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
+            console.error('Validation Error: Invalid email format');
             return res.status(400).json({
                 success: false,
                 message: 'Invalid email format'
@@ -102,7 +104,7 @@ app.post('/api/contact', async (req, res) => {
         await newContact.save();
         console.log('Contact form saved successfully');
 
-        // Send email notification
+        // Email sending temporarily commented out for debugging
         /*
         try {
             await transporter.sendMail({
@@ -130,10 +132,10 @@ app.post('/api/contact', async (req, res) => {
             message: 'Message sent successfully!' 
         });
     } catch (error) {
-        console.error('Error saving contact:', error);
+        console.error('Error in /api/contact endpoint:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Error sending message. Please try again.' 
+            message: 'Internal server error: Failed to process message.' 
         });
     }
 });
@@ -144,7 +146,8 @@ app.get('/api/messages', async (req, res) => {
         const messages = await Contact.find().sort({ createdAt: -1 });
         res.json(messages);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching messages' });
+        console.error('Error in /api/messages endpoint:', error);
+        res.status(500).json({ message: 'Internal server error: Error fetching messages.' });
     }
 });
 
@@ -161,12 +164,14 @@ app.put('/api/messages/:id', async (req, res) => {
         );
         
         if (!message) {
+            console.warn(`Message with ID ${id} not found for update.`);
             return res.status(404).json({ message: 'Message not found' });
         }
         
         res.json(message);
     } catch (error) {
-        res.status(500).json({ message: 'Error updating message' });
+        console.error('Error in /api/messages/:id endpoint:', error);
+        res.status(500).json({ message: 'Internal server error: Error updating message.' });
     }
 });
 
@@ -176,24 +181,27 @@ app.post('/api/subscribe', async (req, res) => {
         const { email } = req.body;
 
         if (!email) {
+            console.error('Validation Error: Email is required for subscription.');
             return res.status(400).json({ success: false, message: 'Email is required.' });
         }
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
+            console.error('Validation Error: Invalid email format for subscription.');
             return res.status(400).json({ success: false, message: 'Invalid email format.' });
         }
 
         const existingSubscriber = await Subscriber.findOne({ email });
         if (existingSubscriber) {
+            console.warn(`Subscription Warning: Email ${email} already subscribed.`);
             return res.status(409).json({ success: false, message: 'You are already subscribed!' });
         }
 
         const newSubscriber = new Subscriber({ email });
         await newSubscriber.save();
 
-        // Optional: Send a confirmation email to the subscriber
+        // Email sending temporarily commented out for debugging
         /*
         try {
             await transporter.sendMail({
@@ -215,17 +223,17 @@ app.post('/api/subscribe', async (req, res) => {
 
         res.status(201).json({ success: true, message: 'Subscription successful!' });
     } catch (error) {
-        console.error('Error subscribing:', error);
-        res.status(500).json({ success: false, message: 'Subscription failed. Please try again later.' });
+        console.error('Error in /api/subscribe endpoint:', error);
+        res.status(500).json({ success: false, message: 'Internal server error: Subscription failed.' });
     }
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error('Server error:', err);
+    console.error('Global server error handler:', err);
     res.status(500).json({
         success: false,
-        message: 'Internal server error'
+        message: 'An unexpected internal server error occurred.'
     });
 });
 
