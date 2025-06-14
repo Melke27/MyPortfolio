@@ -1793,12 +1793,12 @@
 
                 async function fetchBlogPosts() {
                     try {
-                        const response = await fetch('/api/blogposts');
+                        const response = await fetch('/api/blogposts'); // Reverted to /api/blogposts
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
                         }
-                        const posts = await response.json();
-
+                        const posts = await response.json(); // Get JSON data
+                        
                         blogPostsContainer.innerHTML = ''; // Clear existing content
 
                         // Display only the first 3 posts
@@ -1849,34 +1849,34 @@
                 await fetchBlogPosts();
             });
 
-            // Script for local form submission feedback (for Netlify Forms)
-            document.addEventListener('DOMContentLoaded', () => {
-                const contactForm = document.getElementById('contactForm');
-                const successDiv = document.getElementById('success');
-                const errorDiv = document.getElementById('error');
-                const submitButton = document.getElementById('sendMessageButton');
-
-                if (contactForm) {
-                    contactForm.addEventListener('submit', (event) => {
-                        event.preventDefault(); // Prevent default form submission
-
-                        // Simulate sending process
-                        submitButton.disabled = true;
-                        submitButton.innerHTML = '<i class=\"fas fa-spinner fa-spin me-2\"></i>Sending...';
-
-                        // Simulate success after a short delay
-                        setTimeout(() => {
-                            successDiv.textContent = 'Message sent! (Actual sending via Netlify after deployment)';
-                            successDiv.style.display = 'block';
-                            errorDiv.style.display = 'none';
-                            contactForm.reset();
-
-                            submitButton.disabled = false;
-                            submitButton.innerHTML = 'Send Message';
-                        }, 1000); // 1 second delay for simulation
-                    });
-                }
-            });
+            // Script for local form submission feedback (for Netlify Forms) - REMOVED
+            // document.addEventListener('DOMContentLoaded', () => {
+            //     const contactForm = document.getElementById('contactForm');
+            //     const successDiv = document.getElementById('success');
+            //     const errorDiv = document.getElementById('error');
+            //     const submitButton = document.getElementById('sendMessageButton');
+            //
+            //     if (contactForm) {
+            //         contactForm.addEventListener('submit', (event) => {
+            //             event.preventDefault(); // Prevent default form submission
+            //
+            //             // Simulate sending process
+            //             submitButton.disabled = true;
+            //             submitButton.innerHTML = '<i class=\"fas fa-spinner fa-spin me-2\"></i>Sending...';
+            //
+            //             // Simulate success after a short delay
+            //             setTimeout(() => {
+            //                 successDiv.textContent = 'Message sent! (Actual sending via Netlify after deployment)';
+            //                 successDiv.style.display = 'block';
+            //                 errorDiv.style.display = 'none';
+            //                 contactForm.reset();
+            //
+            //                 submitButton.disabled = false;
+            //                 submitButton.innerHTML = 'Send Message';
+            //             }, 1000); // 1 second delay for simulation
+            //         });
+            //     }
+            // });
         </script>
 
         <!-- Template Javascript -->
