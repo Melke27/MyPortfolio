@@ -10,12 +10,17 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
+// Enable CORS
 app.use(cors());
+
+// Middleware
 app.use(express.json());
 
 // Serve static files from the root directory
 app.use(express.static(path.join(__dirname, '..')));
+
+// Serve static files from the assets directory
+app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/portfolio', {

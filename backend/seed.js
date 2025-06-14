@@ -61,7 +61,7 @@ const seedDatabase = async () => {
                         <li>Currying</li>
                     </ul>
                 `,
-                imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                imageUrl: "/assets/img/portfolio-1.jpg",
                 date: new Date("2024-03-15"),
                 author: {
                     name: "Melkamu Wako",
@@ -91,7 +91,7 @@ const seedDatabase = async () => {
                     <h2>Best Practices</h2>
                     <p>Learn the best practices for using hooks in your React applications.</p>
                 `,
-                imageUrl: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                imageUrl: "/assets/img/portfolio-3.jpg",
                 date: new Date("2024-03-10"),
                 author: {
                     name: "Melkamu Wako",
@@ -121,7 +121,7 @@ const seedDatabase = async () => {
                     <h2>Implementation with Node.js</h2>
                     <p>Learn how to implement RESTful APIs using Node.js and Express.</p>
                 `,
-                imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+                imageUrl: "/assets/img/portfolio-4.jpg",
                 date: new Date("2024-03-05"),
                 author: {
                     name: "Melkamu Wako",
@@ -150,7 +150,7 @@ const seedDatabase = async () => {
                     
                     <p>Embracing AI in development workflows can lead to increased productivity, higher code quality, and faster time-to-market. It's not about replacing developers, but empowering them with more advanced tools.</p>
                 `,
-                imageUrl: "https://images.unsplash.com/photo-1698774026330-80a22a36b53a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTIyMDR8MHwxfHNlYXJjaHwxNXx8QUklMjBkZXZlbG9wbWVudHxlbnwwfHx8fHwxNzIwNTcwNjk0fDA&ixlib=rb-4.0.3&q=80&w=1080",
+                imageUrl: "/assets/img/ecommerce.jpg",
                 date: new Date("2024-07-01"),
                 author: {
                     name: "Melkamu Wako",
@@ -182,7 +182,7 @@ const seedDatabase = async () => {
                     <h3>Getting Started for Developers:</h3>
                     <p>Developers can explore quantum computing using simulators and SDKs provided by companies like IBM (Qiskit) and Microsoft (Q#). Basic understanding of linear algebra and quantum mechanics is beneficial but not always a prerequisite for initial exploration.</p>
                 `,
-                imageUrl: "https://images.unsplash.com/photo-1590409462529-65cf9ed12224?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTIyMDR8MHwxfHNlYXJjaHw4fHxxdWFudHVtJTIwY29tcHV0aW5nfGVufDB8fHx8fDE3MjA1NzA4MTJ8MA&ixlib=rb-4.0.3&q=80&w=1080",
+                imageUrl: "/assets/img/portfolio-2.jpg",
                 date: new Date("2024-06-20"),
                 author: {
                     name: "Melkamu Wako",
@@ -220,7 +220,7 @@ const seedDatabase = async () => {
                         <li>Event-Driven Architectures</li>
                     </ul>
                 `,
-                imageUrl: "https://images.unsplash.com/photo-1616401037389-9a742416f585?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTIyMDR8MHwxfHNlYXJjaHwxfHxzZXJ2ZXJsZXNzJTIwY2xvdWR8ZW58MHx8fHwxNzIwNTcwODc5fDA&ixlib=rb-4.0.3&q=80&w=1080",
+                imageUrl: "/assets/img/portfolio-5.jpg",
                 date: new Date("2024-05-10"),
                 author: {
                     name: "Melkamu Wako",
@@ -230,6 +230,98 @@ const seedDatabase = async () => {
                 tags: ["Serverless", "Cloud Computing", "AWS Lambda", "Scalability"],
                 views: 1100,
                 commentsCount: 6
+            },
+            {
+                title: "Essential Data Structures Every Developer Should Know",
+                slug: "essential-data-structures",
+                description: "A comprehensive guide to fundamental data structures and their real-world applications in software development.",
+                content: `
+                    <h2>Introduction to Data Structures</h2>
+                    <p>Data structures are fundamental building blocks in computer science that help organize and store data efficiently. Understanding them is crucial for writing optimized code.</p>
+                    
+                    <h2>Key Data Structures</h2>
+                    <ul>
+                        <li><b>Arrays:</b> Fixed-size collections of elements</li>
+                        <li><b>Linked Lists:</b> Dynamic data structure with nodes</li>
+                        <li><b>Stacks:</b> LIFO (Last In, First Out) structure</li>
+                        <li><b>Queues:</b> FIFO (First In, First Out) structure</li>
+                        <li><b>Trees:</b> Hierarchical data structure</li>
+                        <li><b>Graphs:</b> Network of connected nodes</li>
+                    </ul>
+                    
+                    <h2>Real-World Applications</h2>
+                    <p>Learn how these data structures are used in real-world applications and when to choose each one for optimal performance.</p>
+                `,
+                imageUrl: "/assets/img/portfolio-1.jpg",
+                date: new Date("2024-03-20"),
+                author: {
+                    name: "Melkamu Wako",
+                    imageUrl: "/assets/img/MELKAMU.jpg",
+                    bio: "Full-stack developer passionate about algorithms and data structures."
+                },
+                tags: ["Data Structures", "Algorithms", "Computer Science"],
+                views: 1200,
+                commentsCount: 15
+            },
+            {
+                title: "Modern Web Development: A Complete Guide",
+                slug: "modern-web-development",
+                description: "Explore the latest trends, tools, and best practices in modern web development.",
+                content: `
+                    <h2>The Evolution of Web Development</h2>
+                    <p>Web development has evolved significantly over the years, from static HTML pages to dynamic, interactive applications.</p>
+                    
+                    <h2>Key Technologies</h2>
+                    <ul>
+                        <li><b>Frontend:</b> React, Vue, Angular</li>
+                        <li><b>Backend:</b> Node.js, Python, Java</li>
+                        <li><b>Databases:</b> MongoDB, PostgreSQL, MySQL</li>
+                        <li><b>DevOps:</b> Docker, Kubernetes, CI/CD</li>
+                    </ul>
+                    
+                    <h2>Best Practices</h2>
+                    <p>Learn about responsive design, performance optimization, and security best practices in modern web development.</p>
+                `,
+                imageUrl: "/assets/img/portfolio-3.jpg",
+                date: new Date("2024-03-18"),
+                author: {
+                    name: "Melkamu Wako",
+                    imageUrl: "/assets/img/MELKAMU.jpg",
+                    bio: "Full-stack developer specializing in modern web technologies."
+                },
+                tags: ["Web Development", "JavaScript", "React", "Node.js"],
+                views: 1500,
+                commentsCount: 20
+            },
+            {
+                title: "Cybersecurity Essentials for Developers",
+                slug: "cybersecurity-essentials",
+                description: "Learn fundamental cybersecurity practices and how to protect your applications from common threats.",
+                content: `
+                    <h2>Understanding Cybersecurity</h2>
+                    <p>Cybersecurity is crucial in today's digital world. Learn how to protect your applications and data from various threats.</p>
+                    
+                    <h2>Common Threats</h2>
+                    <ul>
+                        <li><b>SQL Injection:</b> Preventing database attacks</li>
+                        <li><b>XSS (Cross-Site Scripting):</b> Protecting against malicious scripts</li>
+                        <li><b>CSRF (Cross-Site Request Forgery):</b> Securing form submissions</li>
+                        <li><b>Authentication:</b> Implementing secure login systems</li>
+                    </ul>
+                    
+                    <h2>Security Best Practices</h2>
+                    <p>Learn about encryption, secure coding practices, and how to implement proper security measures in your applications.</p>
+                `,
+                imageUrl: "/assets/img/portfolio-4.jpg",
+                date: new Date("2024-03-15"),
+                author: {
+                    name: "Melkamu Wako",
+                    imageUrl: "/assets/img/MELKAMU.jpg",
+                    bio: "Full-stack developer with a focus on secure application development."
+                },
+                tags: ["Cybersecurity", "Web Security", "Best Practices"],
+                views: 1800,
+                commentsCount: 25
             }
         ];
 
