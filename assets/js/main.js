@@ -136,7 +136,7 @@
                     };
 
                     $.ajax({
-                        url: '/api/contact',
+                        url: 'https://myportfolio-melkamuwako.onrender.com/api/contact',
                         method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify(formData),

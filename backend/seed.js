@@ -91,7 +91,7 @@ const seedDatabase = async () => {
                     <h2>Best Practices</h2>
                     <p>Learn the best practices for using hooks in your React applications.</p>
                 `,
-                imageUrl: "/assets/img/portfolio-3.jpg",
+                imageUrl: "/assets/img/coding-desk.jpg",
                 date: new Date("2024-03-10"),
                 author: {
                     name: "Melkamu Wako",
@@ -150,7 +150,7 @@ const seedDatabase = async () => {
                     
                     <p>Embracing AI in development workflows can lead to increased productivity, higher code quality, and faster time-to-market. It's not about replacing developers, but empowering them with more advanced tools.</p>
                 `,
-                imageUrl: "/assets/img/ecommerce.jpg",
+                imageUrl: "/assets/img/ai-cloud-coding.jpg",
                 date: new Date("2024-07-01"),
                 author: {
                     name: "Melkamu Wako",
@@ -182,7 +182,7 @@ const seedDatabase = async () => {
                     <h3>Getting Started for Developers:</h3>
                     <p>Developers can explore quantum computing using simulators and SDKs provided by companies like IBM (Qiskit) and Microsoft (Q#). Basic understanding of linear algebra and quantum mechanics is beneficial but not always a prerequisite for initial exploration.</p>
                 `,
-                imageUrl: "/assets/img/portfolio-2.jpg",
+                imageUrl: "/assets/img/quantum-network.jpg",
                 date: new Date("2024-06-20"),
                 author: {
                     name: "Melkamu Wako",
@@ -194,42 +194,71 @@ const seedDatabase = async () => {
                 commentsCount: 4
             },
             {
+                title: "Navigating the Cyberspace: Essential Cybersecurity Tips for Developers",
+                slug: "cybersecurity-tips-for-developers",
+                description: "A guide for developers to understand and implement crucial cybersecurity practices in their projects and daily routines.",
+                content: `
+                    <h2>Why Cybersecurity Matters for Developers</h2>
+                    <p>In today's interconnected world, every line of code can be a potential vulnerability. Developers play a critical role in building secure applications and protecting user data.</p>
+                    
+                    <h3>Key Practices:</h3>
+                    <ul>
+                        <li><b>Secure Coding Principles:</b> Adhere to OWASP Top 10 guidelines, perform input validation, and use parameterized queries to prevent SQL injection and XSS.</li>
+                        <li><b>Dependency Management:</b> Regularly audit and update third-party libraries to mitigate known vulnerabilities. Tools like Dependabot can automate this.</li>
+                        <li><b>Authentication & Authorization:</b> Implement strong, multi-factor authentication (MFA) and granular access controls. Never store plain-text passwords.</li>
+                        <li><b>Data Encryption:</b> Encrypt sensitive data both in transit (TLS/SSL) and at rest (disk encryption, database encryption).</li>
+                        <li><b>Security Testing:</b> Incorporate static application security testing (SAST), dynamic application security testing (DAST), and penetration testing into your CI/CD pipeline.</li>
+                        <li><b>Incident Response:</b> Have a plan for detecting, responding to, and recovering from security incidents.</li>
+                    </ul>
+                    
+                    <p>By integrating security into every stage of the development lifecycle, developers can significantly reduce the risk of breaches and build more resilient software.</p>
+                `,
+                imageUrl: "/assets/img/cyper.jpg",
+                date: new Date("2024-07-10"),
+                author: {
+                    name: "Melkamu Wako",
+                    imageUrl: "assets/img/MELKAMU.jpg",
+                    bio: "Full-stack developer and technical writer with a focus on secure software development."
+                },
+                tags: ["Cybersecurity", "Development", "Security", "Best Practices"],
+                views: 900,
+                commentsCount: 7
+            },
+            {
                 title: "Embracing Serverless: Building Scalable Apps with Minimal Ops",
                 slug: "embracing-serverless",
                 description: "Understand the benefits and challenges of serverless architecture and how to build highly scalable applications.",
                 content: `
-                    <h2>What is Serverless Architecture?</h2>
-                    <p>Serverless architecture allows you to build and run applications and services without having to manage infrastructure. Your cloud provider (e.g., AWS Lambda, Google Cloud Functions, Azure Functions) automatically provisions, scales, and manages the servers.</p>
+                    <h2>The Serverless Paradigm</h2>
+                    <p>Serverless architecture allows you to build and run applications and services without having to manage infrastructure. Your cloud provider automatically provisions, scales, and manages the servers.</p>
                     
-                    <h3>Key Benefits:</h3>
+                    <h3>Advantages:</h3>
                     <ul>
                         <li><b>Reduced Operational Overhead:</b> No server provisioning, patching, or scaling to worry about.</li>
-                        <li><b>Automatic Scaling:</b> Applications scale automatically with demand, handling traffic spikes seamlessly.</li>
-                        <li><b>Cost Efficiency:</b> You only pay for the compute time consumed, making it highly cost-effective for event-driven workloads.</li>
-                        <li><b>Faster Development:</b> Developers can focus solely on writing code for specific functions, accelerating development cycles.</li>
+                        <li><b>Scalability:</b> Automatically scales with demand, handling spikes in traffic seamlessly.</li>
+                        <li><b>Cost-Efficiency:</b> You only pay for the compute time consumed, making it cost-effective for intermittent workloads.</li>
+                        <li><b>Faster Development:</b> Developers can focus solely on writing code, accelerating time-to-market.</li>
                     </ul>
                     
-                    <h3>Considerations:</h3>
-                    <p>While powerful, serverless architectures come with considerations like vendor lock-in, cold starts for infrequently used functions, and debugging complexities across distributed services.</p>
-                    
-                    <h3>Common Use Cases:</h3>
+                    <h3>Popular Serverless Platforms:</h3>
                     <ul>
-                        <li>Web APIs & Backends</li>
-                        <li>Data Processing & ETL</li>
-                        <li>Chatbots & IoT Backends</li>
-                        <li>Event-Driven Architectures</li>
+                        <li>AWS Lambda</li>
+                        <li>Azure Functions</li>
+                        <li>Google Cloud Functions</li>
                     </ul>
+                    
+                    <p>While serverless offers many benefits, it's essential to understand its nuances, such as vendor lock-in, cold starts, and debugging complexities, to leverage its full potential.</p>
                 `,
-                imageUrl: "/assets/img/portfolio-5.jpg",
-                date: new Date("2024-05-10"),
+                imageUrl: "/assets/img/serverless.jpg",
+                date: new Date("2024-06-01"),
                 author: {
                     name: "Melkamu Wako",
                     imageUrl: "assets/img/MELKAMU.jpg",
-                    bio: "Full-stack developer and technical writer passionate about scalable cloud solutions."
+                    bio: "Full-stack developer and technical writer exploring cloud and serverless technologies."
                 },
-                tags: ["Serverless", "Cloud Computing", "AWS Lambda", "Scalability"],
-                views: 1100,
-                commentsCount: 6
+                tags: ["Serverless", "Cloud Computing", "AWS", "Scalability"],
+                views: 600,
+                commentsCount: 2
             },
             {
                 title: "Essential Data Structures Every Developer Should Know",
@@ -325,14 +354,21 @@ const seedDatabase = async () => {
             }
         ];
 
-        await BlogPost.insertMany(blogPosts);
-        console.log('Dummy blog posts inserted');
+        for (const postData of blogPosts) {
+            await BlogPost.findOneAndUpdate(
+                { slug: postData.slug },
+                { $set: postData },
+                { upsert: true, new: true }
+            );
+        }
+        console.log('Blog posts seeded successfully!');
 
     } catch (error) {
         console.error('Error seeding database:', error);
+        process.exit(1);
     } finally {
         mongoose.disconnect();
-        console.log('MongoDB disconnected');
+        console.log('MongoDB disconnected.');
     }
 };
 
