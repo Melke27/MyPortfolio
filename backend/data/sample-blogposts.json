@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Introduction to Web Development",
+        "slug": "introduction-to-web-development",
+        "content": "Welcome to my first blog post! In this article, we'll explore the basics of web development...",
+        "date": "2025-06-15",
+        "author": "Melkamu Wako",
+        "excerpt": "A beginner's guide to web development",
+        "tags": ["web development", "beginner", "html", "css"]
+    },
+    {
+        "title": "Building Responsive Websites",
+        "slug": "building-responsive-websites",
+        "content": "Learn how to create responsive websites that work on all devices...",
+        "date": "2025-06-14",
+        "author": "Melkamu Wako",
+        "excerpt": "Tips and tricks for responsive design",
+        "tags": ["responsive design", "css", "mobile first"]
+    }
+]

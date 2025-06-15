@@ -1,0 +1,69 @@
+# Jekyll configuration
+source: .
+destination: _site
+exclude:
+  # Dependencies
+  - node_modules
+  - frontend
+  - backend
+  - calculator2.html
+  - "melkamu wako protfolio and landing page"
+  - .git
+  - .gitignore
+  - README.md
+  - _config.yml
+  - .nojekyll
+  
+  # Development files
+  - .env*
+  
+  # Asset files
+  - "*.pdf"
+  - "*.txt"
+  - scss
+  - mail
+  
+  # Build directories
+  - dist
+  - build
+  - .next
+  - .cache
+  - .temp
+
+# Build settings
+markdown: kramdown
+theme: jekyll-theme-minimal
+baseurl: ""
+url: "https://melkamuwako27.netlify.app"
+
+# Disable Jekyll processing
+plugins: []
+sass: {}
+
+# Collections
+collections:
+  data:
+    output: true
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+# Include static files
+include:
+  - assets
+  - assets/css
+  - assets/js
+  - assets/img
+  - assets/lib
+
+# Keep files
+keep_files:
+  - assets
+  - assets/css
+  - assets/js
+  - assets/img
+  - assets/lib 

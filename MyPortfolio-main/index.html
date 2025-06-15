@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Melkamu Wako - Portfolio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        
+        <!-- Chart.js CDN -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
+        <!-- Dark Mode Script -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const themeToggle = document.getElementById('themeToggle');
+                const themeIcon = themeToggle.querySelector('i');
+                
+                // Check for saved theme preference
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    document.documentElement.setAttribute('data-theme', savedTheme);
+                    updateThemeIcon(savedTheme);
+                }
+
+                // Toggle theme
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateThemeIcon(newTheme);
+                });
+
+                function updateThemeIcon(theme) {
+                    themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+
+                // Add smooth transition when changing theme
+                const style = document.createElement('style');
+                style.textContent = `
+                    * {
+                        transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+                    }
+                `;
+                document.head.appendChild(style);
+            });
+        </script>
+
+        <!-- Template Javascript -->
+        <!-- <script src="assets/js/main.js"></script> -->
+
+        <style>
+            /* Custom styles for blog section to match the image */
+            #blog .blog-header {
+                display: flex;
+                align-items: center; /* Vertically align lines and text */
+                margin-bottom: 2rem; /* Space below the entire heading section */
+            }
+
+            #blog .blog-lines {
+                display: flex;
+                flex-direction: column; /* Stack lines vertically */
+                align-items: flex-start; /* Align lines to the left within their container */
+                margin-right: 1rem; /* Space between lines and text */
+            }
+
+            #blog .blog-line-long,
+            #blog .blog-line-short {
+                height: 3px;
+                background-color: #8BC34A; /* Green line */
+            }
+
+            #blog .blog-line-long {
+                width: 300px; /* Length of the longer line */
+                margin-bottom: 5px; /* Space between the two lines */
+            }
+
+            #blog .blog-line-short {
+                width: 150px; /* Length of the shorter line */
+            }
+
+            #blog .blog-title {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #212529; /* Dark gray for "Latest" */
+                margin-bottom: 0; /* Remove default h2 margin */
+            }
+
+            #blog .blog-posts-green {
+                color: #8BC34A; /* Green for "Blog Posts" */
+                margin-left: 0.5rem;
+            }
+
+            #blog .card {
+                border: 1px solid #e0e0e0;
+                transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            }
+
+            #blog .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            #blog .card-img-top {
+                height: 200px; /* Fixed height for consistent image size */
+                object-fit: cover;
+                width: 100%;
+            }
+
+            #blog .card-body {
+                padding: 1.5rem;
+            }
+
+            #blog .card-title {
+                font-size: 1.5rem;
+                color: #212529;
+                margin-bottom: 0.5rem;
+            }
+
+            #blog .card-text {
+                font-size: 0.95rem;
+                color: #6c757d;
+                line-height: 1.6;
+            }
+
+            #blog .btn-success {
+                background-color: #8BC34A;
+                border-color: #8BC34A;
+                color: #fff;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+                border-radius: 5px;
+            }
+
+            #blog .btn-success:hover {
+                background-color: #7CB342;
+                border-color: #7CB342;
+            }
+
+            #blog .btn-outline-primary {
+                border-color: #8BC34A;
+                color: #8BC34A;
+            }
+
+            #blog .btn-outline-primary:hover {
+                background-color: #8BC34A;
+                color: #fff;
+            }
+
+            #blog .text-muted i {
+                margin-right: 0.2rem;
+            }
+
+            /* Styles for Technical Expertise Section */
+            #expertise {
+                padding: 60px 0; /* Adjust padding as needed */
+                background-color: #f8f9fa; /* Light background for the section, matching the overall page light background */
+            }
+
+            #expertise .section-title {
+                margin-bottom: 45px;
+            }
+
+            #expertise .section-title h2 {
+                font-size: 2.8rem;
+                font-weight: 700;
+                color: #343a40; /* Dark gray for "Technical Expertise" */
+            }
+
+            #expertise .section-title p {
+                font-size: 1.1rem;
+                color: #6c757d; /* Lighter gray for subtitle */
+            }
+
+            .expertise-card {
+                background: #fff;
+                border-radius: 10px;
+                padding: 40px 20px; /* Adjusted padding to match image */
+                text-align: center;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Subtle shadow */
+                transition: all 0.3s ease-in-out;
+                height: 100%; /* Ensure cards are same height */
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+            }
+
+            .expertise-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            }
+
+            .expertise-icon {
+                font-size: 3.5rem; /* Larger icon size */
+                color: #007bff; /* Primary blue for icons, as seen in the image */
+                margin-bottom: 20px;
+            }
+
+            .expertise-card h4 {
+                font-size: 1.8rem;
+                font-weight: 600;
+                color: #343a40; /* Dark gray for card titles */
+                margin-bottom: 25px; /* Space below title */
+            }
+
+            .expertise-list {
+                list-style: none; /* Remove default bullet points */
+                padding: 0;
+                margin: 0;
+                text-align: center; /* Center list items */
+                width: 100%; /* Ensure list takes full width */
+            }
+
+            .expertise-list li {
+                font-size: 1.05rem;
+                color: #6c757d; /* Lighter text color for list items */
+                margin-bottom: 10px; /* Spacing between items */
+                padding: 0;
+                border-bottom: none;
+                line-height: 1.5;
+            }
+            .expertise-list li:last-child {
+                margin-bottom: 0;
+            }
+
+            /* Styles for Milestones & Achievements Section */
+            #milestones {
+                background-color: #f8f9fa; /* Light background matching other sections */
+                padding: 60px 0;
+            }
+
+            .milestone-card {
+                background: #fff;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease-in-out;
+                height: 100%; /* Ensure cards are same height */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .milestone-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            }
+
+            .milestone-card i {
+                color: #007bff; /* Primary color for icons */
+            }
+
+            .milestone-card h3.counter {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #212529; /* Dark text for numbers */
+                margin-top: 15px;
+            }
+
+            .milestone-card p {
+                font-size: 1rem;
+                color: #6c757d; /* Muted text for descriptions */
+            }
+
+            /* Styles for My Tech Stack Section */
+            #tech-stack {
+                background-color: #f0f2f5; /* A slightly different background to distinguish */
+                padding: 60px 0;
+            }
+
+            .tech-card {
+                background: #fff;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease-in-out;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .tech-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            }
+
+            .tech-card i, .tech-card img {
+                margin-bottom: 15px;
+            }
+
+            .tech-card h4 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: #343a40;
+                margin-bottom: 10px;
+            }
+
+            .tech-card p {
+                font-size: 0.95rem;
+                color: #6c757d;
+                line-height: 1.5;
+            }
+
+            /* Styles for FAQ Section */
+            #faq {
+                background-color: #f8f9fa; /* Consistent light background */
+                padding: 60px 0;
+            }
+
+            #faq .section-title {
+                margin-bottom: 45px;
+            }
+
+            #faq .accordion-item {
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                overflow: hidden; /* Ensures border-radius is applied correctly */
+            }
+
+            #faq .accordion-button {
+                background-color: #fff;
+                color: #343a40;
+                font-size: 1.15rem;
+                font-weight: 600;
+                padding: 18px 25px;
+                text-align: left;
+                border: none;
+                box-shadow: none; /* Remove default button shadow */
+                transition: background-color 0.3s ease;
+            }
+
+            #faq .accordion-button:not(.collapsed) {
+                color: #007bff; /* Primary color when expanded */
+                background-color: #e9f5ff; /* Light blue background when expanded */
+            }
+
+            #faq .accordion-button::after {
+                color: #007bff; /* Arrow color */
+            }
+
+            #faq .accordion-body {
+                padding: 20px 25px;
+                background-color: #fcfcfc;
+                color: #6c757d;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+        </style>
+    </head>
+    <body data-spy="scroll" data-target=".navbar" data-offset="51">
+        <!-- Spinner Start -->
+        <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div> -->
+        <!-- Spinner End -->
+
+        <div class="wrapper">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar">
+                <div class="sidebar-text d-flex flex-column h-100 justify-content-center text-center">
+                    <div class="profile-image-container">
+                        <img class="w-100 img-fluid mb-4 rounded-circle border border-4 border-primary" src="assets/img/MELKAMU.jpg" alt="Melkamu Wako Profile Photo">
+                        <div class="online-status"></div>
+                    </div>
+                    <h1 class="mt-2">Melkamu Wako</h1>
+                    <div class="mb-4" style="height: 22px;">
+                        <h4 class="typed-text-output d-inline-block text-body"></h4>
+                        <div class="typed-text d-none">Web Developer, Front End Developer, Computer Science Student, Cybersecurity Enthusiast</div>
+                    </div>
+                    <div class="mb-3">
+                        <span class="badge badge-pill badge-primary">JavaScript</span>
+                        <span class="badge badge-pill badge-primary">React</span>
+                        <span class="badge badge-pill badge-primary">Python</span>
+                        <span class="badge badge-pill badge-primary">Java</span>
+                        <span class="badge badge-pill badge-primary">C++</span>
+                        <span class="badge badge-pill badge-primary">HTML/CSS</span>
+                    </div>
+                    <div class="d-flex justify-content-center mt-auto mb-3 social-icons">
+                        <a class="mx-2" href="https://t.me/kidn16" target="_blank" aria-label="Telegram" data-toggle="tooltip" title="Telegram"><i class="fab fa-telegram"></i></a>
+                        <a class="mx-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BuIEBB2OnSR%2BvVmDSU1TR6g%3D%3D" target="_blank" aria-label="LinkedIn" data-toggle="tooltip" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="mx-2" href="https://github.com/melke27" target="_blank" aria-label="GitHub" data-toggle="tooltip" title="GitHub"><i class="fab fa-github"></i></a>
+                        <a class="mx-2" href="https://www.instagram.com/ruf.2316/" target="_blank" aria-label="Instagram" data-toggle="tooltip" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a class="mx-2" href="https://youtube.com/@MelkamuWako-f3v" target="_blank" aria-label="YouTube" data-toggle="tooltip" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <div class="d-flex align-items-end justify-content-between">
+                        <a href="assets/resume/resume.pdf" class="btn btn-block border-right download-btn" download="Melkamu_Wako_Resume.pdf">
+                            <i class="fas fa-download mr-2"></i>Download CV
+                        </a>
+                        <a href="#contact" class="btn btn-block btn-scroll contact-btn">
+                            <i class="fas fa-paper-plane mr-2"></i>Contact Me
+                        </a>
+                    </div>
+                </div>
+                <div class="sidebar-icon d-flex flex-column h-100 justify-content-center text-right">
+                    <i class="fas fa-2x fa-angle-double-right text-primary"></i>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="content">
+                <!-- Hero Section -->
+                <div class="container-fluid bg-primary py-5 hero-header">
+                    <div class="row align-items-center py-4">
+                        <div class="col-lg-6 text-center text-lg-left">
+                            <h1 class="display-3 text-white mb-4 animate__animated animate__fadeInDown">Hello, I'm <span class="text-dark">Melkamu</span></h1>
+                            <p class="lead text-white mb-4 animate__animated animate__fadeIn">Computer Science And Engineering Student & Passionate Developer from Ethiopia</p>
+                            <div class="d-flex justify-content-center justify-content-lg-start animate__animated animate__fadeInUp">
+                                <a href="#projects" class="btn btn-dark mr-3">View My Work</a>
+                                <a href="#contact" class="btn btn-outline-light">Hire Me</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 text-lg-right text-center">
+                            <img class="img-fluid animate__animated animate__zoomIn" src="assets/img/hero-img.png" alt="Developer Illustration">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Start -->
+                <div class="container bg-white py-5" id="about">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">About <span class="text-primary">Me</span></h2>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="about-content">
+                                <h2>About Me</h2>
+                                <p>I am Melkamu Wako, a diligent Computer Science and Engineering student at Adama Science and Technology University (ASTU). My passion for technology spans across multiple domains, from competitive programming to full-stack development and cybersecurity.</p>
+                                
+                                <p>My expertise in C++ has been honed through competitive programming on platforms like Codeforces and LeetCode, where I solve complex algorithmic problems efficiently. This foundation in Data Structures and Algorithms enables me to tackle real-world challenges with optimal solutions.</p>
+                                
+                                <p>In web development, I excel at creating responsive and user-friendly interfaces using HTML, CSS, JavaScript, and React. My full-stack capabilities extend to backend development with Node.js, Java, and RESTful APIs, complemented by database expertise in MySQL, MongoDB, and SQLite.</p>
+                                
+                                <p>Beyond academics, I'm actively involved in CSEC ASTU and Team Alpha Robotics ASTU. My contributions to the robotics team helped secure 2nd place at the 2025 African Robotics Championship, where I developed scratch code and software automation systems. I'm also engaged in university tech clubs and peer-learning initiatives, constantly seeking opportunities for collaborative growth.</p>
+                                
+                                <p>My commitment to cybersecurity is demonstrated through ongoing training with Cisco Networking Academy, focusing on ethical hacking, network security, and cyber defense. This dedication to security complements my goal of becoming a safe, ethical, and effective technical professional.</p>
+
+                                <div class="contact-info-block mb-4">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <p><i class="fa fa-map-marker-alt text-green mr-2"></i><span class="text-green">Location:</span><br/> Addis Ababa, Ethiopia</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p><i class="fa fa-code text-green mr-2"></i><span class="text-green">Experience:</span><br/> 2+ Years</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p><i class="fa fa-envelope text-green mr-2"></i><span class="text-green">Email:</span><br/> melkamuwako5@gmail.com</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p><i class="fa fa-phone-alt text-green mr-2"></i><span class="text-green">Phone:</span><br/> +251 965595251</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center justify-content-lg-start mt-3">
+                                        <a href="#contact" class="btn btn-green py-2 px-4 mr-3"><i class="fas fa-paper-plane mr-2"></i>Contact Me</a>
+                                        <a href="assets/resume/resume.pdf" class="btn btn-outline-green py-2 px-4" download="Melkamu_Wako_Resume.pdf"><i class="fas fa-download mr-2"></i>Download CV</a>
+                                    </div>
+                                </div>
+
+                                <div class="skills-chart mt-5">
+                                    <h5 class="mb-3">My Skills Distribution</h5>
+                                    <div class="skills-chart-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center">
+                                        <div class="chart-legend mb-3 mb-lg-0 me-4">
+                                            <div class="legend-item">
+                                                <span class="color-box bg-primary"></span>
+                                                <span class="legend-text">Competitive Programming</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="color-box bg-success"></span>
+                                                <span class="legend-text">Full-Stack Development</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="color-box bg-info"></span>
+                                                <span class="legend-text">Database Management</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="color-box bg-warning"></span>
+                                                <span class="legend-text">Cybersecurity</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="color-box bg-danger"></span>
+                                                <span class="legend-text">Robotics & Automation</span>
+                                            </div>
+                                        </div>
+                                        <canvas id="skillsPieChart" class="flex-grow-1" style="max-width: 400px; max-height: 400px;"></canvas>
+                                    </div>
+                                </div>
+
+                                <style>
+                                    .skills-chart-container {
+                                        gap: 20px;
+                                    }
+                                    .chart-legend {
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 10px;
+                                    }
+                                    .legend-item {
+                                        display: flex;
+                                        align-items: center;
+                                        font-size: 0.95rem;
+                                        color: #333; /* Adjust color as needed */
+                                    }
+                                    .color-box {
+                                        width: 18px;
+                                        height: 18px;
+                                        margin-right: 8px;
+                                        border-radius: 4px;
+                                    }
+                                    /* Additional colors for subcategories if needed, but not in the main legend */
+                                    .bg-purple { background-color: #6f42c1; } /* Example, if needed */
+                                    .bg-dark { background-color: #343a40; } /* Example, if needed */
+
+                                    /* Ensure canvas takes available space, but with limits */
+                                    #skillsPieChart {
+                                        flex-basis: 0; /* Allows it to shrink below max-width */
+                                        min-width: 250px; /* Ensure it's not too small on narrow screens */
+                                    }
+
+                                    /* Responsive adjustments for the chart legend and container */
+                                    @media (max-width: 991.98px) { /* On medium devices and smaller */
+                                        .skills-chart-container {
+                                            flex-direction: column; /* Stack legend and chart vertically */
+                                            align-items: center; /* Center items when stacked */
+                                        }
+                                        .chart-legend {
+                                            flex-direction: row; /* Keep legend items in a row if space allows */
+                                            flex-wrap: wrap; /* Allow legend items to wrap */
+                                            justify-content: center;
+                                            margin-right: 0 !important; /* Remove right margin when stacked */
+                                        }
+                                        .legend-item {
+                                            margin-bottom: 5px; /* Add some space between wrapped items */
+                                        }
+                                    }
+                                    @media (max-width: 575.98px) { /* On extra small devices */
+                                        .legend-item {
+                                            font-size: 0.85rem;
+                                        }
+                                        .color-box {
+                                            width: 15px;
+                                            height: 15px;
+                                        }
+                                    }
+                                </style>
+
+                                <div class="mt-4">
+                                    <a href="assets/resume/Melkamu_Wako_Resume.pdf" class="btn btn-primary" download>
+                                        <i class="fas fa-download me-2"></i>Download Resume
+                                    </a>
+                                </div>
+
+                                <div class="social-links mt-4">
+                                    <a href="https://github.com/Melke27" target="_blank" class="me-3">
+                                        <i class="fab fa-github fa-2x"></i>
+                                    </a>
+                                    <a href="https://www.linkedin.com/in/melkamu-wako-536174318" target="_blank" class="me-3">
+                                        <i class="fab fa-linkedin fa-2x"></i>
+                                    </a>
+                                    <a href="https://twitter.com/your-twitter" target="_blank" class="me-3">
+                                        <i class="fab fa-twitter fa-2x"></i>
+                                    </a>
+                                    <a href="mailto:melkamu.wako@astu.edu.et" class="me-3">
+                                        <i class="fas fa-envelope fa-2x"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="about-img mb-5">
+                                <img class="img-fluid rounded w-100" src="https://via.placeholder.com/500x500?text=Your+Image+Here" alt="">
+                            </div>
+                            <div class="about-info">
+                                <div class="row">
+                                    <div class="col-sm-6 py-2">
+                                        <div class="info-card">
+                                            <i class="fas fa-user-graduate text-primary"></i>
+                                            <h5 class="d-inline text-primary">Education:</h5>
+                                            <p>BSc in Computer Science and Engineering(CSE) (In Progress)</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 py-2">
+                                        <div class="info-card">
+                                            <i class="fas fa-birthday-cake text-primary"></i>
+                                            <h5 class="d-inline text-primary">Age:</h5>
+                                            <p>21 years</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 py-2">
+                                        <div class="info-card">
+                                            <i class="fas fa-map-marker-alt text-primary"></i>
+                                            <h5 class="d-inline text-primary">Location:</h5>
+                                            <p>Addis Ababa, Ethiopia</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 py-2">
+                                        <div class="info-card">
+                                            <i class="fas fa-code text-primary"></i>
+                                            <h5 class="d-inline text-primary">Experience:</h5>
+                                            <p>2+ Years</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 py-2">
+                                        <div class="info-card">
+                                            <i class="fas fa-envelope text-primary"></i>
+                                            <h5 class="d-inline text-primary">Email:</h5>
+                                            <p>melkamuwako5@gmail.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 py-2">
+                                        <div class="info-card">
+                                            <i class="fas fa-phone-alt text-primary"></i>
+                                            <h5 class="d-inline text-primary">Phone:</h5>
+                                            <p>+251 965595251</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <a href="#contact" class="btn btn-primary mr-2"><i class="fas fa-paper-plane mr-2"></i>Contact Me</a>
+                                    <a href="assets/resume/resume.pdf" class="btn btn-outline-primary" download><i class="fas fa-download mr-2"></i>Download CV</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- About End -->
+
+                <!-- My Milestones & Achievements Section -->
+                <section id="milestones" class="section-padding">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title text-center">
+                                    <h2>My <span class="text-primary">Milestones & Achievements</span></h2>
+                                    <p>Key highlights of my professional journey and accomplishments</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <!-- Milestone Item 1: Years of Experience -->
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="milestone-card">
+                                    <i class="fas fa-briefcase fa-4x mb-3"></i>
+                                    <h3 class="counter" data-count="2">2+</h3>
+                                    <p>Years of Experience</p>
+                                </div>
+                            </div>
+                            <!-- Milestone Item 2: Projects Completed -->
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="milestone-card">
+                                    <i class="fas fa-project-diagram fa-4x mb-3"></i>
+                                    <h3 class="counter" data-count="8">8</h3>
+                                    <p>Projects Completed</p>
+                                </div>
+                            </div>
+                            <!-- Milestone Item 3: Competitive Programming Problems Solved -->
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="milestone-card">
+                                    <i class="fas fa-code fa-4x mb-3"></i>
+                                    <h3 class="counter" data-count="150">150+</h3>
+                                    <p>Competitive Programming Problems Solved <br>(Codeforces & LeetCode)</p>
+                                </div>
+                            </div>
+                            <!-- Milestone Item 4: Certifications Completed -->
+                            <div class="col-lg-3 col-md-6 mb-4">
+                                <div class="milestone-card">
+                                    <i class="fas fa-certificate fa-4x mb-3"></i>
+                                    <h3 class="counter" data-count="4">4+</h3>
+                                    <p>Certificates Completed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- My Milestones & Achievements End -->
+
+                <!-- Blog Start -->
+                <div class="container bg-white py-5" id="blog">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <div class="blog-header">
+                                <div class="blog-lines">
+                                    <div class="blog-line-long"></div>
+                                    <div class="blog-line-short"></div>
+                                </div>
+                                <h2 class="blog-title">Latest <span class="blog-posts-green">Blog Posts</span></h2>
+                            </div>
+                        </div>
+
+                        <!-- Blog Posts Container -->
+                        <div class="col-12">
+                            <div class="row" id="blog-posts-container">
+                                <!-- Blog posts will be populated here by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-4">
+                            <a href="#" id="view-all-posts-btn" class="btn btn-outline-primary">View All Posts</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Blog End -->
+
+                <!-- Skills Start -->
+                <div class="container bg-white py-5" id="skills">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">Technical <span class="text-primary">Skills</span></h2>
+                        </div>
+                        <div class="col-12">
+                            <div class="skills-tabs">
+                                <ul class="nav nav-pills mb-5 justify-content-center" id="skills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="frontend-tab" data-bs-toggle="pill" href="#frontend" role="tab">Frontend</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="backend-tab" data-bs-toggle="pill" href="#backend" role="tab">Backend</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="languages-tab" data-bs-toggle="pill" href="#languages" role="tab">Languages</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tools-tab" data-bs-toggle="pill" href="#tools" role="tab">Tools</a>
+                                    </li>
+                                </ul>
+                                
+                                <div class="tab-content" id="skills-tabContent">
+                                    <div class="tab-pane fade show active" id="frontend" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-html5 text-danger mr-2"></i>HTML5</p>
+                                                        <p class="mb-2">85%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 95%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-css3-alt text-primary mr-2"></i>CSS3</p>
+                                                        <p class="mb-2">75%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 85%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-js-square text-warning mr-2"></i>JavaScript</p>
+                                                        <p class="mb-2">80%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 90%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-react text-info mr-2"></i>React</p>
+                                                        <p class="mb-2">55%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 75%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-bootstrap text-purple mr-2"></i>Bootstrap</p>
+                                                        <p class="mb-2">65%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-purple" role="progressbar" style="width: 85%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fas fa-mobile-alt text-success mr-2"></i>Responsive Design</p>
+                                                        <p class="mb-2">70%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 90%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tab-pane fade" id="backend" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-node-js text-success mr-2"></i>Node.js</p>
+                                                        <p class="mb-2">60%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 70%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fas fa-database text-info mr-2"></i>MongoDB</p>
+                                                        <p class="mb-2">55%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 65%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-python text-primary mr-2"></i>Python (Django/Flask)</p>
+                                                        <p class="mb-2">65%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 75%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fas fa-server text-secondary mr-2"></i>REST APIs</p>
+                                                        <p class="mb-2">60%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-secondary" role="progressbar" style="width: 80%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tab-pane fade" id="languages" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fas fa-code text-dark mr-2"></i>C++</p>
+                                                        <p class="mb-2">95%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-dark" role="progressbar" style="width: 95%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-java text-danger mr-2"></i>Java</p>
+                                                        <p class="mb-2">75%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 75%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-python text-primary mr-2"></i>Python</p>
+                                                        <p class="mb-2">85%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 85%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-js-square text-warning mr-2"></i>JavaScript</p>
+                                                        <p class="mb-2">90%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 90%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="tab-pane fade" id="tools" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-git-alt text-danger mr-2"></i>Git</p>
+                                                        <p class="mb-2">85%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 85%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fab fa-github text-dark mr-2"></i>GitHub</p>
+                                                        <p class="mb-2">90%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-dark" role="progressbar" style="width: 90%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fas fa-terminal text-success mr-2"></i>Command Line</p>
+                                                        <p class="mb-2">80%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 80%"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="skill mb-4">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-2"><i class="fas fa-code-branch text-info mr-2"></i>VS Code</p>
+                                                        <p class="mb-2">95%</p>
+                                                    </div>
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 95%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skills End -->
+
+                <!-- Experience & Education -->
+                <div class="container bg-white py-5">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">Journey <span class="text-primary">Timeline</span></h2>
+                        </div>
+                        <div class="col-12">
+                            <div class="timeline">
+                                <div class="timeline-container left">
+                                    <div class="timeline-content">
+                                        <h4>2023 - Present</h4>
+                                        <h5>Computer Science and Engineering</h5>
+                                        <p>Adama Science and Technology University</p>
+                                        <p>Currently pursuing my bachelor's degree with focus on algorithms, data structures, and software engineering principles.</p>
+                                    </div>
+                                    </div>
+                                <div class="timeline-container right">
+                                    <div class="timeline-content">
+                                        <h4>July 2024</h4>
+                                        <h5>ALX Ventures Founder Academy</h5>
+                                        <p>Completed intensive entrepreneurship program covering business development, startup fundamentals, and venture creation.</p>
+                                        <a href="assets/resume/resume.pdf" target="_blank" class="btn btn-sm btn-outline-primary mr-2">View Certificate</a>
+                                        <a href="https://www.coursera.org/account/accomplishments/verify/XPZHL0UYC5KT" target="_blank" class="btn btn-sm btn-outline-secondary">Verify</a>
+                                </div>
+                                    </div>
+                                <div class="timeline-container left">
+                                    <div class="timeline-content">
+                                        <h4>2022 - Present</h4>
+                                        <h5>Freelance Web Developer</h5>
+                                        <p>Developed websites and web applications for various clients, focusing on responsive design and user experience.</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-container right">
+                                    <div class="timeline-content">
+                                        <h4>September 2024</h4>
+                                        <h5>Programming Fundamentals Nanodegree</h5>
+                                        <p>Udacity (Accenture)</p>
+                                        <p>Completed comprehensive training in programming fundamentals and computer science concepts.</p>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">View Certificate</a>
+                                    </div>
+                                    </div>
+                                <div class="timeline-container left">
+                                    <div class="timeline-content">
+                                        <h4>2021</h4>
+                                        <h5>First Lines of Code</h5>
+                                        <p>Began my programming journey with HTML and CSS, quickly expanding to JavaScript and Python.</p>
+                                </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                    </div>
+                                    </div>
+
+                <!-- Certifications Start -->
+                <div class="container bg-white py-5" id="certifications">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">My <span class="text-primary">Certifications</span></h2>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="certification-card">
+                                <div class="certification-header">
+                                    <img src="assets/img/alx-logo.jpg" alt="ALX Logo" class="certification-logo">
+                                    <div class="certification-title">
+                                        <h5>ALX Ventures Founder Academy</h5>
+                                <p class="text-muted">Issued: July 2024</p>
+                                    </div>
+                                </div>
+                                <div class="certification-body">
+                                    <p>Completed the intensive Founder Academy program covering:</p>
+                                    <ul>
+                                        <li>Entrepreneurship fundamentals</li>
+                                        <li>Business model development</li>
+                                        <li>Startup funding strategies</li>
+                                        <li>Pitching and presentation skills</li>
+                                </ul>
+                            </div>
+                                <div class="certification-footer">
+                                    <a href="assets/certificates/alx-certificate.pdf" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
+                                    <a href="https://savanna.alxafrica.com" class="btn btn-outline-primary" target="_blank">Verify</a>
+                        </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="certification-card">
+                                <div class="certification-header">
+                                    <img src="assets/img/udacity-logo.png" alt="Udacity Logo" class="certification-logo">
+                                    <div class="certification-title">
+                                        <h5>Programming Fundamentals Nanodegree</h5>
+                                <p class="text-muted">Issued: September 2024</p>
+                                    </div>
+                                </div>
+                                <div class="certification-body">
+                                    <p>Key skills and knowledge gained:</p>
+                                    <ul>
+                                        <li>Core programming concepts</li>
+                                        <li>Introduction to HTML, CSS and JavaScript</li>
+                                        <li>Object-oriented programming</li>
+                                        <li>Version control with Git</li>
+                                        <li>Problem-solving techniques</li>
+                                </ul>
+                            </div>
+                                <div class="certification-footer">
+                                    <a href="assets/certificates/udacity-certificate.pdf" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
+                                    <a href="https://www.udacity.com/certificate/e/92bc0228-49ba-11ef-bc5c-e76c9fe1ce56" target="_blank" class="btn btn-outline-primary" target="_blank">Verify</a>
+                        </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="certification-card">
+                                <div class="certification-header">
+                                    <img src="assets/img/coursera-logo.png" alt="Coursera Logo" class="certification-logo">
+                                    <div class="certification-title">
+                                        <h5>Foundations of Coding Full-Stack</h5>
+                                <p class="text-muted">Issued: June 2025</p>
+                                    </div>
+                                </div>
+                                <div class="certification-body">
+                                    <p>Completed the Foundations of Coding Full-Stack program, gaining expertise in:</p>
+                                    <ul>
+                                        <li>Full-stack development fundamentals</li>
+                                        <li>Frontend and backend integration</li>
+                                        <li>Database management</li>
+                                        <li>API development</li>
+                                </ul>
+                                </div>
+                                <div class="certification-footer">
+                                    <a href="assets/certificates/coursera-certificate.pdf" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
+                                    <a href="https://www.coursera.org/account/accomplishments/verify/XPZHL0UYC5KT" class="btn btn-outline-primary" target="_blank">Verify</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- New Certification: CISCO Introduction to Cybersecurity -->
+                        <div class="col-md-6 mb-4">
+                            <div class="certification-card">
+                                <div class="certification-header">
+                                    <img src="assets/img/cisco-logo.png" alt="CISCO Logo" class="certification-logo">
+                                    <div class="certification-title">
+                                        <h5>CISCO Introduction to Cybersecurity</h5>
+                                        <p class="text-muted">Issued: November 2023</p>
+                                    </div>
+                                </div>
+                                <div class="certification-body">
+                                    <p>Gained foundational knowledge in cybersecurity, including:</p>
+                                    <ul>
+                                        <li>Cybersecurity principles and concepts</li>
+                                        <li>Threats, vulnerabilities, and attacks</li>
+                                        <li>Network security basics</li>
+                                        <li>Cryptography fundamentals</li>
+                                        <li>Security best practices</li>
+                                    </ul>
+                                </div>
+                                <div class="certification-footer">
+                                    <a href="assets/certificates/cisco-cybersecurity.pdf" class="btn btn-primary mr-2" target="_blank">View Certificate</a>
+                                    <a href="https://www.linkedin.com/in/melkamu-wako-2a5496228" class="btn btn-outline-primary" target="_blank">Verify on LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Certifications End -->
+
+                <!-- Projects Start -->
+                <div class="container bg-white py-5" id="projects">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">Featured <span class="text-primary">Projects</span></h2>
+                        </div>
+                        
+                        <!-- Project Filter -->
+                        <div class="col-12 mb-5">
+                            <div class="project-filter">
+                                <button class="active" data-filter="*">All Projects</button>
+                                <button data-filter=".web">Web Development</button>
+                                <button data-filter=".software">Software</button>
+                                <button data-filter=".academic">Academic</button>
+                                                        </div>
+                                                    </div>
+                        
+                        <!-- Projects Grid -->
+                        <div class="col-12">
+                            <div class="row project-container">
+                                <!-- Scientific Calculator -->
+                                <div class="col-lg-4 col-md-6 mb-4 project-item mobile">
+                                    <div class="project-card">
+                                        <div class="project-img">
+                                            <img src="assets/img/analogy calculator.png" alt="Scientific Calculator" class="img-fluid">
+                                            <div class="project-overlay">
+                                                <a class="btn btn-primary" href="https://github.com/Melke27/school_projects/blob/main/calculator" target="_blank">Live Demo</a>
+                                                </div>
+                                        </div>
+                                        <div class="project-content">
+                                                    <h5>Scientific Calculator</h5>
+                                                    <span>Python | Tkinter</span>
+                                            <div class="project-tech">
+                                                <span class="badge badge-primary">Python</span>
+                                                <span class="badge badge-primary">Tkinter</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                        </div>
+                                
+                                <!-- Analog Clock -->
+                                <div class="col-lg-4 col-md-6 mb-4 project-item desktop">
+                                    <div class="project-card">
+                                        <div class="project-img">
+                                            <img src="assets/img/portfolio-1.jpg" alt="Analog Clock" class="img-fluid">
+                                            <div class="project-overlay">
+                                                <a class="btn btn-primary" href="https://github.com/Melke27/school_projects/blob/main/clock.py" target="_blank">Live Demo</a>
+                                                    </div>
+                                                </div>
+                                        <div class="project-content">
+                                                    <h5>Analog Clock with Python</h5>
+                                                    <span>Python | Tkinter</span>
+                                            <div class="project-tech">
+                                                <span class="badge badge-primary">Python</span>
+                                                <span class="badge badge-primary">Tkinter</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                        </div>
+                                
+                                <!-- Water Supply System -->
+                                <div class="col-lg-4 col-md-6 mb-4 project-item mobile">
+                                    <div class="project-card">
+                                        <div class="project-img">
+                                            <img src="assets/img/water2.png" alt="Water Supply System" class="img-fluid">
+                                            <div class="project-overlay">
+                                                <a class="btn btn-primary" href="https://github.com/Melke27/school_projects/blob/main/DSApoject" target="_blank">Live Demo</a>
+                                                    </div>
+                                                </div>
+                                        <div class="project-content">
+                                                    <h5>Water Supply Management</h5>
+                                                    <span>C++ | Data Structures</span>
+                                            <div class="project-tech">
+                                                <span class="badge badge-primary">C++</span>
+                                                <span class="badge badge-primary">Data Structures</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                        </div>
+                                
+                                <!-- School Management System -->
+                                <div class="col-lg-4 col-md-6 mb-4 project-item web design">
+                                    <div class="project-card">
+                                        <div class="project-img">
+                                            <img src="assets/img/grademangement_hd.webp" alt="School Management System" class="img-fluid">
+                                            <div class="project-overlay">
+                                                <a class="btn btn-primary" href="https://github.com/Melke27/school_projects/blob/main/grade_management_system.cpp.cxx" target="_blank">Live Demo</a>
+                                                    </div>
+                                                </div>
+                                        <div class="project-content">
+                                                    <h5>School Management System (Grade Management)</h5>
+                                                    <span>C++ | File Handling</span>
+                                            <div class="project-tech">
+                                                <span class="badge badge-primary">C++</span>
+                                                <span class="badge badge-primary">File Handling</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                        </div>
+                                
+                                <!-- E-commerce Website -->
+                                <div class="col-lg-4 col-md-6 mb-4 project-item web design">
+                                    <div class="project-card">
+                                        <div class="project-img">
+                                            <img src="assets/img/landingpage.jpg" alt="Landing Page" class="img-fluid">
+                                            <div class="project-overlay">
+                                                <a class="btn btn-primary" href="https://github.com/Melke27/school_projects/blob/main/landingpage" target="_blank">Live Demo</a>
+                                                    </div>
+                                                </div>
+                                        <div class="project-content">
+                                                    <h5>Modern Landing Page</h5>
+                                                    <span>HTML | CSS | JavaScript</span>
+                                            <div class="project-tech">
+                                                <span class="badge badge-primary">HTML</span>
+                                                <span class="badge badge-primary">CSS</span>
+                                                <span class="badge badge-primary">JavaScript</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                        </div>
+                                
+                                <!-- Weather App -->
+                                <div class="col-lg-4 col-md-6 mb-4 project-item web">
+                                    <div class="project-card">
+                                        <div class="project-img">
+                                            <img src="assets/img/weather-app.jpg" alt="Weather App" class="img-fluid">
+                                            <div class="project-overlay">
+                                                <a href="#" class="btn btn-primary mr-2">View Project</a>
+                                                <a href="#" class="btn btn-light">View Code</a>
+                                                    </div>
+                                                </div>
+                                        <div class="project-content">
+                                                    <h5>Weather Forecast App</h5>
+                                                    <p>Real-time weather application using API integration with 5-day forecast.</p>
+                                            <div class="project-tech">
+                                                <span class="badge badge-primary">JavaScript</span>
+                                                <span class="badge badge-primary">API</span>
+                                                <span class="badge badge-primary">Bootstrap</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- New Project: Habesha Restaurant Management System -->
+                                <div class="col-lg-4 col-md-6 mb-4 project-item desktop">
+                                    <div class="project-card">
+                                        <div class="project-img">
+                                            <img src="assets/img/habesha_restaurant_login.png" alt="Habesha Restaurant Management System Login Screen" class="img-fluid">
+                                            <div class="project-overlay">
+                                                <a class="btn btn-primary" href="https://github.com/Melke27/Habesha-Resturant-Mnagement-System" target="_blank">View Code</a>
+                            </div>
+                        </div>
+                                        <div class="project-content">
+                                            <h5>Habesha Restaurant Management System</h5>
+                                            <span>Java | GUI | Swing/JavaFX</span>
+                                        </div>
+                                        <div class="project-tech">
+                                            <span class="badge badge-primary">Java</span>
+                                            <span class="badge badge-primary">GUI</span>
+                                            <span class="badge badge-primary">Database</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- New Project: Online Food Order and Delivery -->
+                                <div class="col-lg-4 col-md-6 mb-4 project-item web">
+                                    <div class="project-card">
+                                        <div class="project-img">
+                                            <img src="assets/img/habesha_restaurant_login.png" alt="Online Food Order and Delivery" class="img-fluid">
+                                            <div class="project-overlay">
+                                                <a class="btn btn-primary" href="#" target="_blank">Live Demo</a>
+                                                <a class="btn btn-light" href="#" target="_blank">View Code</a>
+                                            </div>
+                                        </div>
+                                        <div class="project-content">
+                                            <h5>Online Food Order and Delivery</h5>
+                                            <p>A web-based platform for online food ordering, real-time delivery tracking, and restaurant management.</p>
+                                        </div>
+                                        <div class="project-tech">
+                                            <span class="badge badge-primary">MongoDB</span>
+                                            <span class="badge badge-primary">Express.js</span>
+                                            <span class="badge badge-primary">React.js</span>
+                                            <span class="badge badge-primary">Node.js</span>
+                                            <span class="badge badge-primary">HTML</span>
+                                            <span class="badge badge-primary">CSS</span>
+                                            <span class="badge badge-primary">JavaScript</span>
+                                            <span class="badge badge-primary">Stripe API</span>
+                                            <span class="badge badge-primary">Socket.io</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                    </div>
+                </div>
+                <!-- Projects End -->
+
+                <!-- Technical Expertise Section -->
+                <section id="expertise" class="section-padding">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title text-center">
+                                    <h2>Technical Expertise</h2>
+                                    <p>Comprehensive overview of my technical skills and capabilities</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="expertise-card">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-server"></i>
+                                    </div>
+                                    <h4>Backend Development</h4>
+                                    <ul class="expertise-list">
+                                        <li>Node.js & Express.js</li>
+                                        <li>Java Spring Boot</li>
+                                        <li>RESTful API Design</li>
+                                        <li>Database Management</li>
+                                        <li>Authentication & Authorization</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="expertise-card">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <h4>Database & Storage</h4>
+                                    <ul class="expertise-list">
+                                        <li>MySQL & MongoDB</li>
+                                        <li>SQLite & PostgreSQL</li>
+                                        <li>Data Modeling</li>
+                                        <li>Query Optimization</li>
+                                        <li>Data Security</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="expertise-card">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <h4>Security & Performance</h4>
+                                    <ul class="expertise-list">
+                                        <li>API Security</li>
+                                        <li>Data Encryption</li>
+                                        <li>Performance Optimization</li>
+                                        <li>Error Handling</li>
+                                        <li>Logging & Monitoring</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Technical Expertise Section End -->
+
+                <!-- My Tech Stack Start -->
+                <section id="tech-stack" class="section-padding">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title text-center">
+                                    <h2>My <span class="text-primary">Tech Stack</span></h2>
+                                    <p>Technologies and tools I love to work with</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Tech Stack Item 1: React -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-react fa-4x text-info mb-3"></i>
+                                    <h4>React</h4>
+                                    <p class="text-muted">Building dynamic and responsive user interfaces.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 2: Node.js -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-node-js fa-4x text-success mb-3"></i>
+                                    <h4>Node.js</h4>
+                                    <p class="text-muted">Scalable server-side applications and RESTful APIs.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 3: Python -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-python fa-4x text-warning mb-3"></i>
+                                    <h4>Python</h4>
+                                    <p class="text-muted">Backend logic, data analysis, and automation scripts.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 4: MongoDB -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fas fa-database fa-4x text-danger mb-3"></i>
+                                    <h4>MongoDB</h4>
+                                    <p class="text-muted">Flexible NoSQL database solutions.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 5: Docker -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-docker fa-4x text-primary mb-3"></i>
+                                    <h4>Docker</h4>
+                                    <p class="text-muted">Containerization for consistent development and deployment.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 6: Git/GitHub -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <i class="fab fa-github fa-4x text-dark mb-3"></i>
+                                    <h4>Git & GitHub</h4>
+                                    <p class="text-muted">Version control and collaborative coding.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 7: Cloud Platform Placeholder -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <img src="assets/img/tech_placeholder.png" alt="Cloud Platform" class="img-fluid mb-3" style="width: 60px; height: 60px;">
+                                    <h4>Cloud Platforms</h4>
+                                    <p class="text-muted">Deploying and managing scalable applications.</p>
+                                </div>
+                            </div>
+                            <!-- Tech Stack Item 8: VS Code -->
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <div class="tech-card text-center">
+                                    <img src="assets/img/tech_placeholder.png" alt="VS Code" class="img-fluid mb-3" style="width: 60px; height: 60px;">
+                                    <h4>VS Code</h4>
+                                    <p class="text-muted">My preferred IDE for efficient development.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- My Tech Stack End -->
+
+                <!-- FAQ Start -->
+                <section id="faq" class="section-padding">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-title text-center mb-5">
+                                    <h2>Frequently Asked <span class="text-primary">Questions</span></h2>
+                                    <p>Find quick answers to common questions</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="accordion" id="faqAccordion">
+                                    <!-- FAQ Item 1 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                What kind of projects do you specialize in?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                I specialize in full-stack web development, competitive programming, and cybersecurity solutions. My expertise ranges from building responsive user interfaces with React to developing scalable backend systems with Node.js and Java, and securing applications.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- FAQ Item 2 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                Do you offer freelance services?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                Yes, I do offer freelance web development services. Feel free to reach out via the contact form with your project details, and I'll get back to you to discuss how I can help.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- FAQ Item 3 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                What is your experience with competitive programming?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                I have extensive experience in competitive programming on platforms like Codeforces and LeetCode, focusing on efficient algorithms and data structures. This has honed my problem-solving skills and ability to optimize solutions for performance.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- FAQ Item 4 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFour">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                How do you approach learning new technologies?
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                I believe in a hands-on approach. I typically start with official documentation, work through tutorials, and immediately apply new concepts in small projects. I also actively engage in tech communities and peer-learning initiatives.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- FAQ End -->
+
+                <!-- Contact Start -->
+                <div class="container bg-white py-5" id="contact">
+                    <div class="row px-3">
+                        <div class="col-12">
+                            <h2 class="title position-relative pb-2 mb-4">Get In <span class="text-primary">Touch</span></h2>
+                        </div>
+                        <div class="col-lg-6 mb-5 mb-lg-0">
+                            <div class="contact-info">
+                                <p class="mb-4">Feel free to reach out to me for any inquiries, collaborations, or just to say hello. I'm always open to new opportunities and discussions.</p>
+                                <div class="d-flex mb-3">
+                                    <i class="fa fa-map-marker-alt text-primary mr-3"></i>
+                                    <h5 class="font-weight-bold mb-0">Address</h5>
+                                    <p class="mb-0">N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
+                                </div>
+                                <div class="d-flex mb-3">
+                                    <i class="fa fa-envelope text-primary mr-3"></i>
+                                    <h5 class="font-weight-bold mb-0">Email</h5>
+                                    <p class="mb-0">melkamuwako5@gmail.com</p>
+                                </div>
+                                <div class="d-flex mb-3">
+                                    <i class="fa fa-phone-alt text-primary mr-3"></i>
+                                    <h5 class="font-weight-bold mb-0">Phone</h5>
+                                    <p class="mb-0">+251 965595251</p>
+                                </div>
+                                <div class="d-flex pt-2">
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://t.me/kidn16" target="_blank"><i class="fab fa-telegram"></i></a>
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BuIEBB2OnSR%2BvVmDSU1TR6g%3D%3D" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://github.com/melke27" target="_blank"><i class="fab fa-github"></i></a>
+                                    <a class="btn btn-outline-light btn-social" href="https://youtube.com/@MelkamuWako-f3v" target="_blank"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="contact-form">
+                                <form name="contact" id="contactForm" method="POST">
+                                    <div class="control-group">
+                                        <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name" required="required" data-validation-required-message="Please enter your name" />
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="control-group">
+                                        <input type="email" class="form-control p-4" id="email" name="email" placeholder="Your Email" required="required" data-validation-required-message="Please enter your email" />
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="control-group">
+                                        <input type="text" class="form-control p-4" id="subject" name="subject" placeholder="Subject" />
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="control-group">
+                                        <textarea class="form-control py-3 px-4" rows="5" id="message" name="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div id="success" class="text-success text-center mb-3" style="display: none;"></div>
+                                    <div id="error" class="text-danger text-center mb-3" style="display: none;"></div>
+                                    <div class="text-center">
+                                        <button class="btn btn-primary py-3 px-5" type="submit" id="sendMessageButton">Send Message</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Contact End -->
+
+                <!-- Map Section -->
+                <div class="container-fluid px-0">
+                    <div class="map-container">
+                        <!-- Google Maps JavaScript API (replace YOUR_GOOGLE_MAPS_API_KEY with your actual key) -->
+                        <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script> -->
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.238030215121!2d38.76395031478615!3d9.040876393525708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f1a4e5a98f%3A0x8e5a4a1a1a1a1a1a!2sAddis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
+                            width="100%" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+                
+                <!-- Newsletter Section -->
+                <div class="container-fluid bg-primary newsletter-section">
+                    <div class="container py-5">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 mb-4 mb-lg-0">
+                                <h3 class="text-white mb-0">Subscribe to My Newsletter</h3>
+                                <p class="text-white mb-0">Get the latest updates, articles and resources directly to your inbox.</p>
+                            </div>
+                            <div class="col-lg-6">
+                                <form class="newsletter-form" id="newsletterForm">
+                                    <div class="input-group">
+                                        <input type="email" class="form-control" id="newsletterEmail" placeholder="Your Email Address" required>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-dark" type="submit">Subscribe</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" id="newsletterCheck" required>
+                                        <label class="form-check-label text-white" for="newsletterCheck">
+                                            I agree to receive emails (you can unsubscribe anytime)
+                                        </label>
+                                    </div>
+                                    <div id="newsletterSuccess" class="text-white mt-2" style="display: none;"></div>
+                                    <div id="newsletterError" class="text-white mt-2" style="display: none;"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Start -->
+                <footer class="container-fluid bg-dark text-white py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 mb-4 mb-lg-0">
+                                <h5 class="text-primary mb-4">About Me</h5>
+                                <p>Computer Science student and passionate developer dedicated to creating innovative solutions and beautiful digital experiences.</p>
+                                <div class="d-flex pt-2">
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://t.me/kidn16" target="_blank"><i class="fab fa-telegram"></i></a>
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BuIEBB2OnSR%2BvVmDSU1TR6g%3D%3D" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                    <a class="btn btn-outline-light btn-social mr-2" href="https://github.com/melke27" target="_blank"><i class="fab fa-github"></i></a>
+                                    <a class="btn btn-outline-light btn-social" href="https://youtube.com/@MelkamuWako-f3v" target="_blank"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 mb-4 mb-lg-0">
+                                <h5 class="text-primary mb-4">Quick Links</h5>
+                                <div class="d-flex flex-column justify-content-start">
+                                    <a class="text-white mb-2" href="#home"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                                    <a class="text-white mb-2" href="#about"><i class="fa fa-angle-right mr-2"></i>About</a>
+                                    <a class="text-white mb-2" href="#skills"><i class="fa fa-angle-right mr-2"></i>Skills</a>
+                                    <a class="text-white mb-2" href="#projects"><i class="fa fa-angle-right mr-2"></i>Projects</a>
+                                    <a class="text-white mb-2" href="#contact"><i class="fa fa-angle-right mr-2"></i>Contact</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <h5 class="text-primary mb-4">Contact Info</h5>
+                                <p><i class="fa fa-map-marker-alt mr-2"></i>N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
+                                <p><i class="fa fa-envelope mr-2"></i>melkamuwako5@gmail.com</p>
+                                <p><i class="fa fa-phone-alt mr-2"></i>+251 965595251</p>
+                                <div class="mt-4">
+                                    <a href="assets/resume/Melkamu_Wako_Resume.pdf" class="btn btn-primary mr-2" download><i class="fas fa-download mr-2"></i>Download CV</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-3">
+                            <div class="col-md-6 text-center text-md-left">
+                                <p class="m-0">&copy; <span id="year"></span> Melkamu Wako. All Rights Reserved.</p>
+                            </div>
+                            <div class="col-md-6 text-center text-md-right">
+                                <div class="footer-links">
+                                    <a class="text-white mr-3" href="privacy.html">Privacy Policy</a>
+                                    <a class="text-white mr-3" href="terms.html">Terms of Service</a>
+                                    <a class="text-white" href="sitemap.html">Sitemap</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- Footer End -->
+            </div>
+        </div>
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+        <!-- Dark Mode Toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN moved here -->
+        <script src="assets/lib/easing/easing.min.js"></script>
+        <script src="assets/lib/waypoints/waypoints.min.js"></script>
+        <script src="assets/lib/owlcarousel/owl.carousel.min.js"></script>
+        <script src="assets/lib/isotope/isotope.pkgd.min.js"></script>
+        <script src="assets/lib/lightbox/js/lightbox.min.js"></script>
+        <script src="assets/lib/typed/typed.min.js"></script>
+
+        <!-- Custom Scripts -->
+        <script>
+            // Set current year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+            
+            // Initialize typed.js for the typing animation
+            if ($('.typed-text-output').length == 1) {
+                var typed_strings = $('.typed-text').text();
+                var typed = new Typed('.typed-text-output', {
+                    strings: typed_strings.split(', '),
+                    typeSpeed: 100,
+                    backSpeed: 20,
+                    smartBackspace: false,
+                    loop: true
+                });
+            }
+        </script>
+        <script>
+            // Wait for the DOM to be fully loaded (for skillsPieChart)
+            window.addEventListener('load', function() {
+                try {
+                    const ctx = document.getElementById('skillsPieChart');
+                    if (!ctx) {
+                        console.error('Canvas element not found');
+                        return;
+                    }
+
+                    new Chart(ctx, {
+                        type: 'radar', // Changed to radar chart
+                        data: {
+                            labels: [
+                                'Frontend',
+                                'Backend',
+                                'Algorithms',
+                                'Problem Solving',
+                                'UI/UX',
+                                'Database'
+                            ],
+                            datasets: [{
+                                label: 'Skills Level',
+                                data: [90, 70, 75, 60, 80, 70], // Approximate values from image
+                                backgroundColor: 'rgba(0, 123, 255, 0.2)', // Light blue fill
+                                borderColor: '#007bff', // Blue line
+                                pointBackgroundColor: '#007bff', // Blue points
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: '#007bff',
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            elements: {
+                                line: {
+                                    borderWidth: 3
+                                }
+                            },
+                            scales: {
+                                r: {
+                                    angleLines: {
+                                        display: true // Display radar lines
+                                    },
+                                    suggestedMin: 0,
+                                    suggestedMax: 100, // Max value on the scale
+                                    ticks: {
+                                        display: true, // Display tick labels
+                                        beginAtZero: true,
+                                        stepSize: 20 // Adjust step size as needed
+                                    },
+                                    grid: {
+                                        color: 'rgba(0, 0, 0, 0.1)' // Light grid lines
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: true // Show the Chart.js legend
+                                }
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error initializing chart:', error);
+                }
+            });
+        </script>
+        <script>
+            // Blog posts population script
+            document.addEventListener('DOMContentLoaded', async () => {
+                const blogPostsContainer = document.getElementById('blog-posts-container');
+                if (!blogPostsContainer) return; // Ensure this check is present
+
+                const viewAllPostsBtn = document.getElementById('view-all-posts-btn');
+
+                try {
+                    const response = await fetch('https://myportfolio-melkamuwako.onrender.com/api/blogposts'); // Corrected URL
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const posts = await response.json();
+
+                    blogPostsContainer.innerHTML = ''; // Clear existing content
+
+                    // Display only the first 3 posts or fewer if less than 3
+                    const postsToDisplay = posts.slice(0, 3);
+
+                    if (postsToDisplay.length === 0) {
+                        blogPostsContainer.innerHTML = '<p class="col-12 text-center">No blog posts available at the moment.</p>';
+                        if (viewAllPostsBtn) viewAllPostsBtn.style.display = 'none';
+                        return;
+                    }
+
+                    postsToDisplay.forEach(post => {
+                        const postHtml = `
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <img class="card-img-top" src="${post.imageUrl || 'https://via.placeholder.com/400x250/8BC34A/ffffff?text=Blog+Post'}" alt="${post.title}" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x250/8BC34A/ffffff?text=Blog+Post'">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${post.title}</h5>
+                                        <p class="card-text text-muted"><i class="far fa-calendar-alt"></i> ${new Date(post.date).toLocaleDateString()}</p>
+                                        <p class="card-text">${post.description}</p>
+                                        <a href="/blog-post.html?slug=${post.slug}" class="btn btn-success btn-sm mt-2">Read More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        blogPostsContainer.innerHTML += postHtml;
+                    });
+
+                    if (posts.length > 3 && viewAllPostsBtn) {
+                        viewAllPostsBtn.style.display = 'block';
+                        viewAllPostsBtn.href = '/blog.html'; // Link to blog listing page, assuming you have one
+                    } else if (viewAllPostsBtn) {
+                        viewAllPostsBtn.style.display = 'none';
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching blog posts:', error);
+                    blogPostsContainer.innerHTML = `
+                        <div class="col-12 text-center text-danger">
+                            <p>Failed to load blog posts. Please try again later.</p>
+                        </div>
+                    `;
+                    if (viewAllPostsBtn) viewAllPostsBtn.style.display = 'none';
+                }
+            });
+
+        </script>
+
+        <!-- Template Javascript -->
+        <script src="assets/js/main.js"></script>
+
+    </body>
+
+</html> 

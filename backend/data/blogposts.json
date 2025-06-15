@@ -1,0 +1,52 @@
+[
+    {
+        "title": "Mastering React: Building Modern Web Applications",
+        "slug": "mastering-react-building-modern-web-applications",
+        "content": "In this comprehensive guide, we'll explore the fundamentals of React and how to build modern, scalable web applications. From setting up your development environment to implementing advanced features like state management and routing, this article covers everything you need to know to become a proficient React developer.",
+        "date": "2025-06-15",
+        "author": "Melkamu Wako",
+        "description": "A comprehensive guide to React development",
+        "imageUrl": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        "tags": ["React", "JavaScript", "Web Development", "Frontend"]
+    },
+    {
+        "title": "Node.js Best Practices: Building Scalable Backend Services",
+        "slug": "nodejs-best-practices-building-scalable-backend-services",
+        "content": "Learn how to build scalable and maintainable backend services using Node.js. This article covers essential topics such as error handling, database integration, security best practices, and performance optimization techniques.",
+        "date": "2025-06-14",
+        "author": "Melkamu Wako",
+        "description": "Building scalable Node.js applications",
+        "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        "tags": ["Node.js", "Backend", "Performance", "Scalability"]
+    },
+    {
+        "title": "Introduction to Competitive Programming",
+        "slug": "introduction-to-competitive-programming",
+        "content": "Get started with competitive programming and learn how to solve algorithmic challenges efficiently. This article covers essential data structures, algorithms, and problem-solving techniques that will help you excel in programming contests.",
+        "date": "2025-06-13",
+        "author": "Melkamu Wako",
+        "description": "Beginner's guide to competitive programming",
+        "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        "tags": ["Competitive Programming", "Algorithms", "Data Structures", "Problem Solving"]
+    },
+    {
+        "title": "Building a Full-Stack Application with MongoDB",
+        "slug": "building-a-full-stack-application-with-mongodb",
+        "content": "Learn how to build a full-stack application using MongoDB as your database. This article covers database design, CRUD operations, and best practices for working with NoSQL databases in modern web applications.",
+        "date": "2025-06-12",
+        "author": "Melkamu Wako",
+        "description": "MongoDB integration in full-stack apps",
+        "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        "tags": ["MongoDB", "Full-Stack", "Database", "NoSQL"]
+    },
+    {
+        "title": "Cybersecurity Fundamentals for Developers",
+        "slug": "cybersecurity-fundamentals-for-developers",
+        "content": "As a developer, understanding cybersecurity is crucial. This article covers essential security concepts, common vulnerabilities, and best practices to protect your applications from cyber threats.",
+        "date": "2025-06-11",
+        "author": "Melkamu Wako",
+        "description": "Security best practices for developers",
+        "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
+        "tags": ["Cybersecurity", "Security", "Web Development", "Best Practices"]
+    }
+]

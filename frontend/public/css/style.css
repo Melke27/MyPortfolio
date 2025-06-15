@@ -1,0 +1,24 @@
+/* Copy all the CSS from your existing file */
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --primary-light: #93c5fd;
+    --secondary: #f59e0b;
+    --secondary-dark: #d97706;
+    --accent: #10b981;
+    --dark: #1e293b;
+    --darker: #0b50f1;
+    --light: #f8fafc;
+    --lighter: #ffffff;
+    --gray: #64748b;
+    --light-gray: #e2e8f0;
+    --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    --gradient-accent: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    --border-radius: 12px;
+    --border-radius-lg: 20px;
+}
+
+/* Copy all your existing CSS styles here */ 

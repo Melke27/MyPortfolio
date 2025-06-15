@@ -1,0 +1,26 @@
+{
+  "name": "melkamu-portfolio",
+  "version": "1.0.0",
+  "description": "Melkamu Wako's Personal Portfolio Website with Blog",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "build": "npm run build:frontend",
+    "build:frontend": "npm run build:css && npm run build:js",
+    "build:css": "sass src/frontend/styles/main.scss:assets/css/style.css",
+    "build:js": "babel src/frontend/js/main.js -o assets/js/main.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.15.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.22.20",
+    "nodemon": "^3.0.1",
+    "sass": "^1.69.3"
+  }
+}
