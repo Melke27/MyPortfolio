@@ -121,7 +121,7 @@ app.post('/api/contact', async (req, res) => {
             try {
                 await transporter.sendMail({
                     from: process.env.EMAIL_USER,
-                    to: process.env.EMAIL_USER,
+                    to: "melkamuwako5@gmail.com",
                     subject: `New Contact Form Submission from ${name}`,
                     html: `
                         <h2>New Contact Form Submission</h2>
@@ -135,7 +135,10 @@ app.post('/api/contact', async (req, res) => {
                 console.log('Email notification sent');
             } catch (emailError) {
                 console.error('Error sending email:', emailError);
-                // Don't fail the request if email fails
+                return res.status(500).json({
+                    success: false,
+                    message: 'Failed to send email notification. Please try again later.'
+                });
             }
         }
         
