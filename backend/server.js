@@ -111,7 +111,7 @@ app.post('/api/contact', async (req, res) => {
         // Send email notification using Brevo SMTP
         try {
             await transporter.sendMail({
-                from: 'melkamuwako5@gmail.com', // Your notification email
+                from: process.env.BREVO_SMTP_USER, // Must match your Brevo SMTP user
                 to: 'melkamuwako5@gmail.com', // Your notification email
                 subject: `New Contact Form Submission from ${name}`,
                 html: `
