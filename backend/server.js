@@ -174,7 +174,7 @@ app.post('/api/subscribe', async (req, res) => {
         if (transporter) {
             try {
                 await transporter.sendMail({
-                    from: 'melkamuwako5@gmail.com', // Must match a verified sender in Brevo
+                    from: process.env.BREVO_SMTP_USER, // Must match your Brevo SMTP user
                     to: email,
                     subject: 'Thank you for subscribing!',
                     html: `
