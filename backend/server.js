@@ -217,6 +217,11 @@ app.use((err, req, res, next) => {
     });
 });
 
+// Add this route near the top, after app initialization
+app.get('/', (req, res) => {
+  res.send('Portfolio backend is running!');
+});
+
 // Start server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
