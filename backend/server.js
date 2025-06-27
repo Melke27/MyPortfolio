@@ -85,23 +85,23 @@ app.post('/api/contact', async (req, res) => {
         await newContact.save();
         console.log('Contact form saved successfully');
         // Send email notification using Brevo HTTP API
-        try {
+            try {
             const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
             await apiInstance.sendTransacEmail({
                 sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
                 to: [{ email: 'melkamuwako5@gmail.com', name: 'Melkamu Wako' }],
-                subject: `New Contact Form Submission from ${name}`,
+                    subject: `New Contact Form Submission from ${name}`,
                 htmlContent: `
-                    <h2>New Contact Form Submission</h2>
-                    <p><strong>Name:</strong> ${name}</p>
-                    <p><strong>Email:</strong> ${email}</p>
-                    <p><strong>Subject:</strong> ${subject || 'No subject'}</p>
-                    <p><strong>Message:</strong></p>
-                    <p>${message}</p>
-                `
-            });
+                        <h2>New Contact Form Submission</h2>
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Subject:</strong> ${subject || 'No subject'}</p>
+                        <p><strong>Message:</strong></p>
+                        <p>${message}</p>
+                    `
+                });
             console.log('Email notification sent via Brevo HTTP API');
-        } catch (emailError) {
+            } catch (emailError) {
             console.error('Error sending email via Brevo HTTP API:', emailError);
             return res.status(500).json({ success: false, message: 'Failed to send email notification.' });
         }
