@@ -41,6 +41,16 @@ const blogPosts = [
         slug: "cybersecurity-practices",
         views: 75,
         commentsCount: 3
+    },
+    {
+        id: 4,
+        title: "AI in Everyday Life: New Innovations",
+        description: "Discover how artificial intelligence is transforming daily experiences, from smart assistants to healthcare.",
+        date: "2025-06-10",
+        imageUrl: "https://via.placeholder.com/400x250/8BC34A/ffffff?text=AI+Innovation",
+        slug: "ai-everyday-life",
+        views: 50,
+        commentsCount: 0
     }
 ];
 

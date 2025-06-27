@@ -351,6 +351,31 @@ const seedDatabase = async () => {
                 tags: ["Cybersecurity", "Web Security", "Best Practices"],
                 views: 1800,
                 commentsCount: 25
+            },
+            {
+                title: "AI in Everyday Life: New Innovations",
+                slug: "ai-everyday-life",
+                description: "Discover how artificial intelligence is transforming daily experiences, from smart assistants to healthcare.",
+                content: `
+                    <h2>AI in Our World</h2>
+                    <p>Artificial Intelligence is now part of our daily lives, powering everything from voice assistants to medical diagnostics.</p>
+                    <h2>Key Innovations</h2>
+                    <ul>
+                        <li>Smart Home Devices</li>
+                        <li>Healthcare Diagnostics</li>
+                        <li>Personalized Recommendations</li>
+                    </ul>
+                `,
+                imageUrl: "/assets/img/portfolio-4.jpg",
+                date: new Date("2025-06-10"),
+                author: {
+                    name: "Melkamu Wako",
+                    imageUrl: "/assets/img/MELKAMU.jpg",
+                    bio: "Full-stack developer and AI enthusiast."
+                },
+                tags: ["AI", "Innovation", "Technology"],
+                views: 50,
+                commentsCount: 0
             }
         ];
 
