@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const nodemailer = require('nodemailer');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 
 // Load environment variables
 dotenv.config();
@@ -61,14 +61,9 @@ const Subscriber = mongoose.model('Subscriber', subscriberSchema);
 const blogRoutes = require('./routes/blogRoutes');
 
 // Email configuration
-const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',
-    port: 587,
-    auth: {
-        user: process.env.BREVO_SMTP_USER,
-        pass: process.env.BREVO_SMTP_PASS
-    }
-});
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = process.env.BREVO_API_KEY;
 
 // Routes
 app.use('/api', blogRoutes);
@@ -82,39 +77,21 @@ app.post('/api/contact', async (req, res) => {
     try {
         console.log('Received contact form submission:', req.body);
         const { name, email, subject, message } = req.body;
-        // Validate required fields
         if (!name || !email || !message) {
-            console.error('Validation Error: Missing required fields');
-            return res.status(400).json({
-                success: false,
-                message: 'Name, email, and message are required'
-            });
-        }
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            console.error('Validation Error: Invalid email format');
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid email format'
-            });
+            return res.status(400).json({ success: false, message: 'Name, email, and message are required' });
         }
         // Save to database
-        const newContact = new Contact({
-            name,
-            email,
-            subject,
-            message
-        });
+        const newContact = new Contact({ name, email, subject, message });
         await newContact.save();
         console.log('Contact form saved successfully');
-        // Send email notification using Brevo SMTP
+        // Send email notification using Brevo HTTP API
         try {
-            await transporter.sendMail({
-                from: process.env.BREVO_SMTP_USER, // Must match your Brevo SMTP user
-                to: 'melkamuwako5@gmail.com', // Your notification email
+            const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+            await apiInstance.sendTransacEmail({
+                sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
+                to: [{ email: 'melkamuwako5@gmail.com', name: 'Melkamu Wako' }],
                 subject: `New Contact Form Submission from ${name}`,
-                html: `
+                htmlContent: `
                     <h2>New Contact Form Submission</h2>
                     <p><strong>Name:</strong> ${name}</p>
                     <p><strong>Email:</strong> ${email}</p>
@@ -123,24 +100,15 @@ app.post('/api/contact', async (req, res) => {
                     <p>${message}</p>
                 `
             });
-            console.log('Email notification sent via Brevo SMTP');
+            console.log('Email notification sent via Brevo HTTP API');
         } catch (emailError) {
-            console.error('Error sending email via Brevo SMTP:', emailError);
-            return res.status(500).json({
-                success: false,
-                message: 'Failed to send email notification. Please try again later.'
-            });
+            console.error('Error sending email via Brevo HTTP API:', emailError);
+            return res.status(500).json({ success: false, message: 'Failed to send email notification.' });
         }
-        res.status(201).json({ 
-            success: true, 
-            message: 'Message sent successfully!' 
-        });
+        res.status(201).json({ success: true, message: 'Message sent successfully!' });
     } catch (error) {
         console.error('Error in /api/contact endpoint:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Internal server error: Failed to process message.' 
-        });
+        res.status(500).json({ success: false, message: 'Internal server error: Failed to process message.' });
     }
 });
 
@@ -171,13 +139,14 @@ app.post('/api/subscribe', async (req, res) => {
         await newSubscriber.save();
 
         // Send confirmation email if configured
-        if (transporter) {
+        if (defaultClient) {
             try {
-                await transporter.sendMail({
-                    from: process.env.BREVO_SMTP_USER, // Must match your Brevo SMTP user
-                    to: email,
+                const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+                await apiInstance.sendTransacEmail({
+                    sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
+                    to: [{ email: email, name: 'Melkamu Wako' }],
                     subject: 'Thank you for subscribing!',
-                    html: `
+                    htmlContent: `
                         <h2>Hello!</h2>
                         <p>Thank you for subscribing to my newsletter. You will receive updates, articles, and resources directly to your inbox.</p>
                         <p>Best regards,<br/>Melkamu Wako</p>
@@ -185,7 +154,7 @@ app.post('/api/subscribe', async (req, res) => {
                 });
                 console.log('Confirmation email sent to new subscriber:', email);
             } catch (emailError) {
-                console.error('Error sending confirmation email:', emailError);
+                console.error('Error sending confirmation email via Brevo HTTP API:', emailError);
                 // Do not fail the subscription if confirmation email fails
             }
         }
@@ -212,10 +181,10 @@ app.get('/', (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log('Environment:', process.env.NODE_ENV || 'development');
     console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Configured' : 'Not configured');
-    console.log('Brevo SMTP configured:', !!transporter);
+    console.log('Brevo API key configured:', !!apiKey.apiKey);
 });
