@@ -417,8 +417,23 @@
             
             <!-- Main Content -->
             <div class="content">
-                <!-- Hero/Introduction Section Start -->
-                <!-- Hero/Introduction Section End -->
+                <!-- Green Hero Section Start -->
+                <section id="hero" class="container-fluid bg-success py-5 hero-header">
+                    <div class="row align-items-center py-4">
+                        <div class="col-lg-6 text-center text-lg-left">
+                            <h1 class="display-3 text-white mb-4">Hello, I'm <span class="text-dark">Melkamu</span></h1>
+                            <p class="lead text-white mb-4">Computer Science And Engineering Student & Passionate Developer from Ethiopia</p>
+                            <div class="d-flex justify-content-center justify-content-lg-start">
+                                <a href="#projects" class="btn btn-dark mr-3">View My Work</a>
+                                <a href="#contact" class="btn btn-outline-light">Hire Me</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 text-lg-right text-center">
+                            <span class="text-white-50">Developer Illustration</span>
+                        </div>
+                    </div>
+                </section>
+                <!-- Green Hero Section End -->
 
                 <!-- About Start -->
                 <div class="container bg-white py-5" id="about">
@@ -693,7 +708,42 @@
                         <!-- Blog Posts Container -->
                         <div class="col-12">
                             <div class="row" id="blog-posts-container">
-                                <!-- Blog posts will be populated here by JavaScript -->
+                                <!-- Blog Card 1 -->
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <img class="card-img-top" src="assets/img/portfolio-1.jpg" alt="Sample Blog 1" style="width:100%; border-radius: 12px 12px 0 0;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">How I Built My Portfolio</h5>
+                                            <p class="card-text text-muted"><i class="far fa-calendar-alt"></i> May 2024</p>
+                                            <p class="card-text">A step-by-step guide to building a modern, responsive portfolio website using HTML, CSS, and JavaScript.</p>
+                                            <a href="#" class="btn btn-success btn-sm mt-2">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Blog Card 2 -->
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <img class="card-img-top" src="assets/img/portfolio-3.jpg" alt="Sample Blog 2" style="width:100%; border-radius: 12px 12px 0 0;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Top 5 JavaScript Tricks</h5>
+                                            <p class="card-text text-muted"><i class="far fa-calendar-alt"></i> April 2024</p>
+                                            <p class="card-text">Discover some lesser-known but powerful JavaScript tips and tricks for web development.</p>
+                                            <a href="#" class="btn btn-success btn-sm mt-2">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Blog Card 3 -->
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <img class="card-img-top" src="assets/img/portfolio-4.jpg" alt="Sample Blog 3" style="width:100%; border-radius: 12px 12px 0 0;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Responsive Design Basics</h5>
+                                            <p class="card-text text-muted"><i class="far fa-calendar-alt"></i> March 2024</p>
+                                            <p class="card-text">Learn the fundamentals of responsive web design and how to make your site look great on any device.</p>
+                                            <a href="#" class="btn btn-success btn-sm mt-2">Read More</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -1510,7 +1560,13 @@
                         </div>
                     </div>
                 </section>
-                <!-- FAQ End -->
+                <!-- Testimonials Section -->
+                <section id="testimonials" class="section" style="padding: 60px 0; background: #fff;">
+                    <div class="container">
+                        <h2 class="section-title" style="text-align:center; margin-bottom: 40px;">Testimonials & Recommendations</h2>
+                        <div style="text-align:center; color:#888; font-size:1.2em;">Coming soon: Endorsements from colleagues, clients, and mentors!</div>
+                    </div>
+                </section>
 
                 <!-- Contact Start -->
                 <div class="container bg-white py-5" id="contact">
@@ -1850,45 +1906,6 @@
             document.addEventListener('DOMContentLoaded', fetchBlogPosts);
         </script>
 
-        <!-- Blog/Articles Section -->
-        <section id="blog" class="section" style="padding: 60px 0; background: #f9f9f9;">
-            <div class="container">
-                <h2 class="section-title" style="text-align:center; margin-bottom: 40px;">Latest Blog Posts & Articles</h2>
-                <div class="blog-grid" style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center;">
-                    <div class="blog-card" style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); width: 320px; transition: transform 0.3s;">
-                        <img src="assets/img/portfolio-1.jpg" alt="Sample Blog 1" style="width:100%; border-radius: 12px 12px 0 0;">
-                        <div style="padding: 20px;">
-                            <h3>How I Built My Portfolio</h3>
-                            <p style="color:#666;">A step-by-step guide to building a modern, responsive portfolio website using HTML, CSS, and JavaScript.</p>
-                            <span style="font-size: 0.9em; color: #aaa;">May 2024</span>
-                        </div>
-                    </div>
-                    <div class="blog-card" style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); width: 320px; transition: transform 0.3s;">
-                        <img src="assets/img/portfolio-3.jpg" alt="Sample Blog 2" style="width:100%; border-radius: 12px 12px 0 0;">
-                        <div style="padding: 20px;">
-                            <h3>Top 5 JavaScript Tricks</h3>
-                            <p style="color:#666;">Discover some lesser-known but powerful JavaScript tips and tricks for web development.</p>
-                            <span style="font-size: 0.9em; color: #aaa;">April 2024</span>
-                        </div>
-                    </div>
-                    <div class="blog-card" style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); width: 320px; transition: transform 0.3s;">
-                        <img src="assets/img/portfolio-4.jpg" alt="Sample Blog 3" style="width:100%; border-radius: 12px 12px 0 0;">
-                        <div style="padding: 20px;">
-                            <h3>Responsive Design Basics</h3>
-                            <p style="color:#666;">Learn the fundamentals of responsive web design and how to make your site look great on any device.</p>
-                            <span style="font-size: 0.9em; color: #aaa;">March 2024</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Testimonial/Recommendation Section -->
-        <section id="testimonials" class="section" style="padding: 60px 0; background: #fff;">
-            <div class="container">
-                <h2 class="section-title" style="text-align:center; margin-bottom: 40px;">Testimonials & Recommendations</h2>
-                <div style="text-align:center; color:#888; font-size:1.2em;">Coming soon: Endorsements from colleagues, clients, and mentors!</div>
-            </div>
-        </section>
         <!-- Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
         <script>
