@@ -46,6 +46,24 @@
         };
         initTypedText();
 
+        // Professional sidebar typing animation
+        if (typeof Typed !== 'undefined') {
+            new Typed('.typed-text-output', {
+                strings: [
+                    'Web Developer',
+                    'Front End Developer',
+                    'Computer Science Student',
+                    'Cybersecurity Enthusiast'
+                ],
+                typeSpeed: 60,
+                backSpeed: 30,
+                backDelay: 1800,
+                loop: true,
+                showCursor: true,
+                cursorChar: '|'
+            });
+        }
+
         // Skills animation with Waypoints
         var initSkillsAnimation = function() {
             $('.skill').waypoint(function() {
