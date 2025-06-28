@@ -273,18 +273,18 @@
                              onerror="this.src='https://via.placeholder.com/800x400/8BC34A/ffffff?text=Blog+Post'">
                     </div>
                     <div class="blog-post-content">
-                        ${post.content}
+                        ${post.content || post.description}
                     </div>
-                    <div class="blog-post-tags">
-                        ${post.tags.map(tag => `<span class="badge">${tag}</span>`).join('')}
-                    </div>
-                    <div class="author-info d-flex align-items-center">
-                        <img src="${post.author.imageUrl}" alt="${post.author.name}" class="author-image me-4">
+                    ${post.tags ? `<div class="blog-post-tags">
+                        ${post.tags.map(tag => `<span class="badge bg-secondary me-2">${tag}</span>`).join('')}
+                    </div>` : ''}
+                    ${post.author ? `<div class="author-info d-flex align-items-center mt-4">
+                        <img src="${post.author.imageUrl}" alt="${post.author.name}" class="author-image me-4" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
                         <div>
                             <h5 class="mb-1">${post.author.name}</h5>
                             <p class="text-muted mb-0">${post.author.bio}</p>
                         </div>
-                    </div>
+                    </div>` : ''}
                 `;
 
                 blogPostContainer.innerHTML = postHtml;
