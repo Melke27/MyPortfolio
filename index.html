@@ -353,6 +353,103 @@
                 font-size: 1rem;
                 line-height: 1.6;
             }
+
+            /* Enhanced Visual Effects */
+            .project-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .project-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            }
+
+            .project-filter button {
+                transition: all 0.3s ease;
+                border: 2px solid transparent;
+            }
+
+            .project-filter button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+            }
+
+            .project-filter button.active {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
+            /* Skills Animation */
+            .progress-bar {
+                transition: width 1.5s ease-in-out;
+            }
+
+            /* Loading Animation */
+            .loading-spinner {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: #fff;
+                animation: spin 1s ease-in-out infinite;
+            }
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            /* Fade In Animation */
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            .fade-in {
+                animation: fadeIn 0.6s ease-out;
+            }
+
+            /* Enhanced Button Effects */
+            .btn {
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn:active {
+                transform: translateY(0);
+            }
+
+            /* Success/Error Messages */
+            .alert {
+                border-radius: 10px;
+                border: none;
+                padding: 15px 20px;
+                margin: 10px 0;
+                animation: slideIn 0.3s ease-out;
+            }
+
+            @keyframes slideIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            /* Enhanced Form Styling */
+            .form-control:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                transform: translateY(-1px);
+            }
+
+            .form-control {
+                transition: all 0.3s ease;
+            }
         </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
@@ -1112,13 +1209,22 @@
                         
                         <!-- Project Filter -->
                         <div class="col-12 mb-5">
-                            <div class="project-filter">
-                                <button class="active" data-filter="*">All Projects</button>
-                                <button data-filter=".web">Web Development</button>
-                                <button data-filter=".software">Software</button>
-                                <button data-filter=".academic">Academic</button>
-                                                        </div>
-                                                    </div>
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="project-filter">
+                                        <button class="active" data-filter="*">All Projects</button>
+                                        <button data-filter=".web">Web Development</button>
+                                        <button data-filter=".software">Software</button>
+                                        <button data-filter=".academic">Academic</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="project-search">
+                                        <input type="text" class="form-control" id="projectSearch" placeholder="Search projects...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
                         <!-- Projects Grid -->
                         <div class="col-12">
@@ -2034,6 +2140,361 @@
         <script src="assets/js/main.js"></script>
         <script>
             // Load blog posts when the page loads
+        </script>
+
+        <script>
+            // Skills Animation with Progress Bars
+            function animateSkills() {
+                const skills = document.querySelectorAll('.skill .progress-bar');
+                skills.forEach(skill => {
+                    const targetWidth = skill.style.width;
+                    skill.style.width = '0%';
+                    
+                    setTimeout(() => {
+                        skill.style.transition = 'width 1.5s ease-in-out';
+                        skill.style.width = targetWidth;
+                    }, 500);
+                });
+            }
+
+            // Project Search and Filtering
+            function initProjectFilter() {
+                const filterButtons = document.querySelectorAll('.project-filter button');
+                const projectItems = document.querySelectorAll('.project-item');
+
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove active class from all buttons
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        // Add active class to clicked button
+                        button.classList.add('active');
+
+                        const filterValue = button.getAttribute('data-filter');
+
+                        projectItems.forEach(item => {
+                            if (filterValue === '*' || item.classList.contains(filterValue.replace('.', ''))) {
+                                item.style.display = 'block';
+                                item.style.animation = 'fadeIn 0.5s ease-in-out';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            }
+
+            // Enhanced Contact Form
+            function initContactForm() {
+                const contactForm = document.getElementById('contactForm');
+                const successDiv = document.getElementById('success');
+                const errorDiv = document.getElementById('error');
+
+                if (contactForm) {
+                    contactForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        
+                        const formData = new FormData(contactForm);
+                        const submitButton = contactForm.querySelector('#sendMessageButton');
+                        
+                        // Show loading state
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                        submitButton.disabled = true;
+
+                        try {
+                            // Simulate form submission (replace with actual API call)
+                            await new Promise(resolve => setTimeout(resolve, 2000));
+                            
+                            // Show success message
+                            successDiv.style.display = 'block';
+                            successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';
+                            errorDiv.style.display = 'none';
+                            
+                            // Reset form
+                            contactForm.reset();
+                            
+                        } catch (error) {
+                            // Show error message
+                            errorDiv.style.display = 'block';
+                            errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sorry, there was an error sending your message. Please try again.';
+                            successDiv.style.display = 'none';
+                        } finally {
+                            // Reset button
+                            submitButton.innerHTML = 'Send Message';
+                            submitButton.disabled = false;
+                        }
+                    });
+                }
+            }
+
+            // Newsletter Subscription
+            function initNewsletterForm() {
+                const newsletterForm = document.getElementById('newsletterForm');
+                const successDiv = document.getElementById('newsletterSuccess');
+                const errorDiv = document.getElementById('newsletterError');
+
+                if (newsletterForm) {
+                    newsletterForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        
+                        const email = document.getElementById('newsletterEmail').value;
+                        const checkbox = document.getElementById('newsletterCheck').checked;
+                        
+                        if (!checkbox) {
+                            errorDiv.style.display = 'block';
+                            errorDiv.innerHTML = 'Please agree to receive emails.';
+                            return;
+                        }
+
+                        try {
+                            // Simulate subscription (replace with actual API call)
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                            
+                            successDiv.style.display = 'block';
+                            successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you for subscribing!';
+                            errorDiv.style.display = 'none';
+                            newsletterForm.reset();
+                            
+                        } catch (error) {
+                            errorDiv.style.display = 'block';
+                            errorDiv.innerHTML = 'Sorry, there was an error. Please try again.';
+                            successDiv.style.display = 'none';
+                        }
+                    });
+                }
+            }
+
+            // Loading Animation
+            function initLoadingAnimation() {
+                const loader = document.createElement('div');
+                loader.className = 'page-loader';
+                loader.innerHTML = `
+                    <div class="loader-content">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-3 text-primary">Loading...</p>
+                    </div>
+                `;
+                loader.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(255, 255, 255, 0.95);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                    transition: opacity 0.5s ease-out;
+                `;
+                
+                document.body.appendChild(loader);
+                
+                // Hide loader after page loads
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        loader.style.opacity = '0';
+                        setTimeout(() => {
+                            loader.remove();
+                        }, 500);
+                    }, 1000);
+                });
+            }
+
+            // Initialize all features when DOM is loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                // Initialize loading animation
+                initLoadingAnimation();
+                
+                // Initialize project filtering
+                initProjectFilter();
+                
+                // Initialize contact form
+                initContactForm();
+                
+                // Initialize newsletter form
+                initNewsletterForm();
+                
+                // Animate skills when they come into view
+                const skillsSection = document.getElementById('skills');
+                if (skillsSection) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                animateSkills();
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    observer.observe(skillsSection);
+                }
+            });
+        </script>
+
+        <script>
+            // Skills Animation
+            function animateSkills() {
+                const progressBars = document.querySelectorAll('.progress-bar');
+                progressBars.forEach(bar => {
+                    const targetWidth = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.transition = 'width 1.5s ease-in-out';
+                        bar.style.width = targetWidth;
+                    }, 300);
+                });
+            }
+
+            // Initialize skills animation when section comes into view
+            document.addEventListener('DOMContentLoaded', () => {
+                const skillsSection = document.getElementById('skills');
+                if (skillsSection) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                animateSkills();
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    observer.observe(skillsSection);
+                }
+            });
+        </script>
+
+        <script>
+            // Enhanced Contact Form
+            document.addEventListener('DOMContentLoaded', () => {
+                const contactForm = document.getElementById('contactForm');
+                const successDiv = document.getElementById('success');
+                const errorDiv = document.getElementById('error');
+
+                if (contactForm) {
+                    contactForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        
+                        const submitButton = contactForm.querySelector('#sendMessageButton');
+                        const originalText = submitButton.innerHTML;
+                        
+                        // Show loading state
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                        submitButton.disabled = true;
+
+                        try {
+                            // Simulate form submission (replace with actual API call)
+                            await new Promise(resolve => setTimeout(resolve, 2000));
+                            
+                            // Show success message
+                            successDiv.style.display = 'block';
+                            successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';
+                            errorDiv.style.display = 'none';
+                            
+                            // Reset form
+                            contactForm.reset();
+                            
+                        } catch (error) {
+                            // Show error message
+                            errorDiv.style.display = 'block';
+                            errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sorry, there was an error sending your message. Please try again.';
+                            successDiv.style.display = 'none';
+                        } finally {
+                            // Reset button
+                            submitButton.innerHTML = originalText;
+                            submitButton.disabled = false;
+                        }
+                    });
+                }
+
+                // Newsletter Form
+                const newsletterForm = document.getElementById('newsletterForm');
+                const newsletterSuccess = document.getElementById('newsletterSuccess');
+                const newsletterError = document.getElementById('newsletterError');
+
+                if (newsletterForm) {
+                    newsletterForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        
+                        const email = document.getElementById('newsletterEmail').value;
+                        const checkbox = document.getElementById('newsletterCheck').checked;
+                        
+                        if (!checkbox) {
+                            newsletterError.style.display = 'block';
+                            newsletterError.innerHTML = 'Please agree to receive emails.';
+                            return;
+                        }
+
+                        try {
+                            // Simulate subscription
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                            
+                            newsletterSuccess.style.display = 'block';
+                            newsletterSuccess.innerHTML = '<i class="fas fa-check-circle"></i> Thank you for subscribing!';
+                            newsletterError.style.display = 'none';
+                            newsletterForm.reset();
+                            
+                        } catch (error) {
+                            newsletterError.style.display = 'block';
+                            newsletterError.innerHTML = 'Sorry, there was an error. Please try again.';
+                            newsletterSuccess.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        </script>
+
+        <script>
+            // Project Search and Filtering
+            document.addEventListener('DOMContentLoaded', () => {
+                const searchInput = document.getElementById('projectSearch');
+                const filterButtons = document.querySelectorAll('.project-filter button');
+                const projectItems = document.querySelectorAll('.project-item');
+
+                // Search functionality
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        const searchTerm = e.target.value.toLowerCase();
+                        
+                        projectItems.forEach(item => {
+                            const title = item.querySelector('h5').textContent.toLowerCase();
+                            const description = item.querySelector('span, p')?.textContent.toLowerCase() || '';
+                            const tech = Array.from(item.querySelectorAll('.badge')).map(badge => badge.textContent.toLowerCase()).join(' ');
+                            
+                            const matches = title.includes(searchTerm) || 
+                                          description.includes(searchTerm) || 
+                                          tech.includes(searchTerm);
+                            
+                            if (matches) {
+                                item.style.display = 'block';
+                                item.classList.add('fade-in');
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    });
+                }
+
+                // Filter functionality
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        // Remove active class from all buttons
+                        filterButtons.forEach(btn => btn.classList.remove('active'));
+                        // Add active class to clicked button
+                        button.classList.add('active');
+
+                        const filterValue = button.getAttribute('data-filter');
+
+                        projectItems.forEach(item => {
+                            if (filterValue === '*' || item.classList.contains(filterValue.replace('.', ''))) {
+                                item.style.display = 'block';
+                                item.classList.add('fade-in');
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            });
         </script>
 
     </body>
