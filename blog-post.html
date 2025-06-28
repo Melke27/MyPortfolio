@@ -242,7 +242,7 @@
             }
 
             try {
-                const response = await fetch(`/api/blogposts/${slug}`);
+                const response = await fetch(`https://myportfolio-melkamuwako.onrender.com/api/blogposts/${slug}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
