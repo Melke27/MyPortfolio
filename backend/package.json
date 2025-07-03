@@ -4,7 +4,7 @@
   "description": "Backend for Melkamu Wako's portfolio website",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node ai-chat.js",
     "dev": "nodemon server.js"
   },
   "keywords": [],
