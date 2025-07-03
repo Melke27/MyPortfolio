@@ -5,6 +5,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -14656,3 +14669,176 @@ h4, h5, h6 {
 "/* Added by AI for software engineering background */"  
 ".sidebar { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important; color: #ecf0f1 !important; }" 
 "\n/* Added by AI for software engineering background */\n.sidebar {\n    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;\n    color: #ecf0f1 !important;\n}" 
+/* Minimize button, badge, and skill tag color and font size (override) */
+.btn, .btn-success, .badge, .skill-tag, .custom-skill-badge {
+  background: #b7e4b0 !important;
+  color: #222 !important;
+  font-size: 0.85rem !important;
+  font-weight: 500;
+  border: none !important;
+}
+/* Further minimize Send button in chatbot and all primary buttons */
+#sendChatBtn, .btn-primary {
+  background: #d6eadf !important;
+  color: #222 !important;
+  font-size: 0.85rem !important;
+  font-weight: 400 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+/* Enforce green and black color scheme for newsletter and footer */
+.newsletter-section {
+  background: #7ed957 !important;
+  color: #fff !important;
+}
+.newsletter-section h2, .newsletter-section h3, .newsletter-section label, .newsletter-section p, .newsletter-section input, .newsletter-section button {
+  color: #fff !important;
+}
+.newsletter-section .btn, .newsletter-section button, .newsletter-section input[type="submit"] {
+  background: #111 !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+footer, .footer, .footer-section, footer.container-fluid {
+  background: #111 !important;
+  color: #fff !important;
+}
+footer h2, footer h3, footer h4, footer h5, .footer h2, .footer h3, .footer h4, .footer h5 {
+  color: #7ed957 !important;
+  font-family: 'Comic Sans MS', cursive, sans-serif !important;
+}
+footer a, .footer a {
+  color: #fff !important;
+}
+footer .btn, .footer .btn, .btn-social, .btn-primary, .btn-outline-light, .btn-outline-primary {
+  background: #7ed957 !important;
+  color: #111 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+footer .btn-social i, .footer .btn-social i {
+  color: #111 !important;
+}
+/* Remove white background and enforce green for entire newsletter section */
+.newsletter-section,
+.newsletter-section .container,
+.newsletter-section form,
+.newsletter-section .input-group,
+.newsletter-section input,
+.newsletter-section .form-control,
+.newsletter-section .input-group-append {
+  background: #7ed957 !important;
+  color: #fff !important;
+  border: none !important;
+}
+.newsletter-section input::placeholder,
+.newsletter-section .form-control::placeholder {
+  color: #fff !important;
+  opacity: 1;
+}
+.newsletter-section .form-check-input {
+  background: #fff !important;
+  border: 1px solid #fff !important;
+}
+.newsletter-section .btn,
+.newsletter-section button,
+.newsletter-section input[type="submit"] {
+  background: #111 !important;
+  color: #fff !important;
+  border: none !important;
+}
+/* Make entire footer black with white text, remove white boxes */
+footer, .footer, .footer-section, footer.container-fluid, footer .container, footer .row {
+  background: #111 !important;
+  color: #fff !important;
+}
+footer h2, footer h3, footer h4, footer h5, .footer h2, .footer h3, .footer h4, .footer h5 {
+  color: #7ed957 !important;
+  font-family: 'Comic Sans MS', cursive, sans-serif !important;
+}
+footer a, .footer a {
+  color: #fff !important;
+}
+footer .btn, .footer .btn, .btn-social, .btn-primary, .btn-outline-light, .btn-outline-primary {
+  background: #7ed957 !important;
+  color: #111 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+footer .btn-social i, .footer .btn-social i {
+  color: #111 !important;
+}
+/* Make newsletter email input field white with dark text */
+.newsletter-section input[type="email"],
+.newsletter-section .form-control[type="email"] {
+  background: #fff !important;
+  color: #222 !important;
+  border-radius: 6px !important;
+  border: none !important;
+}
+.newsletter-section input[type="email"]::placeholder,
+.newsletter-section .form-control[type="email"]::placeholder {
+  color: #888 !important;
+  opacity: 1;
+}
+/* Make all blog section buttons and skill tags normal weight and visible */
+.btn, .btn-success, .btn-primary, .badge, .skill-tag, .custom-skill-badge, .blog-post .btn, .blog-post .badge, .blog-post .skill-tag {
+  font-weight: 400 !important;
+  color: #222 !important;
+}
+/* Blog card fade-in animation */
+.fade-in {
+  animation: blogFadeIn 1s cubic-bezier(0.4,0,0.2,1);
+}
+/* Blog card 3D fade-in and hover animation */
+.fade-in-3d {
+  animation: blogFadeIn3D 1s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes blogFadeIn3D {
+  from { opacity: 0; transform: scale(0.85) rotateY(30deg); }
+  to { opacity: 1; transform: scale(1) rotateY(0); }
+}
+.blog-3d-animate:hover .card {
+  transform: scale(1.04) rotateY(8deg) translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.18);
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), box-shadow 0.5s;
+}
+.blog-3d-animate .card {
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), box-shadow 0.5s;
+}
+/* Make all blog section buttons and badges have white text */
+.btn, .btn-success, .btn-primary, .badge, .skill-tag, .custom-skill-badge, .blog-post .btn, .blog-post .badge, .blog-post .skill-tag, .blog-3d-animate .btn, .blog-3d-animate .badge {
+  color: #fff !important;
+}
+#view-all-posts-btn {
+  color: #fff !important;
+  background: #7ed957 !important;
+  border: none !important;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 1rem;
+  min-width: 160px;
+  transition: background 0.3s, color 0.3s;
+}
+#view-all-posts-btn:hover {
+  background: #5bbd3e !important;
+  color: #fff !important;
+}
+#view-all-posts-btn {
+  color: #fff !important;
+  background: #7ed957 !important;
+  border: none !important;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  min-width: 180px;
+  display: inline-block !important;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.3s, color 0.3s;
+}
+#view-all-posts-btn:hover {
+  background: #5bbd3e !important;
+  color: #fff !important;
+}

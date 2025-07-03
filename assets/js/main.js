@@ -252,6 +252,67 @@
             },
             offset: '80%'
         });
+
+        // Blog Carousel: Show 3 at a time, auto-rotate every 20s, fade animation
+        (function(){
+            const blogPostsContainer = document.getElementById('blog-posts-container');
+            const viewAllBtn = document.getElementById('view-all-posts-btn');
+            if (!blogPostsContainer || typeof blogPostsData === 'undefined') return;
+            let currentBlogIndex = 0;
+            let showingAllBlogs = false;
+            function renderBlogs() {
+                blogPostsContainer.innerHTML = '';
+                let postsToDisplay = [];
+                if (showingAllBlogs) {
+                    postsToDisplay = blogPostsData;
+                } else {
+                    postsToDisplay = blogPostsData.slice(currentBlogIndex, currentBlogIndex + 3);
+                }
+                postsToDisplay.forEach((post, idx) => {
+                    const postHtml = `
+                      <div class="col-lg-4 col-md-6 mb-4 blog-3d-animate">
+                        <div class="card h-100 position-relative">
+                          <img class="card-img-top" src="${post.imageUrl}" alt="${post.title}">
+                          <div class="card-body">
+                            <h5 class="card-title">${post.title}</h5>
+                            <p class="card-text text-muted"><i class="far fa-calendar-alt"></i> ${new Date(post.date).toLocaleDateString()}</p>
+                            <p class="card-text">${post.description}</p>
+                            <div class="mb-2">${post.tags.map(tag => `<span class='badge badge-primary mr-1'>${tag}</span>`).join(' ')}</div>
+                            <a href="/blog-post.html?slug=${post.slug}" class="btn btn-success btn-sm mt-2">Read More</a>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                    blogPostsContainer.innerHTML += postHtml;
+                });
+                // Animate
+                setTimeout(()=>{
+                    document.querySelectorAll('.blog-3d-animate').forEach(el=>{
+                        el.classList.add('fade-in-3d');
+                    });
+                }, 10);
+            }
+            function nextBlogs() {
+                if (showingAllBlogs) return; // Don't auto-rotate if viewing all
+                currentBlogIndex += 3;
+                if (currentBlogIndex >= blogPostsData.length) currentBlogIndex = 0;
+                renderBlogs();
+            }
+            if(viewAllBtn){
+                viewAllBtn.onclick = function(e){
+                    e.preventDefault();
+                    showingAllBlogs = !showingAllBlogs;
+                    if(showingAllBlogs){
+                        viewAllBtn.textContent = 'Show Less';
+                    } else {
+                        viewAllBtn.textContent = 'View All Posts';
+                    }
+                    renderBlogs();
+                };
+            }
+            renderBlogs();
+            setInterval(nextBlogs, 20000);
+        })();
     });
 
 })(jQuery);

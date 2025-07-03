@@ -48,3 +48,38 @@ Feel free to reach out to me through:
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+
+# Portfolio Deployment Guide
+
+## Deploying the Frontend (Netlify)
+1. Push your code to GitHub.
+2. Go to [Netlify](https://netlify.com) and create a new site from GitHub.
+3. Select your repo and deploy. Netlify will auto-detect your static site.
+4. After deploy, copy your Netlify site URL (e.g., `https://your-portfolio.netlify.app`).
+
+## Deploying the Backend (Render)
+1. Push your backend code to GitHub.
+2. Go to [Render](https://render.com) and create a new Web Service.
+3. Connect your repo, set the root directory to `/backend` if needed.
+4. Set environment variables:
+   - `MONGODB_URI` = your MongoDB Atlas/Render connection string
+   - `OPENAI_API_KEY` = your OpenAI API key
+5. Deploy. After deploy, copy your Render backend URL (e.g., `https://your-backend.onrender.com`).
+
+## Connecting Frontend to Backend
+- In `index.html`, update the chatbot fetch URL to your Render backend `/chat` endpoint:
+  ```js
+  fetch('https://your-backend.onrender.com/chat', ...)
+  ```
+- Redeploy your frontend if you change this URL.
+
+## How the Chatbot Works
+- When you ask a question, the frontend sends it to the backend `/chat` endpoint.
+- The backend first searches your MongoDB (BlogPosts, Projects) for a relevant answer.
+- If found, it replies with your data. If not, it asks OpenAI for a smart answer.
+- The answer is shown in your chat window.
+
+## Troubleshooting
+- Make sure your backend is live and accessible from Netlify.
+- CORS must be enabled in your backend (already set in `ai-chat.js`).
+- If you update environment variables, redeploy your backend.

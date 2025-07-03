@@ -1,5 +1,5 @@
 # Handle API routes - redirect to deployed backend
-/api/* https://myportfolio-melkamuwako.onrender.com/api/:splat 200
+/api/* https://myportfolio-melkamuwako.onrender.com/api/:splat 200 
 
 # Handle SPA routing - redirect all routes to index.html
 /*    /index.html   200 

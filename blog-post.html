@@ -227,6 +227,230 @@
             const urlParams = new URLSearchParams(window.location.search);
             const slug = urlParams.get('slug');
 
+            // Full blog posts data (20 posts, detailed, with real images/icons)
+            const blogPostsData = [
+              {
+                id: 1,
+                title: "The Rise of WebAssembly: Next-Gen Web Apps",
+                description: "Discover how WebAssembly is revolutionizing web development by enabling high-performance applications, from games to productivity tools, right in your browser.",
+                date: "2025-07-01",
+                imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
+                slug: "webassembly-future",
+                tags: ["Web Development", "WebAssembly", "Performance"],
+                content: `<h2><i class='fas fa-rocket text-success'></i> What is WebAssembly?</h2><p>WebAssembly (Wasm) is a binary instruction format for a stack-based virtual machine, designed as a portable compilation target for high-level languages like C, C++, and Rust. It brings near-native performance to web applications, allowing developers to run code at blazing speeds in the browser.</p><h3>Why It Matters</h3><ul><li>Enables complex applications (e.g., games, video editors) in the browser</li><li>Works alongside JavaScript for seamless integration</li><li>Supported by all major browsers</li></ul><p>Expect to see more apps using WebAssembly for performance-critical tasks in the coming years.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Web developer passionate about performance and modern web tech." }
+              },
+              {
+                id: 2,
+                title: "Zero Trust Security: The New Standard",
+                description: "Explore the Zero Trust security model—why it's essential for modern businesses, how it works, and practical steps to implement it in your organization.",
+                date: "2025-06-28",
+                imageUrl: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=800&q=80",
+                slug: "zero-trust-security",
+                tags: ["Cybersecurity", "Zero Trust"],
+                content: `<h2><i class='fas fa-shield-alt text-primary'></i> What is Zero Trust?</h2><p>Zero Trust is a security model that assumes no user or device is trusted by default, even if they are inside the network perimeter. Every access request is verified, and least-privilege principles are enforced.</p><h3>Key Principles</h3><ul><li>Verify explicitly</li><li>Use least-privilege access</li><li>Assume breach</li></ul><p>Zero Trust is now the gold standard for securing modern organizations against advanced threats.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Cybersecurity enthusiast and advocate for modern security practices." }
+              },
+              {
+                id: 3,
+                title: "Solidity vs. Rust: Blockchain Smart Contracts",
+                description: "Dive into the strengths and trade-offs of Solidity and Rust for blockchain development, and learn which language is best for your next smart contract project.",
+                date: "2025-06-25",
+                imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+                slug: "solidity-vs-rust",
+                tags: ["Blockchain", "Programming Languages"],
+                content: `<h2><i class='fab fa-ethereum text-info'></i> Solidity vs. Rust</h2><p>Solidity is the primary language for Ethereum smart contracts, while Rust is gaining traction for blockchains like Solana and Polkadot. Rust offers memory safety and performance, while Solidity is easier for Ethereum development.</p><h3>Which Should You Learn?</h3><ul><li>Solidity: Best for Ethereum and EVM-compatible chains</li><li>Rust: Best for Solana, Polkadot, and high-performance chains</li></ul><p>Both are in high demand for blockchain developers in 2025.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Blockchain developer and smart contract auditor." }
+              },
+              {
+                id: 4,
+                title: "TypeScript 5.0: What's New?",
+                description: "Unpack the latest features in TypeScript 5.0, including improved type safety, new syntax, and how these updates boost developer productivity.",
+                date: "2025-06-22",
+                imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+                slug: "typescript-5-features",
+                tags: ["Programming Languages", "TypeScript"],
+                content: `<h2><i class='fab fa-js text-warning'></i> TypeScript 5.0 Highlights</h2><ul><li>Improved type inference</li><li>New decorators standard</li><li>Faster build times</li><li>Better support for React and JSX</li></ul><p>TypeScript 5.0 cements its place as the go-to language for large-scale JavaScript apps.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "TypeScript and JavaScript developer." }
+              },
+              {
+                id: 5,
+                title: "AI-Powered Code Review Tools",
+                description: "See how artificial intelligence is transforming code reviews, catching bugs, and improving code quality faster than ever before.",
+                date: "2025-06-20",
+                imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+                slug: "ai-code-review",
+                tags: ["AI", "Web Development"],
+                content: `<h2><i class='fas fa-robot text-success'></i> AI in Code Review</h2><p>AI-powered tools are now able to review code, suggest improvements, and even detect security vulnerabilities. They help teams maintain high code quality and reduce manual review time.</p><ul><li>Automated bug detection</li><li>Style and standards enforcement</li><li>Learning from your codebase</li></ul><p>Integrate AI tools into your workflow for faster, smarter code reviews.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "AI and automation enthusiast." }
+              },
+              {
+                id: 6,
+                title: "Next.js 14: The Ultimate React Framework?",
+                description: "Take a tour of Next.js 14's new features, performance upgrades, and why it's quickly becoming the go-to framework for React developers.",
+                date: "2025-06-18",
+                imageUrl: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80",
+                slug: "nextjs-14-review",
+                tags: ["Web Development", "React"],
+                content: `<h2><i class='fab fa-react text-info'></i> What's New in Next.js 14?</h2><ul><li>Improved server-side rendering</li><li>Faster builds</li><li>Enhanced routing</li></ul><p>Next.js 14 continues to push the boundaries of React development, making it easier to build fast, scalable apps.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "React and Next.js developer." }
+              },
+              {
+                id: 7,
+                title: "Quantum Computing for Developers",
+                description: "Get a beginner-friendly introduction to quantum computing concepts, real-world applications, and how developers can start experimenting today.",
+                date: "2025-06-15",
+                imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+                slug: "quantum-computing-basics",
+                tags: ["Quantum", "Latest Technologies"],
+                content: `<h2><i class='fas fa-atom text-primary'></i> Quantum Computing Basics</h2><p>Quantum computing leverages the principles of quantum mechanics to solve problems that are intractable for classical computers. Learn about qubits, superposition, and entanglement, and how they enable new computational possibilities.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Tech explorer and quantum enthusiast." }
+              },
+              {
+                id: 8,
+                title: "Serverless Security: Best Practices",
+                description: "Learn the top security strategies for serverless architectures, including access control, monitoring, and protecting your cloud functions.",
+                date: "2025-06-12",
+                imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+                slug: "serverless-security-best-practices",
+                tags: ["Cybersecurity", "Cloud"],
+                content: `<h2><i class='fas fa-cloud text-info'></i> Serverless Security</h2><ul><li>Principle of least privilege</li><li>Environment variable protection</li><li>Monitoring and logging</li></ul><p>Serverless brings new security challenges—learn how to keep your functions and data safe.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Cloud and security specialist." }
+              },
+              {
+                id: 9,
+                title: "Python 4.0: What to Expect",
+                description: "Preview the most exciting features and changes coming in Python 4.0, and how they'll impact developers and data scientists.",
+                date: "2025-06-10",
+                imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
+                slug: "python-4-preview",
+                tags: ["Programming Languages", "Python"],
+                content: `<h2><i class='fab fa-python text-warning'></i> Python 4.0 Preview</h2><ul><li>New syntax improvements</li><li>Performance boosts</li><li>Backward compatibility notes</li></ul><p>Python 4.0 is set to make development even more productive and enjoyable.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Pythonista and software engineer." }
+              },
+              {
+                id: 10,
+                title: "The Future of CSS: Container Queries & More",
+                description: "Discover how container queries and other new CSS features are making responsive design more powerful and flexible than ever.",
+                date: "2025-06-08",
+                imageUrl: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80",
+                slug: "css-container-queries",
+                tags: ["Web Development", "CSS"],
+                content: `<h2><i class='fab fa-css3-alt text-primary'></i> CSS Innovations</h2><ul><li>Container queries</li><li>New color functions</li><li>Better layout tools</li></ul><p>CSS is evolving—learn how to use the latest features for modern, responsive designs.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Frontend developer and CSS lover." }
+              },
+              {
+                id: 11,
+                title: "Web3 Explained: Beyond the Hype",
+                description: "Cut through the buzzwords and understand what Web3 really means for developers, users, and the future of the internet.",
+                date: "2025-06-06",
+                imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
+                slug: "web3-explained",
+                tags: ["Blockchain", "Web Development"],
+                content: `<h2><i class='fab fa-ethereum text-info'></i> Web3 Demystified</h2><p>Web3 is about decentralization, user ownership, and new business models. Learn what it means for developers and how to get started building decentralized apps.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Blockchain and web developer." }
+              },
+              {
+                id: 12,
+                title: "Go vs. Rust: The Battle for Backend Supremacy",
+                description: "Compare Go and Rust for backend development—performance, safety, ecosystem, and which projects benefit most from each.",
+                date: "2025-06-04",
+                imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+                slug: "go-vs-rust-backend",
+                tags: ["Programming Languages", "Backend"],
+                content: `<h2><i class='fas fa-server text-secondary'></i> Go vs. Rust</h2><ul><li>Go: Simplicity, concurrency, fast builds</li><li>Rust: Memory safety, performance, fearless concurrency</li></ul><p>Which should you choose for your next backend project? We break it down.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Backend engineer and language enthusiast." }
+              },
+              {
+                id: 13,
+                title: "How to Build a Secure REST API",
+                description: "Follow a step-by-step guide to designing, building, and securing REST APIs that protect your users and scale with your app.",
+                date: "2025-06-02",
+                imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+                slug: "secure-rest-api-guide",
+                tags: ["Web Development", "Cybersecurity"],
+                content: `<h2><i class='fas fa-lock text-danger'></i> Secure REST APIs</h2><ul><li>Authentication and authorization</li><li>Input validation</li><li>Rate limiting</li></ul><p>Build APIs that are robust, secure, and ready for production.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "API and security specialist." }
+              },
+              {
+                id: 14,
+                title: "React Server Components: The Next Big Thing?",
+                description: "Learn what React Server Components are, how they work, and why they could change the way you build React apps.",
+                date: "2025-05-30",
+                imageUrl: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80",
+                slug: "react-server-components",
+                tags: ["Web Development", "React"],
+                content: `<h2><i class='fab fa-react text-info'></i> React Server Components</h2><p>React Server Components allow you to render parts of your UI on the server, improving performance and user experience. Learn how to use them in your next project.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "React developer and performance optimizer." }
+              },
+              {
+                id: 15,
+                title: "Kubernetes for Beginners: A 2025 Guide",
+                description: "Start your Kubernetes journey with this beginner's guide—covering core concepts, setup, and tips for deploying your first containerized app.",
+                date: "2025-05-28",
+                imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+                slug: "kubernetes-beginners-guide",
+                tags: ["Cloud", "Latest Technologies"],
+                content: `<h2><i class='fas fa-cloud text-info'></i> Kubernetes 101</h2><ul><li>Pods, deployments, and services</li><li>Scaling and rolling updates</li><li>Best practices for beginners</li></ul><p>Get started with Kubernetes and container orchestration.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Cloud native and DevOps learner." }
+              },
+              {
+                id: 16,
+                title: "The State of JavaScript 2025",
+                description: "Explore the latest trends, frameworks, and developer insights from the State of JavaScript 2025 survey.",
+                date: "2025-05-26",
+                imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
+                slug: "state-of-js-2025",
+                tags: ["Web Development", "JavaScript"],
+                content: `<h2><i class='fab fa-js-square text-warning'></i> JavaScript in 2025</h2><ul><li>Popular frameworks and libraries</li><li>Language features</li><li>Community trends</li></ul><p>Stay up to date with the ever-evolving JavaScript ecosystem.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "JavaScript developer and tech blogger." }
+              },
+              {
+                id: 17,
+                title: "Penetration Testing: Tools & Techniques",
+                description: "A hands-on introduction to modern penetration testing, including essential tools, methodologies, and real-world scenarios.",
+                date: "2025-05-24",
+                imageUrl: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=800&q=80",
+                slug: "penetration-testing-tools",
+                tags: ["Cybersecurity", "Testing"],
+                content: `<h2><i class='fas fa-vial text-danger'></i> Penetration Testing</h2><ul><li>Reconnaissance and scanning</li><li>Exploitation techniques</li><li>Reporting and remediation</li></ul><p>Learn how to test and secure your applications like a pro.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Security tester and ethical hacker." }
+              },
+              {
+                id: 18,
+                title: "Deno vs. Node.js: The 2025 Showdown",
+                description: "Compare Deno and Node.js in 2025—security, performance, and developer experience—to help you choose the right runtime.",
+                date: "2025-05-22",
+                imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
+                slug: "deno-vs-nodejs",
+                tags: ["Web Development", "Backend"],
+                content: `<h2><i class='fas fa-server text-secondary'></i> Deno vs. Node.js</h2><ul><li>Security model comparison</li><li>Performance benchmarks</li><li>Developer experience</li></ul><p>Which JavaScript runtime should you use in 2025?</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Backend developer and JavaScript enthusiast." }
+              },
+              {
+                id: 19,
+                title: "The Power of GraphQL in Modern Apps",
+                description: "See why GraphQL is becoming the preferred API technology for modern web and mobile apps, and how to get started.",
+                date: "2025-05-20",
+                imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+                slug: "graphql-modern-apps",
+                tags: ["Web Development", "APIs"],
+                content: `<h2><i class='fas fa-plug text-primary'></i> GraphQL APIs</h2><ul><li>Flexible queries</li><li>Strong typing</li><li>Real-time data</li></ul><p>Learn how GraphQL can simplify your API development and improve client performance.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "API designer and frontend developer." }
+              },
+              {
+                id: 20,
+                title: "Top 10 New Programming Languages in 2025",
+                description: "Meet the hottest new programming languages of 2025, what makes them unique, and why you should consider learning them.",
+                date: "2025-05-18",
+                imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
+                slug: "top-10-new-languages-2025",
+                tags: ["Programming Languages", "Latest Technologies"],
+                content: `<h2><i class='fas fa-lightbulb text-warning'></i> New Languages in 2025</h2><ul><li>Emerging trends</li><li>Unique features</li><li>Why you should care</li></ul><p>Stay ahead of the curve by exploring the most promising new languages this year.</p>`,
+                author: { name: "Melkamu Wako", imageUrl: "assets/img/MELKAMU.jpg", bio: "Polyglot developer and language explorer." }
+              }
+            ];
+
             if (!slug) {
                 blogPostContainer.innerHTML = `
                     <div class="alert alert-danger">
@@ -241,198 +465,136 @@
                 return;
             }
 
-            try {
-                // Use embedded blog posts data instead of API call
-                const allPosts = [
-                    {
-                        id: 1,
-                        title: "Introduction to Competitive Programming",
-                        description: "Learn how to get started with competitive programming and improve your problem-solving skills.",
-                        date: "2025-06-01",
-                        imageUrl: "https://via.placeholder.com/400x250/8BC34A/ffffff?text=Competitive+Programming",
-                        slug: "competitive-programming-intro",
-                        views: 125,
-                        commentsCount: 8,
-                        content: `
-                            <h2>What is Competitive Programming?</h2>
-                            <p>Competitive programming is a mind sport where participants solve algorithmic problems within a time limit. It's an excellent way to improve your problem-solving skills and learn efficient algorithms.</p>
-                            
-                            <h2>Getting Started</h2>
-                            <p>Start with platforms like Codeforces, LeetCode, and HackerRank. Focus on understanding basic algorithms and data structures first.</p>
-                            
-                            <h2>Key Skills to Develop</h2>
-                            <ul>
-                                <li>Algorithm analysis and complexity</li>
-                                <li>Data structures (arrays, linked lists, trees, graphs)</li>
-                                <li>Dynamic programming</li>
-                                <li>Graph algorithms</li>
-                                <li>Mathematical thinking</li>
-                            </ul>
-                        `,
-                        author: {
-                            name: "Melkamu Wako",
-                            imageUrl: "assets/img/MELKAMU.jpg",
-                            bio: "Computer Science student and competitive programming enthusiast"
-                        },
-                        tags: ["Competitive Programming", "Algorithms", "Problem Solving"]
-                    },
-                    {
-                        id: 2,
-                        title: "Building Modern Web Applications",
-                        description: "A comprehensive guide to building responsive web applications using modern technologies.",
-                        date: "2025-05-25",
-                        imageUrl: "https://via.placeholder.com/400x250/8BC34A/ffffff?text=Web+Development",
-                        slug: "modern-web-apps",
-                        views: 98,
-                        commentsCount: 5,
-                        content: `
-                            <h2>Modern Web Development Stack</h2>
-                            <p>Today's web applications require a robust tech stack that includes frontend frameworks, backend services, and modern deployment practices.</p>
-                            
-                            <h2>Frontend Technologies</h2>
-                            <ul>
-                                <li>React.js for dynamic user interfaces</li>
-                                <li>CSS3 and Flexbox/Grid for responsive design</li>
-                                <li>JavaScript ES6+ for modern syntax</li>
-                                <li>Webpack for bundling</li>
-                            </ul>
-                            
-                            <h2>Backend Considerations</h2>
-                            <p>Choose the right backend technology based on your project requirements. Node.js, Python, and Java are all excellent choices.</p>
-                        `,
-                        author: {
-                            name: "Melkamu Wako",
-                            imageUrl: "assets/img/MELKAMU.jpg",
-                            bio: "Full-stack developer passionate about modern web technologies"
-                        },
-                        tags: ["Web Development", "React", "JavaScript", "Full-Stack"]
-                    },
-                    {
-                        id: 3,
-                        title: "Cybersecurity Best Practices",
-                        description: "Essential cybersecurity practices for developers and system administrators.",
-                        date: "2025-05-18",
-                        imageUrl: "https://via.placeholder.com/400x250/8BC34A/ffffff?text=Cybersecurity",
-                        slug: "cybersecurity-practices",
-                        views: 75,
-                        commentsCount: 3,
-                        content: `
-                            <h2>Why Cybersecurity Matters</h2>
-                            <p>In today's digital world, cybersecurity is not optional. Every developer should understand basic security principles to protect their applications and users.</p>
-                            
-                            <h2>Essential Security Practices</h2>
-                            <ul>
-                                <li>Input validation and sanitization</li>
-                                <li>Secure authentication and authorization</li>
-                                <li>HTTPS everywhere</li>
-                                <li>Regular security updates</li>
-                                <li>Data encryption</li>
-                            </ul>
-                            
-                            <h2>Common Vulnerabilities to Avoid</h2>
-                            <p>Learn about SQL injection, XSS attacks, CSRF, and other common security vulnerabilities.</p>
-                        `,
-                        author: {
-                            name: "Melkamu Wako",
-                            imageUrl: "assets/img/MELKAMU.jpg",
-                            bio: "Cybersecurity enthusiast and developer"
-                        },
-                        tags: ["Cybersecurity", "Security", "Best Practices"]
-                    },
-                    {
-                        id: 4,
-                        title: "AI in Everyday Life: New Innovations",
-                        description: "Discover how artificial intelligence is transforming daily experiences, from smart assistants to healthcare.",
-                        date: "2025-06-10",
-                        imageUrl: "https://via.placeholder.com/400x250/8BC34A/ffffff?text=AI+Innovation",
-                        slug: "ai-everyday-life",
-                        views: 50,
-                        commentsCount: 0,
-                        content: `
-                            <h2>The AI Revolution</h2>
-                            <p>Artificial Intelligence is no longer science fiction. It's here, and it's transforming how we live, work, and interact with technology.</p>
-                            
-                            <h2>AI Applications in Daily Life</h2>
-                            <ul>
-                                <li>Smart assistants (Siri, Alexa, Google Assistant)</li>
-                                <li>Recommendation systems (Netflix, Spotify)</li>
-                                <li>Autonomous vehicles</li>
-                                <li>Healthcare diagnostics</li>
-                                <li>Financial fraud detection</li>
-                            </ul>
-                            
-                            <h2>The Future of AI</h2>
-                            <p>As AI continues to evolve, we can expect even more innovative applications that will make our lives easier and more efficient.</p>
-                        `,
-                        author: {
-                            name: "Melkamu Wako",
-                            imageUrl: "assets/img/MELKAMU.jpg",
-                            bio: "AI enthusiast and technology researcher"
-                        },
-                        tags: ["Artificial Intelligence", "Innovation", "Technology"]
-                    }
-                ];
-
-                const post = allPosts.find(p => p.slug === slug);
-                if (!post) {
-                    throw new Error('Post not found');
-                }
-
-                // Format the date
-                const postDate = new Date(post.date);
-                const formattedDate = postDate.toLocaleDateString('en-US', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                });
-
-                // Create the blog post HTML
-                const postHtml = `
-                    <header class="blog-post-header text-center">
-                        <h1 class="display-4 mb-3">${post.title}</h1>
-                        <div class="blog-post-meta">
-                            <span><i class="far fa-calendar-alt"></i>${formattedDate}</span>
-                            <span class="ms-3"><i class="far fa-eye"></i>${post.views} views</span>
-                            <span class="ms-3"><i class="far fa-comment-alt"></i>${post.commentsCount} comments</span>
-                        </div>
-                    </header>
-                    <div class="blog-post-image-container">
-                        <img src="${post.imageUrl}" 
-                             alt="${post.title}" 
-                             class="blog-post-image"
-                             onerror="this.src='https://via.placeholder.com/800x400/8BC34A/ffffff?text=Blog+Post'">
-                    </div>
-                    <div class="blog-post-content">
-                        ${post.content || post.description}
-                    </div>
-                    ${post.tags ? `<div class="blog-post-tags">
-                        ${post.tags.map(tag => `<span class="badge bg-secondary me-2">${tag}</span>`).join('')}
-                    </div>` : ''}
-                    ${post.author ? `<div class="author-info d-flex align-items-center mt-4">
-                        <img src="${post.author.imageUrl}" alt="${post.author.name}" class="author-image me-4" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
-                        <div>
-                            <h5 class="mb-1">${post.author.name}</h5>
-                            <p class="text-muted mb-0">${post.author.bio}</p>
-                        </div>
-                    </div>` : ''}
-                `;
-
-                blogPostContainer.innerHTML = postHtml;
-                document.title = `${post.title} - Melkamu Wako's Blog`;
-
-            } catch (error) {
-                console.error('Error fetching blog post:', error);
+            const post = blogPostsData.find(p => p.slug === slug);
+            if (!post) {
                 blogPostContainer.innerHTML = `
                     <div class="alert alert-danger">
-                        <h4 class="alert-heading">Error</h4>
-                        <p>Failed to load the blog post. Please try again later.</p>
+                        <h4 class="alert-heading">Not Found</h4>
+                        <p>Blog post not found. Please check the URL or select another post.</p>
                         <hr>
                         <p class="mb-0">
                             <a href="/" class="btn btn-primary">Return to Home</a>
                         </p>
                     </div>
                 `;
+                return;
             }
+
+            // Format the date
+            const postDate = new Date(post.date);
+            const formattedDate = postDate.toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            // Create the blog post HTML
+            const postHtml = `
+                <header class="blog-post-header text-center">
+                    <h1 class="display-4 mb-3">${post.title}</h1>
+                    <div class="blog-post-meta">
+                        <span><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
+                    </div>
+                </header>
+                <div class="blog-post-image-container">
+                    <img src="${post.imageUrl}" 
+                         alt="${post.title}" 
+                         class="blog-post-image"
+                         onerror="this.src='https://via.placeholder.com/800x400/8BC34A/ffffff?text=Blog+Post'">
+                </div>
+                <div class="blog-post-content">
+                    ${post.content || post.description}
+                </div>
+                ${post.tags ? `<div class="blog-post-tags mt-3">
+                    ${post.tags.map(tag => `<span class="badge bg-secondary me-2"><i class='${getTagIcon(tag)} me-1'></i>${tag}</span>`).join('')}
+                </div>` : ''}
+                ${post.author ? `<div class="author-info d-flex align-items-center mt-4">
+                    <img src="${post.author.imageUrl}" alt="${post.author.name}" class="author-image me-4" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                    <div>
+                        <h5 class="mb-1">${post.author.name}</h5>
+                        <p class="text-muted mb-0">${post.author.bio}</p>
+                    </div>
+                </div>` : ''}
+            `;
+
+            function getTagIcon(tag) {
+                // Map tags to FontAwesome icons
+                const icons = {
+                    'Web Development': 'fas fa-code',
+                    'WebAssembly': 'fas fa-rocket',
+                    'Performance': 'fas fa-tachometer-alt',
+                    'Cybersecurity': 'fas fa-shield-alt',
+                    'Zero Trust': 'fas fa-user-secret',
+                    'Blockchain': 'fab fa-ethereum',
+                    'Programming Languages': 'fas fa-terminal',
+                    'TypeScript': 'fab fa-js',
+                    'AI': 'fas fa-robot',
+                    'React': 'fab fa-react',
+                    'JavaScript': 'fab fa-js-square',
+                    'Full-Stack': 'fas fa-layer-group',
+                    'Quantum': 'fas fa-atom',
+                    'Latest Technologies': 'fas fa-lightbulb',
+                    'Cloud': 'fas fa-cloud',
+                    'Python': 'fab fa-python',
+                    'CSS': 'fab fa-css3-alt',
+                    'Backend': 'fas fa-server',
+                    'Testing': 'fas fa-vial',
+                    'APIs': 'fas fa-plug',
+                    'Innovation': 'fas fa-lightbulb',
+                    'Technology': 'fas fa-microchip',
+                    'Security': 'fas fa-lock',
+                    'Best Practices': 'fas fa-check-circle',
+                    'Algorithms': 'fas fa-project-diagram',
+                    'Problem Solving': 'fas fa-brain',
+                };
+                return icons[tag] || 'fas fa-tag';
+            }
+
+            blogPostContainer.innerHTML = postHtml;
+            document.title = `${post.title} - Melkamu Wako's Blog`;
+
+            const currentIndex = blogPostsData.findIndex(p => p.slug === slug);
+            let navHtml = '<div class="d-flex justify-content-between mt-5">';
+            if (currentIndex > 0) {
+                const prev = blogPostsData[currentIndex - 1];
+                navHtml += `<a href="/blog-post.html?slug=${prev.slug}" class="btn btn-outline-primary">&larr; Previous</a>`;
+            } else {
+                navHtml += '<span></span>';
+            }
+            if (currentIndex < blogPostsData.length - 1) {
+                const next = blogPostsData[currentIndex + 1];
+                navHtml += `<a href="/blog-post.html?slug=${next.slug}" class="btn btn-outline-primary">Next &rarr;</a>`;
+            } else {
+                navHtml += '<span></span>';
+            }
+            navHtml += '</div>';
+
+            blogPostContainer.innerHTML += navHtml;
+
+            const shareHtml = `
+              <div class="d-flex gap-2 align-items-center mt-4 mb-3">
+                <span class="me-2">Share:</span>
+                <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(window.location.href)}" target="_blank" class="btn btn-outline-secondary btn-sm" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(post.title)}" target="_blank" class="btn btn-outline-secondary btn-sm" title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <button id="copyLinkBtn" class="btn btn-outline-secondary btn-sm" title="Copy Link"><i class="fas fa-link"></i></button>
+                <span id="copyLinkMsg" style="display:none;margin-left:8px;color:#28a745;font-size:0.95em;">Copied!</span>
+              </div>
+            `;
+            blogPostContainer.innerHTML += shareHtml;
+
+            // Copy Link functionality
+            setTimeout(() => {
+              const copyBtn = document.getElementById('copyLinkBtn');
+              const copyMsg = document.getElementById('copyLinkMsg');
+              if (copyBtn && copyMsg) {
+                copyBtn.onclick = function() {
+                  navigator.clipboard.writeText(window.location.href).then(() => {
+                    copyMsg.style.display = 'inline';
+                    setTimeout(() => { copyMsg.style.display = 'none'; }, 1200);
+                  });
+                };
+              }
+            }, 0);
         });
     </script>
 </body>
