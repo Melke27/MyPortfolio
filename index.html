@@ -2805,7 +2805,7 @@
               isWaiting=true;
               try{
                 // Replace with your Render backend URL:
-                const resp=await fetch('https://your-render-backend-url.onrender.com/chat',{
+                const resp=await fetch('https://melkamuwako27-backend.onrender.com/chat',{
                   method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})
                 });
                 const data=await resp.json();
