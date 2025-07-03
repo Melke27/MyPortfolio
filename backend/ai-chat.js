@@ -7,7 +7,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require('openai');
 const mongoose = require('mongoose');
 const BlogPost = require('./models/BlogPost');
 const Project = require('./models/Project');
@@ -18,9 +18,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const openai = new OpenAIApi(new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
-}));
+});
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
@@ -55,12 +55,12 @@ app.post('/chat', async (req, res) => {
       return res.json({ reply: `Here's a relevant project: "${project.title}"\n${project.description}\nTech: ${project.technologies.join(', ')}` });
     }
     // 3. Fallback to OpenAI
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: message }],
       max_tokens: 200
     });
-    const aiReply = completion.data.choices[0].message.content;
+    const aiReply = completion.choices[0].message.content;
     res.json({ reply: aiReply });
   } catch (err) {
     res.status(500).json({ error: 'AI/database request failed', details: err.message });
