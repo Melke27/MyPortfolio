@@ -63,7 +63,8 @@ app.post('/chat', async (req, res) => {
     const aiReply = completion.choices[0].message.content;
     res.json({ reply: aiReply });
   } catch (err) {
-    res.status(500).json({ error: 'AI/database request failed', details: err.message });
+    console.error('AI/database request failed:', err);
+    res.status(500).json({ error: 'AI/database request failed', details: err.message, stack: err.stack });
   }
 });
 
