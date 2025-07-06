@@ -18,6 +18,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    env_vars: {
+      has_openai_key: !!process.env.OPENAI_API_KEY,
+      has_mongodb_uri: !!process.env.MONGODB_URI,
+      mongodb_connected: mongoose.connection.readyState === 1
+    }
+  });
+});
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
@@ -31,30 +44,44 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.post('/chat', async (req, res) => {
   const { message } = req.body;
   if (!message) return res.status(400).json({ error: 'Message is required.' });
+  
+  console.log('Received chat request:', message);
+  
   try {
-    // 1. Search BlogPosts
-    const blog = await BlogPost.findOne({
-      $or: [
-        { title: { $regex: message, $options: 'i' } },
-        { description: { $regex: message, $options: 'i' } },
-        { tags: { $elemMatch: { $regex: message, $options: 'i' } } }
-      ]
-    });
-    if (blog) {
-      return res.json({ reply: `Here's a relevant blog post: "${blog.title}"\n${blog.description}\nRead more on the blog!` });
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      console.log('MongoDB not connected, skipping database search');
+    } else {
+      // 1. Search BlogPosts
+      const blog = await BlogPost.findOne({
+        $or: [
+          { title: { $regex: message, $options: 'i' } },
+          { description: { $regex: message, $options: 'i' } },
+          { tags: { $elemMatch: { $regex: message, $options: 'i' } } }
+        ]
+      });
+      if (blog) {
+        return res.json({ reply: `Here's a relevant blog post: "${blog.title}"\n${blog.description}\nRead more on the blog!` });
+      }
+      // 2. Search Projects
+      const project = await Project.findOne({
+        $or: [
+          { title: { $regex: message, $options: 'i' } },
+          { description: { $regex: message, $options: 'i' } },
+          { technologies: { $elemMatch: { $regex: message, $options: 'i' } } }
+        ]
+      });
+      if (project) {
+        return res.json({ reply: `Here's a relevant project: "${project.title}"\n${project.description}\nTech: ${project.technologies.join(', ')}` });
+      }
     }
-    // 2. Search Projects
-    const project = await Project.findOne({
-      $or: [
-        { title: { $regex: message, $options: 'i' } },
-        { description: { $regex: message, $options: 'i' } },
-        { technologies: { $elemMatch: { $regex: message, $options: 'i' } } }
-      ]
-    });
-    if (project) {
-      return res.json({ reply: `Here's a relevant project: "${project.title}"\n${project.description}\nTech: ${project.technologies.join(', ')}` });
-    }
+    
     // 3. Fallback to OpenAI
+    if (!process.env.OPENAI_API_KEY) {
+      console.log('No OpenAI API key found');
+      return res.json({ reply: 'Sorry, I cannot process your request right now. Please try again later.' });
+    }
+    
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: message }],
@@ -64,7 +91,16 @@ app.post('/chat', async (req, res) => {
     res.json({ reply: aiReply });
   } catch (err) {
     console.error('AI/database request failed:', err);
-    res.status(500).json({ error: 'AI/database request failed', details: err.message, stack: err.stack });
+    res.status(500).json({ 
+      error: 'AI/database request failed', 
+      details: err.message, 
+      stack: err.stack,
+      env_check: {
+        has_openai_key: !!process.env.OPENAI_API_KEY,
+        has_mongodb_uri: !!process.env.MONGODB_URI,
+        mongodb_connected: mongoose.connection.readyState === 1
+      }
+    });
   }
 });
 
