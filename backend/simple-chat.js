@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { OpenAI } = require('openai');
-dotenv.config();
+dotenv.config({ path: __dirname + '/.env' });
 
 const app = express();
 app.use(cors());
