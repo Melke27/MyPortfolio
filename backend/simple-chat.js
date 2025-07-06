@@ -29,17 +29,23 @@ app.post('/chat', async (req, res) => {
   const lowerMessage = message.toLowerCase();
   
   if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-    reply = 'Hello! How can I help you today?';
+    reply = 'Hello! I\'m Melkamu Wako\'s AI assistant. How can I help you today?';
+  } else if (lowerMessage.includes('name') || lowerMessage.includes('who are you')) {
+    reply = 'I\'m Melkamu Wako\'s AI assistant. I help visitors learn about Melkamu\'s skills, projects, and experience.';
+  } else if (lowerMessage.includes('melkamu')) {
+    reply = 'Melkamu Wako is a software developer and engineer. He has experience in web development, mobile apps, and various programming languages. You can ask me about his projects, skills, or background!';
   } else if (lowerMessage.includes('project') || lowerMessage.includes('work')) {
-    reply = 'I can help you find information about my projects. Try asking about specific technologies like React, Python, or JavaScript.';
+    reply = 'Melkamu has worked on many projects including web applications, mobile apps, and software development. Some of his projects include e-commerce sites, weather apps, and educational tools. What specific type of project interests you?';
   } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
-    reply = 'You can contact me through the contact form on this website or via LinkedIn.';
+    reply = 'You can contact Melkamu through the contact form on this website, via LinkedIn, or email at melkamuwako5@gmail.com.';
   } else if (lowerMessage.includes('skill') || lowerMessage.includes('technology')) {
-    reply = 'My skills include JavaScript, React, Python, Java, C++, C#, HTML/CSS, and more. What would you like to know about?';
+    reply = 'Melkamu\'s skills include JavaScript, React, Python, Java, C++, C#, HTML/CSS, Node.js, and more. He\'s experienced in both frontend and backend development. What specific technology would you like to know about?';
   } else if (lowerMessage.includes('experience') || lowerMessage.includes('background')) {
-    reply = 'I have experience in software development, web development, and various programming languages. Check out my projects section for more details.';
+    reply = 'Melkamu has experience in software development, web development, and mobile app development. He\'s worked on various projects and has a strong foundation in multiple programming languages and frameworks.';
+  } else if (lowerMessage.includes('education') || lowerMessage.includes('degree')) {
+    reply = 'Melkamu has a background in software engineering and computer science. He\'s passionate about technology and continuous learning.';
   } else {
-    reply = 'Thanks for your message! I\'m a simple AI assistant. You can ask me about projects, skills, experience, or contact information.';
+    reply = 'Thanks for your message! I\'m Melkamu\'s AI assistant. You can ask me about his projects, skills, experience, education, or contact information.';
   }
   
   res.json({ reply });

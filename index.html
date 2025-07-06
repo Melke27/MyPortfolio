@@ -2898,8 +2898,11 @@
               }catch(e){
                 console.error('Backend error:', e);
                 setTyping(false);
-                appendMsg('AI','[Backend unreachable. Please try again later.]');
-                showNotification('Backend connection failed. Please check your internet connection.', 'error');
+                
+                // Try fallback response
+                const fallbackResponse = getFallbackResponse(msg);
+                appendMsg('AI', fallbackResponse);
+                showNotification('Using fallback response. Backend is not available.', 'error');
               }
               isWaiting=false;
             }
@@ -3046,6 +3049,18 @@
             testNotificationBtn.onclick = () => {
               console.log('Test notification button clicked');
               showNotification('This is a test notification! If you see this, notifications are working.');
+              
+              // Also test a simple backend call
+              fetch('https://melkamuwako27-backend.onrender.com/health')
+                .then(response => response.json())
+                .then(data => {
+                  console.log('Backend health check:', data);
+                  showNotification('Backend is working! Status: ' + data.status, 'success');
+                })
+                .catch(error => {
+                  console.error('Backend health check failed:', error);
+                  showNotification('Backend is not responding. Check Render deployment.', 'error');
+                });
             };
           }
         </script>
