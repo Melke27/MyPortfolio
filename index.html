@@ -2900,9 +2900,8 @@
                 setTyping(false);
                 
                 // Try fallback response
-                const fallbackResponse = getFallbackResponse(msg);
-                appendMsg('AI', fallbackResponse);
-                showNotification('Using fallback response. Backend is not available.', 'error');
+                appendMsg('AI', 'Sorry, the AI backend is not available right now.');
+                showNotification('Backend is not available.', 'error');
               }
               isWaiting=false;
             }
