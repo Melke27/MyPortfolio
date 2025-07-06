@@ -41,10 +41,64 @@ mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected for chatbot')).catch(console.error);
 
+// In-memory chat history (shared for all users, resets on server restart)
+const chatHistory = [];
+const MAX_HISTORY = 20; // Store last 20 messages
+
+// Helper: Check for repeated questions
+function isRepeatedQuestion(message) {
+  return chatHistory.some(entry => entry.message.toLowerCase() === message.toLowerCase());
+}
+
+// Helper: Get a different response for repeated questions
+function getDifferentResponse(topic) {
+  const responses = {
+    games: [
+      "Here are some fun games you might like: Chess, Sudoku, or try coding a simple game yourself!",
+      "Gaming is a great way to relax. Do you want recommendations for online games or programming game ideas?",
+      "Games can boost your problem-solving skills! Ever tried making your own game?"
+    ],
+    programming: [
+      "Programming opens up endless possibilities! What language or topic interests you?",
+      "Want to learn about algorithms, data structures, or web development? Ask me anything!",
+      "Programming is both art and science. Do you have a specific question or need a project idea?"
+    ],
+    joke: [
+      "Why do Java developers wear glasses? Because they don't see sharp!",
+      "How many programmers does it take to change a light bulb? None, that's a hardware problem!",
+      "Why do Python programmers have low self-esteem? Because they're constantly comparing their self to others."
+    ]
+  };
+  if (responses[topic]) {
+    // Pick a random response
+    return responses[topic][Math.floor(Math.random() * responses[topic].length)];
+  }
+  return null;
+}
+
 app.post('/chat', async (req, res) => {
   const { message } = req.body;
   if (!message) return res.status(400).json({ error: 'Message is required.' });
   
+  // Check for repeated question
+  if (isRepeatedQuestion(message)) {
+    // Try to give a different response for known topics
+    if (/game/i.test(message)) {
+      return res.json({ reply: getDifferentResponse('games') });
+    }
+    if (/joke/i.test(message)) {
+      return res.json({ reply: getDifferentResponse('joke') });
+    }
+    if (/programming|algorithm|code|developer/i.test(message)) {
+      return res.json({ reply: getDifferentResponse('programming') });
+    }
+    // Otherwise, let OpenAI try to answer differently
+  }
+
+  // Add to chat history
+  chatHistory.push({ message });
+  if (chatHistory.length > MAX_HISTORY) chatHistory.shift();
+
   console.log('Received chat request:', message);
   
   try {
@@ -82,6 +136,17 @@ app.post('/chat', async (req, res) => {
       return res.json({ reply: 'Sorry, I cannot process your request right now. Please try again later.' });
     }
     
+    // For certain keywords, provide dynamic responses before OpenAI
+    if (/game/i.test(message)) {
+      return res.json({ reply: getDifferentResponse('games') });
+    }
+    if (/joke/i.test(message)) {
+      return res.json({ reply: getDifferentResponse('joke') });
+    }
+    if (/programming|algorithm|code|developer/i.test(message)) {
+      return res.json({ reply: getDifferentResponse('programming') });
+    }
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: message }],

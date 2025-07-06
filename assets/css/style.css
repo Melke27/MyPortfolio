@@ -2397,6 +2397,10 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
 }
 
+.btn, .btn-primary, .fab, .fas {
+  font-weight: 400 !important;
+}
+
 .btn-success {
   color: #fff;
   background-color: #28a745;
@@ -9476,10 +9480,6 @@ input[type="button"].btn-block {
   padding-right: 0.5rem;
   color: #6c757d;
   content: "/";
-}
-
-.breadcrumb-item + .breadcrumb-item:hover::before {
-  text-decoration: underline;
 }
 
 .breadcrumb-item + .breadcrumb-item:hover::before {
