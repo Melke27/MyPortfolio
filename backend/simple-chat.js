@@ -1,10 +1,17 @@
 // Simple Chat Backend - Expanded Knowledge Base for Melkamu Wako
 const express = require('express');
 const cors = require('cors');
+const dotenv = require('dotenv');
+const { OpenAI } = require('openai');
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 // --- Jokes, Games, and Fun Data ---
 const techJokes = [
@@ -35,27 +42,47 @@ const riddles = [
 
 const rockPaperScissors = ["rock", "paper", "scissors"];
 
+// In-memory memory to avoid repeating the same joke/answer in a row
+let lastJoke = null;
+let lastRiddle = null;
+let isFirstMessage = true;
+
 // --- Main Chatbot Logic ---
 app.post('/chat', async (req, res) => {
   const { message } = req.body;
   if (!message) return res.status(400).json({ error: 'Message is required.' });
   const lower = message.toLowerCase();
 
+  // Friendly AI introduction for the first message
+  let intro = '';
+  if (isFirstMessage) {
+    intro = "👋 Hello! I'm Melkamu's AI Assistant. I can help you with cybersecurity, programming, games, jokes, Melkamu's background, and much more. Ask me anything!";
+    isFirstMessage = false;
+  }
+
   // --- Jokes & Fun ---
   if (lower.includes('joke') || lower.includes('make me laugh') || lower.includes('pun') || lower.includes('funny')) {
-    const joke = techJokes[Math.floor(Math.random() * techJokes.length)];
-    return res.json({ reply: joke });
+    let joke;
+    do {
+      joke = techJokes[Math.floor(Math.random() * techJokes.length)];
+    } while (joke === lastJoke && techJokes.length > 1);
+    lastJoke = joke;
+    return res.json({ reply: intro ? `${intro}\n${joke}` : joke });
   }
   if (lower.includes('riddle')) {
-    const riddle = riddles[Math.floor(Math.random() * riddles.length)];
-    return res.json({ reply: riddle.question + ' (Say "answer" to get the answer!)' });
+    let riddle;
+    do {
+      riddle = riddles[Math.floor(Math.random() * riddles.length)];
+    } while (riddle === lastRiddle && riddles.length > 1);
+    lastRiddle = riddle;
+    return res.json({ reply: intro ? `${intro}\n${riddle.question} (Say "answer" to get the answer!)` : riddle.question + ' (Say "answer" to get the answer!)' });
   }
   if (lower.includes('answer')) {
     // Just return a generic answer for now
-    return res.json({ reply: 'The answer is: ' + riddles[0].answer });
+    return res.json({ reply: intro ? `${intro}\nThe answer is: ${riddles[0].answer}` : 'The answer is: ' + riddles[0].answer });
   }
   if (lower.includes('rock paper scissors')) {
-    return res.json({ reply: 'Let\'s play! Type "rock", "paper", or "scissors".' });
+    return res.json({ reply: intro ? `${intro}\nLet's play! Type "rock", "paper", or "scissors".` : 'Let\'s play! Type "rock", "paper", or "scissors".' });
   }
   if (rockPaperScissors.includes(lower.trim())) {
     const aiMove = rockPaperScissors[Math.floor(Math.random() * 3)];
@@ -63,7 +90,7 @@ app.post('/chat', async (req, res) => {
     if (lower === aiMove) result = "It's a tie!";
     else if ((lower === 'rock' && aiMove === 'scissors') || (lower === 'paper' && aiMove === 'rock') || (lower === 'scissors' && aiMove === 'paper')) result = 'You win!';
     else result = 'I win!';
-    return res.json({ reply: `You: ${lower}\nAI: ${aiMove}\n${result}` });
+    return res.json({ reply: intro ? `${intro}\nYou: ${lower}\nAI: ${aiMove}\n${result}` : `You: ${lower}\nAI: ${aiMove}\n${result}` });
   }
 
   // --- Melkamu Wako Personal Background ---
@@ -84,6 +111,23 @@ app.post('/chat', async (req, res) => {
   }
   if (lower.includes('upbringing') || lower.includes('background')) {
     return res.json({ reply: "Melkamu's upbringing—from rural roots to city life—shaped his passion for learning, growth, and using technology to make a difference." });
+  }
+
+  // --- Family & Friends ---
+  if (lower.includes('father') || lower.includes('wako')) {
+    return res.json({ reply: "Melkamu's father, Wako, is a source of inspiration and support in his life. Family values and encouragement have played a big role in Melkamu's journey." });
+  }
+  if (lower.includes('grandfather') || lower.includes('otika')) {
+    return res.json({ reply: "Melkamu's grandfather, Otika, is remembered for his wisdom and kindness. His legacy continues to inspire Melkamu and his family." });
+  }
+  if (lower.includes('girlfriend')) {
+    return res.json({ reply: "Melkamu's girlfriend is very special to him. He appreciates her love, support, and the happiness she brings into his life. ❤️" });
+  }
+  if (lower.includes('i love you')) {
+    return res.json({ reply: "I love you too! 🥰" });
+  }
+  if (lower.includes('friend')) {
+    return res.json({ reply: "Friends are an important part of Melkamu's life. He values friendship, support, and the good times shared with friends." });
   }
 
   // --- Cybersecurity Basics ---
@@ -187,10 +231,125 @@ app.post('/chat', async (req, res) => {
   if (lower.includes('fenwick tree')) return res.json({ reply: "A Fenwick tree (Binary Indexed Tree) is a data structure for efficiently computing prefix sums and updates in logarithmic time." });
   if (lower.includes('practice cp') || lower.includes('how does melkamu practice cp')) return res.json({ reply: "Melkamu practices competitive programming on platforms like Codeforces, LeetCode, and HackerRank. He solves problems daily, participates in contests, and studies algorithms and data structures." });
 
-  // --- Add more sections for career, study help, tech skills, etc. as needed ---
+  // --- Professional, Career, and Tech Skills Advice ---
+  if (lower.includes('how to write a professional resume')) return res.json({ reply: "To write a professional resume: use a clean format, highlight your achievements, tailor it to the job, use action verbs, and keep it concise (1-2 pages). Include contact info, education, experience, and relevant skills." });
+  if (lower.includes('tips for a job interview')) return res.json({ reply: "Job interview tips: research the company, practice common questions, dress professionally, be on time, show confidence, and ask thoughtful questions. Follow up with a thank-you note." });
+  if (lower.includes('how to prepare for coding interviews')) return res.json({ reply: "Prepare for coding interviews by practicing algorithms and data structures, solving problems on LeetCode or HackerRank, reviewing system design basics, and practicing mock interviews." });
+  if (lower.includes('best programming languages for beginners')) return res.json({ reply: "Best programming languages for beginners: Python (easy syntax), JavaScript (web development), and Java (widely used). Start with one and build projects to learn." });
+  if (lower.includes('what skills are employers looking for')) return res.json({ reply: "Employers look for technical skills, problem-solving, teamwork, communication, adaptability, and a willingness to learn. Soft skills are as important as hard skills." });
+  if (lower.includes('how to build a personal brand')) return res.json({ reply: "Build a personal brand by showcasing your work online, sharing knowledge, networking, and maintaining a professional online presence (LinkedIn, portfolio website)." });
+  if (lower.includes('what is linkedin networking')) return res.json({ reply: "LinkedIn networking is connecting with professionals, sharing insights, and building relationships to advance your career. Engage with posts, join groups, and reach out politely." });
+  if (lower.includes('how to improve communication skills')) return res.json({ reply: "Improve communication skills by practicing active listening, speaking clearly, asking questions, and seeking feedback. Join clubs or take courses to practice." });
+  if (lower.includes('how to ask for a raise')) return res.json({ reply: "To ask for a raise: prepare evidence of your achievements, research salary benchmarks, choose the right time, and communicate your value confidently and professionally." });
+  if (lower.includes('how to manage time effectively')) return res.json({ reply: "Manage time by setting priorities, using to-do lists, breaking tasks into steps, avoiding multitasking, and taking regular breaks. Tools like calendars and timers help." });
+  if (lower.includes('what is agile methodology')) return res.json({ reply: "Agile methodology is an iterative approach to software development that values collaboration, flexibility, and customer feedback. Common frameworks: Scrum, Kanban." });
+  if (lower.includes('how to work well in a team')) return res.json({ reply: "Work well in a team by communicating openly, respecting others, sharing responsibilities, and supporting teammates. Be reliable and open to feedback." });
+  if (lower.includes('how to set career goals')) return res.json({ reply: "Set career goals by identifying your interests, researching opportunities, setting SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound), and tracking progress." });
+  if (lower.includes('what is project management')) return res.json({ reply: "Project management is planning, organizing, and overseeing projects to achieve specific goals. It involves managing resources, timelines, and risks." });
+  if (lower.includes('how to handle work stress')) return res.json({ reply: "Handle work stress by taking breaks, prioritizing tasks, practicing mindfulness, exercising, and seeking support when needed. Balance work and personal life." });
+  if (lower.includes('how to give a great presentation')) return res.json({ reply: "Give a great presentation by knowing your audience, organizing your content, practicing delivery, using visuals, and engaging with your audience." });
+  if (lower.includes('what is critical thinking')) return res.json({ reply: "Critical thinking is analyzing facts objectively to make reasoned judgments. It involves questioning assumptions, evaluating evidence, and considering alternatives." });
+  if (lower.includes('how to learn new technologies fast')) return res.json({ reply: "Learn new technologies fast by building small projects, following tutorials, reading documentation, and practicing regularly. Join communities for support." });
+  if (lower.includes('how to start freelancing')) return res.json({ reply: "Start freelancing by identifying your skills, creating a portfolio, joining freelance platforms, networking, and delivering quality work to build your reputation." });
+  if (lower.includes('how to find an internship')) return res.json({ reply: "Find internships by searching online job boards, networking, attending career fairs, and reaching out to companies directly. Tailor your resume and cover letter." });
+  if (lower.includes('how to get certifications')) return res.json({ reply: "Get certifications by choosing relevant ones for your field, studying the material, taking practice exams, and registering for the official test." });
+  if (lower.includes('what is continuous learning')) return res.json({ reply: "Continuous learning is regularly updating your skills and knowledge to stay current in your field. It involves taking courses, reading, and practicing new skills." });
+  if (lower.includes('how to write professional emails')) return res.json({ reply: "Write professional emails by using a clear subject, greeting, concise message, polite tone, and proper closing. Proofread before sending." });
+  if (lower.includes('how to handle workplace conflict')) return res.json({ reply: "Handle workplace conflict by staying calm, listening to all sides, communicating openly, and seeking a solution that works for everyone." });
+  if (lower.includes('what is a mentor')) return res.json({ reply: "A mentor is an experienced person who provides guidance, advice, and support to help you grow professionally or personally." });
+  if (lower.includes('how to ask for feedback')) return res.json({ reply: "Ask for feedback by being open, specific about what you want to improve, and thanking the person for their input. Use feedback to grow." });
+  if (lower.includes('how to stay motivated at work')) return res.json({ reply: "Stay motivated by setting goals, celebrating achievements, seeking new challenges, and maintaining a positive work environment." });
+  if (lower.includes('what is professional networking')) return res.json({ reply: "Professional networking is building relationships with others in your field to exchange information, support, and opportunities." });
+  if (lower.includes('how to improve problem-solving skills')) return res.json({ reply: "Improve problem-solving by practicing with puzzles, learning algorithms, analyzing problems, and reflecting on solutions. Collaborate with others for new perspectives." });
+  if (lower.includes('how to work remotely effectively')) return res.json({ reply: "Work remotely effectively by setting a routine, creating a dedicated workspace, communicating clearly, and using collaboration tools." });
+  if (lower.includes('how to keep a work-life balance')) return res.json({ reply: "Keep work-life balance by setting boundaries, prioritizing self-care, scheduling downtime, and disconnecting from work after hours." });
+  if (lower.includes('what is emotional intelligence')) return res.json({ reply: "Emotional intelligence is the ability to understand and manage your own emotions and those of others. It helps in communication, teamwork, and leadership." });
+  if (lower.includes('how to develop leadership skills')) return res.json({ reply: "Develop leadership skills by taking initiative, learning from leaders, seeking feedback, and practicing decision-making and communication." });
+  if (lower.includes('what is effective teamwork')) return res.json({ reply: "Effective teamwork is collaborating with others to achieve common goals, using clear communication, trust, and shared responsibility." });
+  if (lower.includes('how to create a portfolio')) return res.json({ reply: "Create a portfolio by showcasing your best work, including project descriptions, links, and your role. Use a personal website or platforms like GitHub or Behance." });
+  if (lower.includes('what is version control')) return res.json({ reply: "Version control is a system for tracking changes to code or documents. Git is a popular tool for version control, allowing collaboration and history tracking." });
+  if (lower.includes('how to prepare for technical tests')) return res.json({ reply: "Prepare for technical tests by reviewing key concepts, practicing sample questions, and timing yourself. Focus on problem areas and practice coding." });
+  if (lower.includes('how to negotiate salary')) return res.json({ reply: "Negotiate salary by researching market rates, knowing your value, being confident, and discussing benefits as well as pay." });
+  if (lower.includes('how to build confidence')) return res.json({ reply: "Build confidence by setting small goals, celebrating progress, practicing skills, and maintaining a positive mindset." });
+  if (lower.includes('how to write a cover letter')) return res.json({ reply: "Write a cover letter by addressing the hiring manager, explaining why you're a good fit, and highlighting relevant experience. Keep it concise and tailored." });
+  if (lower.includes('what are soft skills')) return res.json({ reply: "Soft skills are personal attributes like communication, teamwork, adaptability, and problem-solving that help you work well with others." });
+  if (lower.includes('how to stay productive')) return res.json({ reply: "Stay productive by setting clear goals, minimizing distractions, taking breaks, and using productivity tools like to-do lists and calendars." });
+  if (lower.includes('what is professional etiquette')) return res.json({ reply: "Professional etiquette is the set of rules for polite, respectful behavior in the workplace, including communication, dress, and punctuality." });
+  if (lower.includes('how to manage multiple projects')) return res.json({ reply: "Manage multiple projects by prioritizing tasks, using project management tools, delegating when possible, and tracking progress regularly." });
+  if (lower.includes('how to build technical skills')) return res.json({ reply: "Build technical skills by taking courses, practicing regularly, building projects, and staying updated with new technologies." });
+  if (lower.includes('what is continuous integration')) return res.json({ reply: "Continuous integration is a development practice where code changes are automatically tested and merged, helping catch issues early and improve collaboration." });
+  if (lower.includes('how to contribute to open source')) return res.json({ reply: "Contribute to open source by finding projects that interest you, reading contribution guidelines, fixing bugs, and submitting pull requests." });
+  if (lower.includes('how to network at conferences')) return res.json({ reply: "Network at conferences by introducing yourself, attending sessions, asking questions, and following up with new contacts afterward." });
+  if (lower.includes('what is time management')) return res.json({ reply: "Time management is organizing and planning how to divide your time between activities to work efficiently and meet deadlines." });
+  if (lower.includes('how to handle failure professionally')) return res.json({ reply: "Handle failure professionally by learning from mistakes, staying positive, seeking feedback, and using setbacks as opportunities for growth." });
 
-  // --- Default response ---
-  return res.json({ reply: "Thanks for your message! I can answer questions about cybersecurity, programming, games, jokes, Melkamu's background, and more. Try asking about cybersecurity, algorithms, or say 'Tell me a tech joke!'" });
+  // --- Tech Skills & Study Help ---
+  if (lower.includes('how to learn python fast')) return res.json({ reply: "Learn Python fast by following tutorials, building small projects, practicing coding daily, and joining Python communities for support." });
+  if (lower.includes('what is object-oriented programming')) return res.json({ reply: "Object-oriented programming (OOP) is a programming paradigm based on objects and classes. It uses concepts like inheritance, encapsulation, and polymorphism." });
+  if (lower.includes('how to write clean code')) return res.json({ reply: "Write clean code by using meaningful names, keeping functions short, writing comments, and following consistent formatting and best practices." });
+  if (lower.includes('what is data structure')) return res.json({ reply: "A data structure is a way of organizing and storing data for efficient access and modification. Examples: arrays, lists, stacks, queues, trees, graphs." });
+  if (lower.includes('how to debug code efficiently')) return res.json({ reply: "Debug code efficiently by using print statements, debuggers, checking error messages, and isolating the problem step by step." });
+  if (lower.includes('what is software testing')) return res.json({ reply: "Software testing is the process of evaluating software to find and fix bugs. Types include unit, integration, and system testing." });
+  if (lower.includes('how to use github')) return res.json({ reply: "Use GitHub to host code, collaborate with others, track changes, and contribute to open source. Learn basic Git commands to get started." });
+  if (lower.includes('what is cloud computing')) return res.json({ reply: "Cloud computing is delivering computing services (servers, storage, databases, networking, software) over the internet. Examples: AWS, Azure, Google Cloud." });
+  if (lower.includes('how to build a website')) return res.json({ reply: "Build a website by learning HTML, CSS, and JavaScript. Use frameworks like React or Vue for dynamic sites, and host your site on platforms like Netlify or Vercel." });
+  if (lower.includes('what is rest api')) return res.json({ reply: "A REST API is an interface that allows applications to communicate over HTTP using standard methods like GET, POST, PUT, and DELETE." });
+  if (lower.includes('how to learn sql')) return res.json({ reply: "Learn SQL by practicing queries, building sample databases, and using online resources. Focus on SELECT, INSERT, UPDATE, DELETE, and JOIN operations." });
+  if (lower.includes('what is machine learning')) return res.json({ reply: "Machine learning is a field of AI where computers learn from data to make predictions or decisions without being explicitly programmed." });
+  if (lower.includes('how to write algorithms')) return res.json({ reply: "Write algorithms by breaking problems into steps, using pseudocode, and testing with sample inputs. Practice with common algorithm problems." });
+  if (lower.includes('what is devops')) return res.json({ reply: "DevOps is a set of practices that combines software development and IT operations to shorten the development lifecycle and deliver high-quality software." });
+  if (lower.includes('how to learn javascript')) return res.json({ reply: "Learn JavaScript by following tutorials, building interactive web pages, and practicing regularly. Use online platforms like freeCodeCamp or Codecademy." });
+  if (lower.includes('what is responsive design')) return res.json({ reply: "Responsive design ensures websites look good on all devices by using flexible layouts, images, and CSS media queries." });
+  if (lower.includes('how to prepare for exams')) return res.json({ reply: "Prepare for exams by reviewing notes, practicing past questions, making a study schedule, and taking regular breaks to stay focused." });
+  if (lower.includes('what is pair programming')) return res.json({ reply: "Pair programming is a practice where two programmers work together at one workstation, collaborating on code and sharing ideas." });
+  if (lower.includes('how to build mobile apps')) return res.json({ reply: "Build mobile apps by learning platforms like Android (Java/Kotlin), iOS (Swift), or cross-platform tools like Flutter and React Native." });
+  if (lower.includes('what is database normalization')) return res.json({ reply: "Database normalization is organizing data to reduce redundancy and improve integrity. It involves dividing tables and defining relationships." });
+  if (lower.includes('how to write documentation')) return res.json({ reply: "Write documentation by explaining how your code works, providing examples, and keeping it clear and up to date. Use tools like Markdown or JSDoc." });
+  if (lower.includes('what is cybersecurity basics')) return res.json({ reply: "Cybersecurity basics include protecting devices and data from threats, using strong passwords, updating software, and being aware of phishing and malware." });
+  if (lower.includes('how to improve coding speed')) return res.json({ reply: "Improve coding speed by practicing regularly, using keyboard shortcuts, and learning your development tools well." });
+  if (lower.includes('what is encryption')) return res.json({ reply: "Encryption is converting data into a coded form to prevent unauthorized access. Only those with the key can decrypt and read the data." });
+  if (lower.includes('how to use command line')) return res.json({ reply: "Use the command line to navigate files, run programs, and automate tasks. Learn basic commands like cd, ls, mkdir, rm, and touch." });
+  if (lower.includes('what is api testing')) return res.json({ reply: "API testing checks if your APIs work as expected. It involves sending requests, checking responses, and validating data and error handling." });
+  if (lower.includes('how to handle exceptions')) return res.json({ reply: "Handle exceptions by using try-catch blocks, logging errors, and providing meaningful error messages to users." });
+  if (lower.includes('what is asynchronous programming')) return res.json({ reply: "Asynchronous programming allows tasks to run in the background, improving performance. In JavaScript, use callbacks, promises, or async/await." });
+  if (lower.includes('how to learn data science')) return res.json({ reply: "Learn data science by studying statistics, Python, data analysis libraries (Pandas, NumPy), and practicing with real datasets." });
+  if (lower.includes('what is software architecture')) return res.json({ reply: "Software architecture is the high-level structure of a software system, defining how components interact and are organized." });
+  if (lower.includes('how to implement algorithms')) return res.json({ reply: "Implement algorithms by understanding the logic, writing code step by step, and testing with different inputs." });
+  if (lower.includes('what is functional programming')) return res.json({ reply: "Functional programming is a paradigm where programs are built using pure functions, avoiding shared state and side effects." });
+  if (lower.includes('how to prepare coding projects')) return res.json({ reply: "Prepare coding projects by planning features, designing architecture, setting up version control, and breaking work into tasks." });
+  if (lower.includes('what is network security')) return res.json({ reply: "Network security protects computer networks from attacks and unauthorized access using firewalls, encryption, and monitoring." });
+  if (lower.includes('how to use docker')) return res.json({ reply: "Use Docker to package applications into containers for easy deployment. Learn basic commands: docker build, run, pull, and push." });
+  if (lower.includes('what is agile scrum')) return res.json({ reply: "Agile Scrum is a framework for managing projects with short iterations (sprints), daily standups, and regular reviews to improve teamwork and delivery." });
+  if (lower.includes('how to manage databases')) return res.json({ reply: "Manage databases by designing schemas, using SQL for queries, backing up data, and monitoring performance." });
+  if (lower.includes('what is version control')) return res.json({ reply: "Version control tracks changes to code, allowing collaboration and history tracking. Git is the most popular version control system." });
+  if (lower.includes('how to write unit tests')) return res.json({ reply: "Write unit tests by creating small tests for individual functions or components to ensure they work as expected. Use frameworks like Jest or Mocha." });
+  if (lower.includes('what is cloud storage')) return res.json({ reply: "Cloud storage lets you save data online and access it from anywhere. Examples: Google Drive, Dropbox, AWS S3." });
+  if (lower.includes('how to improve problem-solving')) return res.json({ reply: "Improve problem-solving by practicing coding challenges, learning algorithms, and analyzing different solutions." });
+  if (lower.includes('what is artificial intelligence')) return res.json({ reply: "Artificial intelligence (AI) is the simulation of human intelligence in machines, enabling them to learn, reason, and solve problems." });
+  if (lower.includes('how to learn linux commands')) return res.json({ reply: "Learn Linux commands by practicing in the terminal, following tutorials, and using cheat sheets for common commands." });
+  if (lower.includes('what is api documentation')) return res.json({ reply: "API documentation explains how to use an API, including endpoints, parameters, and examples. Good docs help developers integrate easily." });
+  if (lower.includes('how to improve code readability')) return res.json({ reply: "Improve code readability by using clear names, consistent formatting, comments, and breaking code into small functions." });
+  if (lower.includes('what is continuous delivery')) return res.json({ reply: "Continuous delivery is a practice where code changes are automatically prepared for release, enabling frequent and reliable deployments." });
+  if (lower.includes('how to automate testing')) return res.json({ reply: "Automate testing by writing scripts or using tools to run tests automatically, saving time and catching bugs early." });
+  if (lower.includes('what is big data')) return res.json({ reply: "Big data refers to extremely large datasets that require special tools and techniques to store, process, and analyze." });
+  if (lower.includes('how to learn algorithms and data structures')) return res.json({ reply: "Learn algorithms and data structures by studying theory, practicing problems, and building projects that use them." });
+  if (lower.includes('what is blockchain technology')) return res.json({ reply: "Blockchain is a decentralized digital ledger that records transactions securely and transparently. It's used in cryptocurrencies and more." });
+
+  // --- Fallback to OpenAI for anything else ---
+  if (!process.env.OPENAI_API_KEY) {
+    return res.json({ reply: intro ? `${intro}\nSorry, I cannot process your request right now. Please try again later.` : 'Sorry, I cannot process your request right now. Please try again later.' });
+  }
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: message }],
+      max_tokens: 200
+    });
+    const aiReply = completion.choices[0].message.content;
+    res.json({ reply: intro ? `${intro}\n${aiReply}` : aiReply });
+  } catch (err) {
+    res.status(500).json({ error: 'AI request failed', details: err.message });
+  }
 });
 
 const PORT = process.env.PORT || 5001;
