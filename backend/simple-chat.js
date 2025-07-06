@@ -60,6 +60,9 @@ app.post('/chat', async (req, res) => {
     isFirstMessage = false;
   }
 
+  // Always prepend this greeting
+  const greeting = 'Hello, I am Melkamu Assistant.';
+
   // --- Jokes & Fun ---
   if (lower.includes('joke') || lower.includes('make me laugh') || lower.includes('pun') || lower.includes('funny')) {
     let joke;
@@ -67,7 +70,7 @@ app.post('/chat', async (req, res) => {
       joke = techJokes[Math.floor(Math.random() * techJokes.length)];
     } while (joke === lastJoke && techJokes.length > 1);
     lastJoke = joke;
-    return res.json({ reply: intro ? `${intro}\n${joke}` : joke });
+    return res.json({ reply: `${greeting}\n${intro ? intro + '\n' : ''}${joke}` });
   }
   if (lower.includes('riddle')) {
     let riddle;
@@ -75,14 +78,13 @@ app.post('/chat', async (req, res) => {
       riddle = riddles[Math.floor(Math.random() * riddles.length)];
     } while (riddle === lastRiddle && riddles.length > 1);
     lastRiddle = riddle;
-    return res.json({ reply: intro ? `${intro}\n${riddle.question} (Say "answer" to get the answer!)` : riddle.question + ' (Say "answer" to get the answer!)' });
+    return res.json({ reply: `${greeting}\n${intro ? intro + '\n' : ''}${riddle.question} (Say "answer" to get the answer!)` });
   }
   if (lower.includes('answer')) {
-    // Just return a generic answer for now
-    return res.json({ reply: intro ? `${intro}\nThe answer is: ${riddles[0].answer}` : 'The answer is: ' + riddles[0].answer });
+    return res.json({ reply: `${greeting}\n${intro ? intro + '\n' : ''}The answer is: ${riddles[0].answer}` });
   }
   if (lower.includes('rock paper scissors')) {
-    return res.json({ reply: intro ? `${intro}\nLet's play! Type "rock", "paper", or "scissors".` : 'Let\'s play! Type "rock", "paper", or "scissors".' });
+    return res.json({ reply: `${greeting}\n${intro ? intro + '\n' : ''}Let's play! Type "rock", "paper", or "scissors".` });
   }
   if (rockPaperScissors.includes(lower.trim())) {
     const aiMove = rockPaperScissors[Math.floor(Math.random() * 3)];
@@ -90,7 +92,7 @@ app.post('/chat', async (req, res) => {
     if (lower === aiMove) result = "It's a tie!";
     else if ((lower === 'rock' && aiMove === 'scissors') || (lower === 'paper' && aiMove === 'rock') || (lower === 'scissors' && aiMove === 'paper')) result = 'You win!';
     else result = 'I win!';
-    return res.json({ reply: intro ? `${intro}\nYou: ${lower}\nAI: ${aiMove}\n${result}` : `You: ${lower}\nAI: ${aiMove}\n${result}` });
+    return res.json({ reply: `${greeting}\n${intro ? intro + '\n' : ''}You: ${lower}\nAI: ${aiMove}\n${result}` });
   }
 
   // --- Melkamu Wako Personal Background ---
@@ -337,7 +339,7 @@ app.post('/chat', async (req, res) => {
 
   // --- Fallback to OpenAI for anything else ---
   if (!process.env.OPENAI_API_KEY) {
-    return res.json({ reply: intro ? `${intro}\nSorry, I cannot process your request right now. Please try again later.` : 'Sorry, I cannot process your request right now. Please try again later.' });
+    return res.json({ reply: `${greeting}\n${intro ? intro + '\n' : ''}Sorry, I cannot process your request right now. Please try again later.` });
   }
   try {
     const completion = await openai.chat.completions.create({
@@ -346,7 +348,7 @@ app.post('/chat', async (req, res) => {
       max_tokens: 200
     });
     const aiReply = completion.choices[0].message.content;
-    res.json({ reply: intro ? `${intro}\n${aiReply}` : aiReply });
+    res.json({ reply: `${greeting}\n${intro ? intro + '\n' : ''}${aiReply}` });
   } catch (err) {
     res.status(500).json({ error: 'AI request failed', details: err.message });
   }
