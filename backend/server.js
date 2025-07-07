@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
+const axios = require('axios');
 
 // Load environment variables
 dotenv.config();
@@ -164,6 +165,59 @@ app.post('/api/subscribe', async (req, res) => {
         console.error('Error in /api/subscribe endpoint:', error);
         res.status(500).json({ success: false, message: 'Internal server error: Subscription failed.' });
     }
+});
+
+// --- Chatbot Logic (from simple-chat.js) ---
+async function askOpenRouter(message) {
+  try {
+    const response = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'mistralai/mistral-7b-instruct:free',
+        messages: [
+          {
+            role: 'system',
+            content: `You are Melkamu Wako's AI assistant. You can answer general questions, provide technical help, and chat about a wide range of topics. If someone asks about Melkamu Wako, you know he is a Computer Science and Engineering student and fullstack developer from Ethiopia, with experience in JavaScript, React, Python, Java, C++, C#, HTML/CSS, and projects like a weather app, e-commerce site, and grade management system. For all other questions, answer as a helpful AI assistant.\nAt the end of every reply, add: 'Created by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com'.`
+          },
+          { role: 'user', content: message }
+        ]
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    let reply = response.data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
+    const footer = "\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com";
+    if (!reply.includes("Created by Melkamu Wako")) {
+      reply += footer;
+    }
+    return reply;
+  } catch (err) {
+    console.error('OpenRouter API error:', err.response ? err.response.data : err.message);
+    throw err;
+  }
+}
+
+app.post('/chat', async (req, res) => {
+  const { message } = req.body;
+  if (!message) {
+    return res.status(400).json({ error: 'Message is required.' });
+  }
+  // Custom about-me reply
+  if (/about (you|melkamu|yourself)/i.test(message) || /melkamu wako/i.test(message)) {
+    return res.json({
+      reply: "I'm Melkamu Wako's AI assistant. Melkamu Wako is a Computer Science and Engineering student and passionate fullstack developer from Ethiopia. He has experience with JavaScript, React, Python, Java, C++, C#, and HTML/CSS. His projects include a weather app, e-commerce site, grade management system, and more.\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com"
+    });
+  }
+  try {
+    const reply = await askOpenRouter(message);
+    res.json({ reply });
+  } catch (error) {
+    res.status(500).json({ error: 'AI request failed', details: error.message });
+  }
 });
 
 // Error handling middleware
