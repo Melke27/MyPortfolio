@@ -3062,19 +3062,16 @@
           
           if(testNotificationBtn){
             testNotificationBtn.onclick = () => {
-                
-              console.log('Test notification button clicked');
+              if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+              }
               showNotification('This is a test notification! If you see this, notifications are working.');
-              
-              // Also test a simple backend call
               fetch('https://melkamuwako27-backend.onrender.com/health')
                 .then(response => response.json())
                 .then(data => {
-                  console.log('Backend health check:', data);
                   showNotification('Backend is working! Status: ' + data.status, 'success');
                 })
                 .catch(error => {
-                  console.error('Backend health check failed:', error);
                   showNotification('Backend is not responding. Check Render deployment.', 'error');
                 });
             };
