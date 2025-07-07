@@ -47,30 +47,28 @@ let lastJoke = null;
 let lastRiddle = null;
 let isFirstMessage = true;
 
-// Hugging Face Inference API call
-async function askHuggingFace(message) {
+// OpenRouter API call
+async function askOpenRouter(message) {
   try {
     const response = await axios.post(
-      'https://api-inference.huggingface.co/models/bigscience/bloom-560m',
+      'https://openrouter.ai/api/v1/chat/completions',
       {
-        inputs: message,
-        parameters: { max_new_tokens: 100 }
+        model: 'mistralai/mistral-7b-instruct:free',
+        messages: [
+          { role: 'user', content: message }
+        ]
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.HF_API_KEY}`
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json'
         }
       }
     );
-    if (Array.isArray(response.data) && response.data[0]?.generated_text) {
-      return response.data[0].generated_text;
-    } else if (response.data.generated_text) {
-      return response.data.generated_text;
-    } else {
-      return JSON.stringify(response.data);
-    }
+    // Extract the reply from the response
+    return response.data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
   } catch (err) {
-    console.error('Hugging Face API error:', err.response ? err.response.data : err.message);
+    console.error('OpenRouter API error:', err.response ? err.response.data : err.message);
     throw err;
   }
 }
@@ -82,7 +80,7 @@ app.post('/chat', async (req, res) => {
     return res.status(400).json({ error: 'Message is required.' });
   }
   try {
-    const reply = await askHuggingFace(message);
+    const reply = await askOpenRouter(message);
     res.json({ reply });
   } catch (error) {
     res.status(500).json({ error: 'AI request failed', details: error.message });
