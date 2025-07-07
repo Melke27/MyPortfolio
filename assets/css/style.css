@@ -5590,26 +5590,6 @@ pre code {
   max-width: 100%;
 }
 
-.row-cols-1 > * {
-  flex: 0 0 100%;
-  max-width: 100%;
-}
-
-.row-cols-2 > * {
-  flex: 0 0 50%;
-  max-width: 50%;
-}
-
-.row-cols-3 > * {
-  flex: 0 0 33.33333%;
-  max-width: 33.33333%;
-}
-
-.row-cols-4 > * {
-  flex: 0 0 25%;
-  max-width: 25%;
-}
-
 .row-cols-5 > * {
   flex: 0 0 20%;
   max-width: 20%;
@@ -14152,10 +14132,6 @@ button.bg-dark:focus {
 
 .font-weight-light {
   font-weight: 300 !important;
-}
-
-.font-weight-lighter {
-  font-weight: lighter !important;
 }
 
 .font-weight-normal {
