@@ -1048,3 +1048,14 @@ footer {
         gap: 10px;
     }
 }
+
+/* Minimize boldness and ensure white text for Contact Me button */
+.contact-btn, .btn-green {
+  font-weight: 400 !important;
+  color: #fff !important;
+}
+
+/* Optionally, make the icon white too */
+.contact-btn i, .btn-green i {
+  color: #fff !important;
+}
