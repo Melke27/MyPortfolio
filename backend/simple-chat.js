@@ -49,19 +49,24 @@ let isFirstMessage = true;
 
 // Hugging Face Inference API call
 async function askHuggingFace(message) {
-  const response = await axios.post(
-    'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2',
-    {
-      inputs: message,
-      parameters: { max_new_tokens: 100 }
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.HF_API_KEY}`
+  try {
+    const response = await axios.post(
+      'https://api-inference.huggingface.co/models/gpt2',
+      {
+        inputs: message,
+        parameters: { max_new_tokens: 100 }
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.HF_API_KEY}`
+        }
       }
-    }
-  );
-  return response.data[0]?.generated_text || "Sorry, I couldn't generate a response.";
+    );
+    return response.data[0]?.generated_text || "Sorry, I couldn't generate a response.";
+  } catch (err) {
+    console.error('Hugging Face API error:', err.response ? err.response.data : err.message);
+    throw err;
+  }
 }
 
 // --- Main Chatbot Logic ---
