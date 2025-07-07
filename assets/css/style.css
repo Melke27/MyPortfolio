@@ -18,6 +18,7 @@
 
 
 
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -14841,4 +14842,42 @@ footer .btn-social i, .footer .btn-social i {
 #view-all-posts-btn:hover {
   background: #5bbd3e !important;
   color: #fff !important;
+}
+body.dark-mode {
+  background-color: #181a1b !important;
+  color: #f1f1f1 !important;
+}
+
+body.dark-mode a {
+  color: #90cdf4 !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .navbar,
+body.dark-mode .footer,
+body.dark-mode .container,
+body.dark-mode .section-title,
+body.dark-mode .modal-content {
+  background-color: #23272b !important;
+  color: #f1f1f1 !important;
+}
+
+body.dark-mode .btn,
+body.dark-mode .btn-primary {
+  background-color: #2563eb !important;
+  color: #fff !important;
+  border-color: #2563eb !important;
+}
+
+body.dark-mode .btn-outline-light {
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: #23272b !important;
+  color: #f1f1f1 !important;
+  border-color: #444 !important;
 }

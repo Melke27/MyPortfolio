@@ -177,6 +177,11 @@
                             $submitButton.prop('disabled', false).text(originalText);
                         }
                     });
+
+                    // Fallback: Always reset button after 10 seconds in case AJAX hangs
+                    setTimeout(function() {
+                        $submitButton.prop('disabled', false).text(originalText);
+                    }, 10000);
                 });
             }
         };
