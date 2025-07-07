@@ -51,7 +51,7 @@ let isFirstMessage = true;
 async function askHuggingFace(message) {
   try {
     const response = await axios.post(
-      'https://api-inference.huggingface.co/models/gpt2',
+      'https://api-inference.huggingface.co/models/bigscience/bloom-560m',
       {
         inputs: message,
         parameters: { max_new_tokens: 100 }
@@ -62,7 +62,13 @@ async function askHuggingFace(message) {
         }
       }
     );
-    return response.data[0]?.generated_text || "Sorry, I couldn't generate a response.";
+    if (Array.isArray(response.data) && response.data[0]?.generated_text) {
+      return response.data[0].generated_text;
+    } else if (response.data.generated_text) {
+      return response.data.generated_text;
+    } else {
+      return JSON.stringify(response.data);
+    }
   } catch (err) {
     console.error('Hugging Face API error:', err.response ? err.response.data : err.message);
     throw err;
