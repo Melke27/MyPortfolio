@@ -2,16 +2,11 @@
 const express = require('express');
 const cors = require('cors');
 // const dotenv = require('dotenv');
-const { OpenAI } = require('openai');
 const axios = require('axios');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
 
 // --- Jokes, Games, and Fun Data ---
 const techJokes = [
