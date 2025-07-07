@@ -2756,7 +2756,11 @@
 
         <!-- Minimal modals/panels for each feature -->
         <div id="chatbotModal" style="display:none;position:fixed;bottom:80px;right:60px;width:250px;height:300px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.2);overflow:hidden;z-index:10020;display:flex;flex-direction:column;">
-          <div style="background:#007bff;color:#fff;padding:6px 10px;font-weight:bold;font-size:0.8rem;">AI Assistant <span style="float:right;cursor:pointer;font-size:1.1rem;user-select:none;" id="closeChatbotModal">&times;</span></div>
+          <div style="background:#007bff;color:#fff;padding:6px 10px;font-weight:bold;font-size:0.8rem;display:flex;align-items:center;">
+            <img src="assets/img/MELKAMU.jpg" alt="Melkamu Wako" style="width:28px;height:28px;border-radius:50%;margin-right:8px;border:2px solid #fff;object-fit:cover;">
+            <span>melke27 AI Assistant</span>
+            <span style="float:right;cursor:pointer;font-size:1.1rem;user-select:none;margin-left:auto;" id="closeChatbotModal">&times;</span>
+          </div>
           <div id="chatMessages" style="flex:1;overflow-y:auto;padding:6px 4px 4px 4px;font-size:0.75rem;background:#f8f9fa;"></div>
           <div style="display:flex;padding:4px 4px 4px 4px;background:#f0f0f0;">
             <input id="chatInput" type="text" class="form-control" placeholder="Type your message..." style="flex:1;font-size:0.75rem;padding:4px 6px;">
