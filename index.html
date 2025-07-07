@@ -15,6 +15,18 @@
         <!-- Template Javascript -->
         <!-- <script src="assets/js/main.js"></script> -->
 
+        <!-- Font Awesome CSS override to prevent conflicts -->
+        <style>
+        .fa, .fas, .fab, .far {
+          font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "FontAwesome", sans-serif !important;
+          font-style: normal !important;
+          font-weight: 400 !important;
+          font-variant: normal !important;
+          text-rendering: auto !important;
+          display: inline-block !important;
+        }
+        </style>
+
         <style>
             /* Custom styles for blog section to match the image */
             #blog .blog-header {
@@ -157,8 +169,8 @@
             }
 
             .expertise-icon {
-                font-size: 3.5rem; /* Larger icon size */
-                color: #007bff; /* Primary blue for icons, as seen in the image */
+                font-size: 2.5rem !important;
+                color: #007bff;
                 margin-bottom: 20px;
             }
 
@@ -490,7 +502,8 @@
           font-family: 'OpenDyslexic', Arial, sans-serif !important;
         }
         </style>
-        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/open-dyslexic" id="dyslexiaFontLink" disabled>
+        <!-- Remove OpenDyslexic font link to fix font loading error -->
+        <!-- <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/open-dyslexic" id="dyslexiaFontLink" disabled> -->
         <style>
           .certification-logo {
             max-width: 80px;
@@ -501,13 +514,11 @@
         </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
-        <!-- Spinner Start -->
-        <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+        <!-- Minimal Font Awesome icon test: Remove after confirming icons work -->
+        <!-- <div style="position:fixed;top:10px;right:10px;z-index:9999;background:#fff;padding:8px 16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);font-size:1.5rem;">
+          <i class="fas fa-download"></i> Font Awesome Test Icon
         </div> -->
-        <!-- Spinner End -->
+        <!-- After deployment, do a hard refresh (Ctrl+F5) to clear cache and test icons. -->
 
         <div class="wrapper">
             <!-- Sidebar Navigation -->
@@ -1479,10 +1490,27 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4 col-md-6 mb-4">
+                            <!-- New: Frontend Development -->
+                            <div class="col-lg-2 col-md-4 mb-4">
                                 <div class="expertise-card">
                                     <div class="expertise-icon">
-                                        <i class="fas fa-server fa-4x" style="color:#007bff;"></i>
+                                        <i class="fas fa-laptop-code fa-2x" style="color:#007bff;"></i>
+                                    </div>
+                                    <h4>Frontend Development</h4>
+                                    <ul class="expertise-list">
+                                        <li>HTML, CSS, JavaScript</li>
+                                        <li>React.js</li>
+                                        <li>Responsive Design</li>
+                                        <li>UI/UX</li>
+                                        <li>Accessibility</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Backend Development -->
+                            <div class="col-lg-2 col-md-4 mb-4">
+                                <div class="expertise-card">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-server fa-2x" style="color:#007bff;"></i>
                                     </div>
                                     <h4>Backend Development</h4>
                                     <ul class="expertise-list">
@@ -1494,10 +1522,11 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6 mb-4">
+                            <!-- Database & Storage -->
+                            <div class="col-lg-2 col-md-4 mb-4">
                                 <div class="expertise-card">
                                     <div class="expertise-icon">
-                                        <i class="fas fa-database fa-4x" style="color:#007bff;"></i>
+                                        <i class="fas fa-database fa-2x" style="color:#007bff;"></i>
                                     </div>
                                     <h4>Database & Storage</h4>
                                     <ul class="expertise-list">
@@ -1509,10 +1538,11 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6 mb-4">
+                            <!-- Security & Performance -->
+                            <div class="col-lg-2 col-md-4 mb-4">
                                 <div class="expertise-card">
                                     <div class="expertise-icon">
-                                        <i class="fas fa-shield-alt fa-4x" style="color:#007bff;"></i>
+                                        <i class="fas fa-shield-alt fa-2x" style="color:#007bff;"></i>
                                     </div>
                                     <h4>Security & Performance</h4>
                                     <ul class="expertise-list">
@@ -1521,6 +1551,22 @@
                                         <li>Performance Optimization</li>
                                         <li>Error Handling</li>
                                         <li>Logging & Monitoring</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- New: DevOps & Cloud -->
+                            <div class="col-lg-2 col-md-4 mb-4">
+                                <div class="expertise-card">
+                                    <div class="expertise-icon">
+                                        <i class="fas fa-cloud fa-2x" style="color:#007bff;"></i>
+                                    </div>
+                                    <h4>DevOps & Cloud</h4>
+                                    <ul class="expertise-list">
+                                        <li>Docker & CI/CD</li>
+                                        <li>Cloud Platforms</li>
+                                        <li>Deployment Automation</li>
+                                        <li>Monitoring</li>
+                                        <li>Scaling</li>
                                     </ul>
                                 </div>
                             </div>
