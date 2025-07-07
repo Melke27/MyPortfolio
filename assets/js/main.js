@@ -144,6 +144,8 @@
                     var $submitButton = $(this).find('button[type="submit"]');
                     var originalText = $submitButton.text();
                     
+                    // Prevent multiple submissions
+                    if ($submitButton.prop('disabled')) return;
                     $submitButton.prop('disabled', true).text('Sending...');
                     
                     var formData = {
@@ -159,7 +161,7 @@
                         contentType: 'application/json',
                         data: JSON.stringify(formData),
                         success: function(response) {
-                            $('#success').html('Message sent successfully!').show();
+                            $('#success').html('Thank you! Your message has been sent successfully.').show();
                             $('#error').hide();
                             $contactForm[0].reset();
                         },
