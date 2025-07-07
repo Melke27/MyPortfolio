@@ -2839,7 +2839,21 @@
               div.style.borderBottom='1px solid #eee';
               
               if(sender === 'AI') {
-                div.innerHTML=`<span style="color:#007bff;font-weight:bold;font-size:0.8rem;">${sender}:</span> <span style="font-size:0.85rem;">${msg}</span>`;
+                // Check for Melkamu Wako footer and replace with styled block
+                const footerText = 'Created by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com';
+                let mainMsg = msg;
+                let footerHtml = '';
+                if(msg.includes(footerText)) {
+                  mainMsg = msg.replace(footerText, '').trim();
+                  footerHtml = `<div class="ai-footer" style="display:flex;align-items:center;margin-top:8px;padding-top:6px;border-top:1px solid #e0e0e0;">
+                    <img src='assets/img/MELKAMU.jpg' alt='Melkamu Wako' style='width:28px;height:28px;border-radius:50%;margin-right:8px;object-fit:cover;'>
+                    <span style='font-size:0.8rem;color:#007bff;'>
+                      Created by Melkamu Wako, Fullstack Developer.<br>
+                      <a href='mailto:melkamuwako5@gmail.com' style='color:#007bff;text-decoration:underline;'>melkamuwako5@gmail.com</a>
+                    </span>
+                  </div>`;
+                }
+                div.innerHTML=`<span style="color:#007bff;font-weight:bold;font-size:0.8rem;">melke27 AI Assistant:</span> <span style="font-size:0.85rem;">${mainMsg}</span>${footerHtml}`;
                 // Show notification for AI messages
                 showNotification(msg);
               } else {
