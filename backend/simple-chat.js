@@ -50,6 +50,10 @@ async function askOpenRouter(message) {
       {
         model: 'mistralai/mistral-7b-instruct:free',
         messages: [
+          {
+            role: 'system',
+            content: `You are Melkamu Wako's AI assistant. Melkamu Wako is a Computer Science and Engineering student and passionate fullstack developer from Ethiopia. He has experience with JavaScript, React, Python, Java, C++, C#, and HTML/CSS. His projects include a weather app, e-commerce site, grade management system, and more. You know about his skills, projects, and background. Always introduce yourself as Melkamu Wako's assistant and offer to help with questions about him or his work. At the end of every reply, add: 'Created by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com'.`
+          },
           { role: 'user', content: message }
         ]
       },
@@ -60,8 +64,13 @@ async function askOpenRouter(message) {
         }
       }
     );
-    // Extract the reply from the response
-    return response.data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
+    // Extract the reply from the response and append the footer if not already present
+    let reply = response.data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
+    const footer = "\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com";
+    if (!reply.includes("Created by Melkamu Wako")) {
+      reply += footer;
+    }
+    return reply;
   } catch (err) {
     console.error('OpenRouter API error:', err.response ? err.response.data : err.message);
     throw err;
@@ -74,6 +83,14 @@ app.post('/chat', async (req, res) => {
   if (!message) {
     return res.status(400).json({ error: 'Message is required.' });
   }
+
+  // Custom about-me reply
+  if (/about (you|melkamu|yourself)/i.test(message) || /melkamu wako/i.test(message)) {
+    return res.json({
+      reply: "I'm Melkamu Wako's AI assistant. Melkamu Wako is a Computer Science and Engineering student and passionate fullstack developer from Ethiopia. He has experience with JavaScript, React, Python, Java, C++, C#, and HTML/CSS. His projects include a weather app, e-commerce site, grade management system, and more.\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com"
+    });
+  }
+
   try {
     const reply = await askOpenRouter(message);
     res.json({ reply });
