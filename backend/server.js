@@ -221,7 +221,6 @@ app.post('/chat', async (req, res) => {
 });
 
 // --- Visitor Notification Endpoint (Telegram Bot) ---
-const fetch = require('node-fetch');
 
 function sendTelegramNotification(message) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
