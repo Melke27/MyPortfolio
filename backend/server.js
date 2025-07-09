@@ -220,6 +220,41 @@ app.post('/chat', async (req, res) => {
   }
 });
 
+// --- Visitor Notification Endpoint (Telegram Bot) ---
+const fetch = require('node-fetch');
+
+function sendTelegramNotification(message) {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!botToken || !chatId) {
+    console.error('Telegram credentials not set.');
+    return Promise.resolve(); // Prevents breaking the flow if not set
+  }
+  const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+  return axios.post(url, {
+    chat_id: chatId,
+    text: message,
+  });
+}
+
+// Homepage route: notify on every visit
+app.get('/', (req, res) => {
+  sendTelegramNotification('👀 Someone visited your portfolio!')
+    .then(() => console.log('Telegram notification sent!'))
+    .catch(err => console.error('Telegram error:', err.response ? err.response.data : err));
+  res.send('Portfolio backend is running!');
+});
+
+// POST endpoint for frontend-triggered notification
+app.post('/notify-visit', (req, res) => {
+  sendTelegramNotification('👀 Someone visited your portfolio!')
+    .then(() => res.json({ success: true }))
+    .catch(err => {
+      console.error('Telegram error:', err.response ? err.response.data : err);
+      res.status(500).json({ success: false });
+    });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Global server error handler:', err);
@@ -227,11 +262,6 @@ app.use((err, req, res, next) => {
         success: false,
         message: 'An unexpected internal server error occurred.'
     });
-});
-
-// Add this route near the top, after app initialization
-app.get('/', (req, res) => {
-  res.send('Portfolio backend is running!');
 });
 
 // Start server
