@@ -537,6 +537,78 @@
             }
           }
         </style>
+        <style>
+          /* Visitor Name Modal Styles */
+          #visitorNameOverlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          #visitorNameModal {
+            background: #232946;
+            color: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 2.5rem 2rem 2rem 2rem;
+            min-width: 320px;
+            max-width: 90vw;
+            text-align: center;
+            position: relative;
+            font-family: 'Segoe UI', 'Open Sans', Arial, sans-serif;
+          }
+          #visitorNameModal h2 {
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #eebbc3;
+          }
+          #visitorNameInput {
+            width: 90%;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            border: 1.5px solid #eebbc3;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            background: #121629;
+            color: #fff;
+            outline: none;
+            transition: border 0.2s;
+          }
+          #visitorNameInput:focus {
+            border: 2px solid #eebbc3;
+          }
+          .visitorNameBtn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+          }
+          #visitorNameSubmit {
+            background: #eebbc3;
+            color: #232946;
+          }
+          #visitorNameSubmit:hover {
+            background: #fff;
+            color: #232946;
+          }
+          #visitorNameCancel {
+            background: #232946;
+            color: #eebbc3;
+            border: 1.5px solid #eebbc3;
+          }
+          #visitorNameCancel:hover {
+            background: #eebbc3;
+            color: #232946;
+          }
+        </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
         <!-- Minimal Font Awesome icon test: Remove after confirming icons work -->
@@ -3230,6 +3302,48 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ name: visitorName })
             });
+          });
+        </script>
+
+        <div id="visitorNameOverlay">
+          <div id="visitorNameModal">
+            <h2>What is your name to see this profile?</h2>
+            <input id="visitorNameInput" type="text" placeholder="Enter your name..." autocomplete="off" />
+            <div style="margin-top:1.2rem;">
+              <button id="visitorNameSubmit" class="visitorNameBtn">Continue</button>
+              <button id="visitorNameCancel" class="visitorNameBtn">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <script>
+          // Custom modal for visitor name
+          document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.getElementById('visitorNameOverlay');
+            const input = document.getElementById('visitorNameInput');
+            const submitBtn = document.getElementById('visitorNameSubmit');
+            const cancelBtn = document.getElementById('visitorNameCancel');
+            function sendName(name) {
+              fetch('https://melkamuwako27-backend.onrender.com/notify-visit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+              });
+            }
+            submitBtn.onclick = function() {
+              let name = input.value.trim();
+              if (!name) name = 'Unknown visitor';
+              sendName(name);
+              overlay.style.display = 'none';
+            };
+            cancelBtn.onclick = function() {
+              sendName('Unknown visitor');
+              overlay.style.display = 'none';
+            };
+            input.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') submitBtn.click();
+            });
+            // Autofocus input
+            setTimeout(() => { input.focus(); }, 100);
           });
         </script>
 
