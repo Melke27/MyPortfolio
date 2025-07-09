@@ -10,12 +10,8 @@ dotenv.config();
 
 const app = express();
 
-// Enable CORS with specific options
-app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// Enable CORS for all origins (for troubleshooting CORS errors)
+app.use(cors());
 
 // Middleware
 app.use(express.json());
