@@ -246,7 +246,8 @@ app.get('/', (req, res) => {
 
 // POST endpoint for frontend-triggered notification
 app.post('/notify-visit', (req, res) => {
-  sendTelegramNotification('👀 Someone visited your portfolio!')
+  const name = req.body.name || 'Unknown visitor';
+  sendTelegramNotification(`👀 ${name} visited your portfolio!`)
     .then(() => res.json({ success: true }))
     .catch(err => {
       console.error('Telegram error:', err.response ? err.response.data : err);

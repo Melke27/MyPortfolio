@@ -3220,6 +3220,19 @@
           }
         </script>
 
+        <script>
+          // Prompt for visitor name and notify backend
+          window.addEventListener('DOMContentLoaded', function() {
+            let visitorName = prompt("Welcome! What's your name?");
+            if (!visitorName || visitorName.trim() === "") visitorName = "Unknown visitor";
+            fetch('https://melkamuwako27-backend.onrender.com/notify-visit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: visitorName })
+            });
+          });
+        </script>
+
     </body>
 
 </html> 
