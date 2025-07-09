@@ -270,4 +270,6 @@ app.listen(PORT, () => {
     console.log('Environment:', process.env.NODE_ENV || 'development');
     console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Configured' : 'Not configured');
     console.log('Brevo API key configured:', !!apiKey.apiKey);
+    console.log('TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN);
+    console.log('TELEGRAM_CHAT_ID:', process.env.TELEGRAM_CHAT_ID);
 });
