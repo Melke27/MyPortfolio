@@ -3068,6 +3068,7 @@
             }
             
             function appendMsg(sender,msg){
+              console.log('[appendMsg] sender:', sender, 'msg:', msg); // Debug
               const div=document.createElement('div');
               div.style.marginBottom='6px';
               div.style.padding='4px 0';
@@ -3117,6 +3118,7 @@
             
             async function sendMsg(){
               const msg=chatInput.value.trim();
+              console.log('[sendMsg] Message to send:', msg); // Debug
               if(!msg||isWaiting)return;
               appendMsg('You',msg);
               chatInput.value='';
@@ -3126,18 +3128,18 @@
               const backendUrl = 'https://melkamuwako27-backend.onrender.com/chat';
               
               try{
-                console.log('Sending message to backend:', msg);
+                console.log('[sendMsg] Sending fetch to backend...');
                 const resp=await fetch(backendUrl,{
                   method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})
                 });
-                console.log('Backend response status:', resp.status);
+                console.log('[sendMsg] Backend response status:', resp.status);
                 
                 if (!resp.ok) {
                   throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
                 }
                 
                 const data=await resp.json();
-                console.log('Backend response data:', data);
+                console.log('[sendMsg] Backend response data:', data);
                 // Show the raw response in the chat window for debugging
                 appendMsg('AI', 'DEBUG: ' + JSON.stringify(data));
                 setTyping(false);
@@ -3145,13 +3147,12 @@
                 if(data.reply) {
                   appendMsg('AI',data.reply);
                 } else if(data.error) {
-                  console.error('Backend error:', data.error);
+                  console.error('[sendMsg] Backend error:', data.error);
                   appendMsg('AI','Sorry, there was an error processing your request. Please try again.');
                 } else {
                   appendMsg('AI','Sorry, I could not answer.');
                 }
               }catch(e){
-                console.error('Backend error:', e);
                 setTyping(false);
                 
                 // Try fallback response
@@ -3163,7 +3164,7 @@
             
             if(sendChatBtn&&chatInput){
               sendChatBtn.onclick=sendMsg;
-              sendChatBtn.addEventListener('touchend', sendMsg);
+              // Removed: sendChatBtn.addEventListener('touchend', sendMsg);
               chatInput.addEventListener('keydown', function(e){if(e.key==='Enter')sendMsg();});
               chatInput.addEventListener('keyup', function(e){if(e.key==='Enter')sendMsg();});
             }
