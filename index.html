@@ -609,6 +609,42 @@
             color: #232946;
           }
         </style>
+        <style>
+        /* Responsive chatbot modal and floating button for mobile */
+        @media (max-width: 600px) {
+          #chatbotModal {
+            width: 95vw !important;
+            min-width: 0 !important;
+            height: 60vh !important;
+            right: 2vw !important;
+            bottom: 90px !important;
+            left: unset !important;
+            border-radius: 10px !important;
+            font-size: 1rem !important;
+            z-index: 10020 !important;
+          }
+          #chatMessages {
+            font-size: 0.95rem !important;
+            padding: 8px 6px 6px 6px !important;
+          }
+          #chatInput {
+            font-size: 1rem !important;
+            padding: 6px 8px !important;
+          }
+          #sendChatBtn {
+            font-size: 0.95rem !important;
+            padding: 6px 12px !important;
+          }
+          #floatingChatbotBtn {
+            width: 48px !important;
+            height: 48px !important;
+            bottom: 20px !important;
+            right: 10px !important;
+            font-size: 1.3rem !important;
+            z-index: 10010 !important;
+          }
+        }
+        </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
         <!-- Minimal Font Awesome icon test: Remove after confirming icons work -->
@@ -3125,7 +3161,9 @@
             
             if(sendChatBtn&&chatInput){
               sendChatBtn.onclick=sendMsg;
-              chatInput.onkeydown=function(e){if(e.key==='Enter')sendMsg();};
+              sendChatBtn.addEventListener('touchend', sendMsg);
+              chatInput.addEventListener('keydown', function(e){if(e.key==='Enter')sendMsg();});
+              chatInput.addEventListener('keyup', function(e){if(e.key==='Enter')sendMsg();});
             }
             // Always set close button handler
             if(closeChat&&chatModal){
@@ -3292,19 +3330,6 @@
           }
         </script>
 
-        <script>
-          // Prompt for visitor name and notify backend
-          window.addEventListener('DOMContentLoaded', function() {
-            let visitorName = prompt("Welcome! What's your name?");
-            if (!visitorName || visitorName.trim() === "") visitorName = "Unknown visitor";
-            fetch('https://melkamuwako27-backend.onrender.com/notify-visit', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name: visitorName })
-            });
-          });
-        </script>
-
         <div id="visitorNameOverlay">
           <div id="visitorNameModal">
             <h2>What is your name to see this profile?(Optional)</h2>
@@ -3316,17 +3341,50 @@
           </div>
         </div>
         <script>
+          // Helper to get device and browser info
+          function getDeviceInfo() {
+            const ua = navigator.userAgent;
+            let device = 'PC';
+            if (/Mobi|Android/i.test(ua)) device = 'Phone';
+            else if (/Tablet|iPad/i.test(ua)) device = 'Tablet';
+            return {
+              device,
+              browser: navigator.userAgent
+            };
+          }
+          // Helper to get location info from a public API
+          async function getLocationInfo() {
+            try {
+              const res = await fetch('https://ipapi.co/json/');
+              if (!res.ok) return {};
+              const data = await res.json();
+              return {
+                ip: data.ip,
+                city: data.city,
+                region: data.region,
+                country: data.country_name
+              };
+            } catch (e) {
+              return {};
+            }
+          }
           // Custom modal for visitor name
           document.addEventListener('DOMContentLoaded', function() {
             const overlay = document.getElementById('visitorNameOverlay');
             const input = document.getElementById('visitorNameInput');
             const submitBtn = document.getElementById('visitorNameSubmit');
             const cancelBtn = document.getElementById('visitorNameCancel');
-            function sendName(name) {
+            async function sendName(name) {
+              const deviceInfo = getDeviceInfo();
+              const locationInfo = await getLocationInfo();
               fetch('https://melkamuwako27-backend.onrender.com/notify-visit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name })
+                body: JSON.stringify({
+                  name,
+                  ...deviceInfo,
+                  ...locationInfo
+                })
               });
             }
             submitBtn.onclick = function() {
