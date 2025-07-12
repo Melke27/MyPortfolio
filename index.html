@@ -3124,26 +3124,20 @@
               chatInput.value='';
               setTyping(true);
               isWaiting=true;
-              
               const backendUrl = 'https://melkamuwako27-backend.onrender.com/chat';
-              
               try{
                 console.log('[sendMsg] Sending fetch to backend...');
                 const resp=await fetch(backendUrl,{
                   method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})
                 });
                 console.log('[sendMsg] Backend response status:', resp.status);
-                
                 if (!resp.ok) {
                   throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
                 }
-                
                 const data=await resp.json();
                 console.log('[sendMsg] Backend response data:', data);
-                // Show the raw response in the chat window for debugging
                 appendMsg('AI', 'DEBUG: ' + JSON.stringify(data));
                 setTyping(false);
-                
                 if(data.reply) {
                   appendMsg('AI',data.reply);
                 } else if(data.error) {
@@ -3154,12 +3148,12 @@
                 }
               }catch(e){
                 setTyping(false);
-                
-                // Try fallback response
+                console.error('[sendMsg] Network/backend error:', e);
                 appendMsg('AI', 'Sorry, the AI backend is not available or there was a network error.');
                 showNotification('Backend is not available or there was a network error.', 'error');
+              } finally {
+                isWaiting = false;
               }
-              isWaiting=false;
             }
             
             if(sendChatBtn&&chatInput){
