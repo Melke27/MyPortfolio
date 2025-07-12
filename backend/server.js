@@ -243,7 +243,15 @@ app.get('/', (req, res) => {
 // POST endpoint for frontend-triggered notification
 app.post('/notify-visit', (req, res) => {
   const name = req.body.name || 'Unknown visitor';
-  sendTelegramNotification(`👀 ${name} visited your portfolio!`)
+  const device = req.body.device || 'Unknown device';
+  const browser = req.body.browser || 'Unknown browser';
+  const ip = req.body.ip || 'Unknown IP';
+  const city = req.body.city || '';
+  const region = req.body.region || '';
+  const country = req.body.country || '';
+  const location = [city, region, country].filter(Boolean).join(', ');
+  const message = `👀 ${name} visited your portfolio!\nDevice: ${device}\nBrowser: ${browser}\nIP: ${ip}\nLocation: ${location}`;
+  sendTelegramNotification(message)
     .then(() => res.json({ success: true }))
     .catch(err => {
       console.error('Telegram error:', err.response ? err.response.data : err);
