@@ -3153,8 +3153,8 @@
                 setTyping(false);
                 
                 // Try fallback response
-                appendMsg('AI', 'Sorry, the AI backend is not available right now.');
-                showNotification('Backend is not available.', 'error');
+                appendMsg('AI', 'Sorry, the AI backend is not available or there was a network error.');
+                showNotification('Backend is not available or there was a network error.', 'error');
               }
               isWaiting=false;
             }
