@@ -3136,20 +3136,20 @@
                 }
                 const data=await resp.json();
                 console.log('[sendMsg] Backend response data:', data);
+                // Always show the raw backend response for debugging
                 appendMsg('AI', 'DEBUG: ' + JSON.stringify(data));
                 setTyping(false);
-                if(data.reply) {
-                  appendMsg('AI',data.reply);
+                if(data.reply && typeof data.reply === 'string' && data.reply.trim() !== '') {
+                  appendMsg('AI', data.reply);
                 } else if(data.error) {
-                  console.error('[sendMsg] Backend error:', data.error);
-                  appendMsg('AI','Sorry, there was an error processing your request. Please try again.');
+                  appendMsg('AI', 'Error: ' + data.error + (data.details ? ' (' + data.details + ')' : ''));
                 } else {
-                  appendMsg('AI','Sorry, I could not answer.');
+                  appendMsg('AI', 'No reply field in backend response: ' + JSON.stringify(data));
                 }
               }catch(e){
                 setTyping(false);
                 console.error('[sendMsg] Network/backend error:', e);
-                appendMsg('AI', 'Sorry, the AI backend is not available or there was a network error.');
+                appendMsg('AI', 'Sorry, the AI backend is not available or there was a network error. Error: ' + e.message);
                 showNotification('Backend is not available or there was a network error.', 'error');
               } finally {
                 isWaiting = false;
@@ -3428,10 +3428,6 @@
         });
         </script>
 
-        <script>
-alert('Chatbot JS loaded!');
-console.log('Chatbot JS loaded!');
-        </script>
 
     </body>
 
