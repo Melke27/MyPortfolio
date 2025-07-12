@@ -2398,8 +2398,28 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5);
 }
 
-.btn, .btn-primary, .fab, .fas {
-  font-weight: 400 !important;
+/* Minimize and standardize all button styles for visibility */
+.btn, .btn-primary, .btn-success, .btn-outline-primary, .btn-outline-success, .btn-outline-light, .btn-outline-dark, .btn-secondary, .btn-info, .btn-warning, .btn-danger {
+  background: #78CC6D !important;
+  color: #222 !important;
+  border: 1px solid #4eb941 !important;
+  font-size: 0.92rem !important;
+  font-weight: 500 !important;
+  padding: 0.4rem 1.1rem !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  transition: background 0.2s, color 0.2s;
+}
+.btn:hover, .btn:focus {
+  background: #5ec251 !important;
+  color: #111 !important;
+  border-color: #4eb941 !important;
+}
+.btn:disabled, .btn.disabled {
+  opacity: 0.6 !important;
+  background: #b7e4b0 !important;
+  color: #888 !important;
+  border-color: #b7e4b0 !important;
 }
 
 .btn-success {
@@ -13335,9 +13355,6 @@ button.bg-dark:focus {
 }
 
 @media (min-width: 992px) {
-  .m-lg-0 {
-    margin: 0 !important;
-  }
   .mt-lg-0,
   .my-lg-0 {
     margin-top: 0 !important;
