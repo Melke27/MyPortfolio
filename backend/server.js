@@ -198,6 +198,9 @@ async function askOpenRouter(message) {
 }
 
 app.post('/chat', async (req, res) => {
+  console.log('--- /chat endpoint hit ---');
+  console.log('Request body:', req.body);
+  console.log('User-Agent:', req.headers['user-agent']);
   const { message } = req.body;
   if (!message) {
     return res.status(400).json({ error: 'Message is required.' });
@@ -212,6 +215,7 @@ app.post('/chat', async (req, res) => {
     const reply = await askOpenRouter(message);
     res.json({ reply });
   } catch (error) {
+    console.error('Error in /chat endpoint:', error);
     res.status(500).json({ error: 'AI request failed', details: error.message });
   }
 });
