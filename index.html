@@ -3153,6 +3153,7 @@
                 const data=await resp.json();
                 console.log('[sendMsg] Backend response data:', data);
                 setTyping(false);
+                appendMsg('AI', '[DEBUG] Raw backend response: ' + JSON.stringify(data));
                 if(data.reply && typeof data.reply === 'string' && data.reply.trim() !== '') {
                   appendMsg('AI', data.reply);
                 } else if(data.error) {
