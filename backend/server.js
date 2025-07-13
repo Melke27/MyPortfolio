@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const SibApiV3Sdk = require('sib-api-v3-sdk');
 const axios = require('axios');
 
 // Load environment variables
@@ -58,9 +57,9 @@ const Subscriber = mongoose.model('Subscriber', subscriberSchema);
 const blogRoutes = require('./routes/blogRoutes');
 
 // Email configuration
-const defaultClient = SibApiV3Sdk.ApiClient.instance;
-const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = process.env.BREVO_API_KEY;
+// REMOVE: const defaultClient = SibApiV3Sdk.ApiClient.instance;
+// REMOVE: const apiKey = defaultClient.authentications['api-key'];
+// REMOVE: apiKey.apiKey = process.env.BREVO_API_KEY;
 
 // Routes
 app.use('/api', blogRoutes);
@@ -83,20 +82,20 @@ app.post('/api/contact', async (req, res) => {
         console.log('Contact form saved successfully');
         // Send email notification using Brevo HTTP API
             try {
-            const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-            await apiInstance.sendTransacEmail({
-                sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
-                to: [{ email: 'melkamuwako5@gmail.com', name: 'Melkamu Wako' }],
-                    subject: `New Contact Form Submission from ${name}`,
-                htmlContent: `
-                        <h2>New Contact Form Submission</h2>
-                        <p><strong>Name:</strong> ${name}</p>
-                        <p><strong>Email:</strong> ${email}</p>
-                        <p><strong>Subject:</strong> ${subject || 'No subject'}</p>
-                        <p><strong>Message:</strong></p>
-                        <p>${message}</p>
-                    `
-                });
+            // REMOVE: const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+            // REMOVE: await apiInstance.sendTransacEmail({
+            // REMOVE:     sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
+            // REMOVE:     to: [{ email: 'melkamuwako5@gmail.com', name: 'Melkamu Wako' }],
+            // REMOVE:         subject: `New Contact Form Submission from ${name}`,
+            // REMOVE:     htmlContent: `
+            // REMOVE:         <h2>New Contact Form Submission</h2>
+            // REMOVE:         <p><strong>Name:</strong> ${name}</p>
+            // REMOVE:         <p><strong>Email:</strong> ${email}</p>
+            // REMOVE:         <p><strong>Subject:</strong> ${subject || 'No subject'}</p>
+            // REMOVE:         <p><strong>Message:</strong></p>
+            // REMOVE:         <p>${message}</p>
+            // REMOVE:     `
+            // REMOVE:     });
             console.log('Email notification sent via Brevo HTTP API');
             } catch (emailError) {
             console.error('Error sending email via Brevo HTTP API:', emailError);
@@ -136,25 +135,25 @@ app.post('/api/subscribe', async (req, res) => {
         await newSubscriber.save();
 
         // Send confirmation email if configured
-        if (defaultClient) {
-            try {
-                const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-                await apiInstance.sendTransacEmail({
-                    sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
-                    to: [{ email: email, name: 'Melkamu Wako' }],
-                    subject: 'Thank you for subscribing!',
-                    htmlContent: `
-                        <h2>Hello!</h2>
-                        <p>Thank you for subscribing to my newsletter. You will receive updates, articles, and resources directly to your inbox.</p>
-                        <p>Best regards,<br/>Melkamu Wako</p>
-                    `
-                });
-                console.log('Confirmation email sent to new subscriber:', email);
-            } catch (emailError) {
-                console.error('Error sending confirmation email via Brevo HTTP API:', emailError);
-                // Do not fail the subscription if confirmation email fails
-            }
-        }
+        // REMOVE: if (defaultClient) {
+        // REMOVE:     try {
+        // REMOVE:         const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+        // REMOVE:         await apiInstance.sendTransacEmail({
+        // REMOVE:             sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
+        // REMOVE:             to: [{ email: email, name: 'Melkamu Wako' }],
+        // REMOVE:             subject: 'Thank you for subscribing!',
+        // REMOVE:             htmlContent: `
+        // REMOVE:                 <h2>Hello!</h2>
+        // REMOVE:                 <p>Thank you for subscribing to my newsletter. You will receive updates, articles, and resources directly to your inbox.</p>
+        // REMOVE:                 <p>Best regards,<br/>Melkamu Wako</p>
+        // REMOVE:             `
+        // REMOVE:         });
+        // REMOVE:         console.log('Confirmation email sent to new subscriber:', email);
+        // REMOVE:     } catch (emailError) {
+        // REMOVE:         console.error('Error sending confirmation email via Brevo HTTP API:', emailError);
+        // REMOVE:         // Do not fail the subscription if confirmation email fails
+        // REMOVE:     }
+        // REMOVE: }
 
         res.status(201).json({ success: true, message: 'Subscription successful!' });
     } catch (error) {
@@ -278,7 +277,7 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     console.log('Environment:', process.env.NODE_ENV || 'development');
     console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Configured' : 'Not configured');
-    console.log('Brevo API key configured:', !!apiKey.apiKey);
+    // REMOVE: console.log('Brevo API key configured:', !!apiKey.apiKey);
     console.log('TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN);
     console.log('TELEGRAM_CHAT_ID:', process.env.TELEGRAM_CHAT_ID);
 });
