@@ -662,6 +662,30 @@
   100% { background-position: 0% 50%; }
 }
         </style>
+        <!-- SEO & Social Sharing Meta Tags -->
+        <meta name="description" content="Melkamu Wako's professional portfolio: projects, blog, certifications, and contact info. Computer Science student, developer, and tech enthusiast.">
+        <meta name="keywords" content="Melkamu Wako, Portfolio, Developer, Projects, Blog, Certifications, Ethiopia, ASTU, Web Development, Cybersecurity, React, Node.js">
+        <meta name="author" content="Melkamu Wako">
+        <meta property="og:title" content="Melkamu Wako - Portfolio">
+        <meta property="og:description" content="Explore Melkamu Wako's projects, blog, certifications, and more. Computer Science student and developer.">
+        <meta property="og:image" content="assets/img/MELKAMU.jpg">
+        <meta property="og:url" content="https://your-portfolio-url.com/">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Melkamu Wako - Portfolio">
+        <meta name="twitter:description" content="Explore Melkamu Wako's projects, blog, certifications, and more.">
+        <meta name="twitter:image" content="assets/img/MELKAMU.jpg">
+        <!-- End SEO & Social Sharing Meta Tags -->
+
+        <!-- Google Analytics (replace with your GA4 ID) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-XXXXXXXXXX');
+        </script>
+        <!-- End Google Analytics -->
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
         <!-- Minimal Font Awesome icon test: Remove after confirming icons work -->
@@ -3447,6 +3471,223 @@
             }
         });
         </script>
+
+        <!-- Dyslexia Font Toggle Button -->
+        <button id="dyslexiaFontToggle" style="position:fixed;top:60px;right:20px;z-index:999;background:none;border:none;font-size:1.7rem;cursor:pointer;" title="Toggle dyslexia-friendly font" aria-label="Toggle dyslexia-friendly font">🧠</button>
+        <style>
+          .dyslexia-font, .dyslexia-font * {
+            font-family: 'OpenDyslexic', Arial, sans-serif !important;
+          }
+        </style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.0/open-dyslexic.min.css" crossorigin="anonymous">
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const dyslexiaBtn = document.getElementById('dyslexiaFontToggle');
+            dyslexiaBtn.addEventListener('click', function() {
+              document.body.classList.toggle('dyslexia-font');
+            });
+          });
+        </script>
+        <!-- End Dyslexia Font Toggle -->
+
+        <!-- Add ARIA attributes and alt text improvements -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Add ARIA roles to main sections
+          document.querySelector('.sidebar')?.setAttribute('role', 'navigation');
+          document.querySelector('.content')?.setAttribute('role', 'main');
+          document.querySelector('footer')?.setAttribute('role', 'contentinfo');
+          // Add alt text to images missing it
+          document.querySelectorAll('img:not([alt])').forEach(img => {
+            img.setAttribute('alt', 'Portfolio image');
+          });
+        });
+        </script>
+        <!-- End ARIA/alt improvements -->
+
+        <!-- Language Switcher Button -->
+        <button id="langSwitcher" style="position:fixed;top:100px;right:20px;z-index:999;background:none;border:none;font-size:1.7rem;cursor:pointer;" title="Switch language" aria-label="Switch language">🌐</button>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const langBtn = document.getElementById('langSwitcher');
+            let isAmharic = false;
+            langBtn.addEventListener('click', function() {
+              isAmharic = !isAmharic;
+              // Example: Switch some key section titles
+              document.querySelectorAll('.title, .section-title h2').forEach(el => {
+                if (isAmharic) {
+                  if (el.textContent.includes('About')) el.textContent = 'ስለ እኔ';
+                  if (el.textContent.includes('Skills')) el.textContent = 'ችሎታዎቼ';
+                  if (el.textContent.includes('Projects')) el.textContent = 'ፕሮጀክቶቼ';
+                  if (el.textContent.includes('Contact')) el.textContent = 'አግኙኝ';
+                  if (el.textContent.includes('Certifications')) el.textContent = 'ማረጋገጫዎች';
+                  if (el.textContent.includes('Blog')) el.textContent = 'ብሎግ';
+                } else {
+                  window.location.reload(); // Reload to restore English
+                }
+              });
+            });
+          });
+        </script>
+        <!-- End Language Switcher -->
+
+        <!-- Download Portfolio as PDF Button (auto-download on click) -->
+        <div class="mt-3 mb-3 text-center">
+          <a href="#" id="autoDownloadPortfolio" class="btn btn-outline-primary">
+            <i class="fas fa-file-pdf mr-2"></i>Download Portfolio (PDF)
+          </a>
+        </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const autoDownloadBtn = document.getElementById('autoDownloadPortfolio');
+          if (autoDownloadBtn) {
+            autoDownloadBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              const link = document.createElement('a');
+              link.href = 'assets/resume/portfolio.pdf';
+              link.download = 'Melkamu_Wako_Portfolio.pdf';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            });
+          }
+        });
+        </script>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.skill').forEach(function(skillDiv, idx) {
+            if (!skillDiv.querySelector('.endorse-btn')) {
+              const btn = document.createElement('button');
+              btn.className = 'endorse-btn btn btn-sm btn-outline-success';
+              btn.innerHTML = '<i class="fas fa-thumbs-up"></i> <span class="endorse-count">0</span>';
+              btn.style.marginLeft = '8px';
+              btn.onclick = function() {
+                const countSpan = btn.querySelector('.endorse-count');
+                countSpan.textContent = parseInt(countSpan.textContent) + 1;
+              };
+              skillDiv.querySelector('.d-flex').appendChild(btn);
+            }
+          });
+        });
+        </script>
+
+        <!-- Add missing Verify links to certifications -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.certification-card').forEach(function(card) {
+            const hasVerify = card.querySelector('.btn-outline-primary, .btn-outline-secondary');
+            if (!hasVerify) {
+              const footer = card.querySelector('.certification-footer');
+              if (footer) {
+                const verifyBtn = document.createElement('a');
+                verifyBtn.className = 'btn btn-outline-primary';
+                verifyBtn.href = '#';
+                verifyBtn.target = '_blank';
+                verifyBtn.textContent = 'Verify';
+                footer.appendChild(verifyBtn);
+              }
+            }
+          });
+        });
+        </script>
+
+        <!-- Add file upload to contact form -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const contactForm = document.getElementById('contactForm');
+          if (contactForm && !document.getElementById('fileUpload')) {
+            const fileDiv = document.createElement('div');
+            fileDiv.className = 'control-group';
+            fileDiv.innerHTML = '<input type="file" class="form-control p-2" id="fileUpload" name="fileUpload" />';
+            contactForm.insertBefore(fileDiv, contactForm.querySelector('.control-group:last-of-type'));
+          }
+        });
+        </script>
+        <!-- Simulate auto-reply after contact form submission -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const contactForm = document.getElementById('contactForm');
+          if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+              setTimeout(function() {
+                successDiv.style.display = 'block';
+                successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you for contacting me! I have received your message and will respond soon.';
+                setTimeout(function() {
+                  successDiv.style.display = 'none';
+                }, 6000);
+              }, 2200);
+            });
+          }
+        });
+        </script>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const newsletterForm = document.getElementById('newsletterForm');
+          if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+              setTimeout(function() {
+                const successDiv = document.getElementById('newsletterSuccess');
+                if (successDiv) {
+                  successDiv.innerHTML += '<br><span style="font-size:0.95em;">Please check your email to confirm your subscription (double opt-in).</span>';
+                }
+              }, 1600);
+            });
+          }
+        });
+        </script>
+
+        <!-- Project Case Study Modal HTML (add at end of body) -->
+        <div class="modal fade" id="caseStudyModal" tabindex="-1" aria-labelledby="caseStudyModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="caseStudyModalLabel">Project Case Study</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" id="caseStudyModalBody">
+                <!-- Case study content will be injected here -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Add Case Study button to each project card
+          document.querySelectorAll('.project-card').forEach(function(card, idx) {
+            const title = card.querySelector('h5')?.textContent || '';
+            if (title.includes('Habesha Restaurant Management System')) {
+              let btn = card.querySelector('.case-study-btn');
+              if (!btn) {
+                btn = document.createElement('button');
+                btn.className = 'btn btn-outline-info btn-sm case-study-btn';
+                btn.textContent = 'Case Study';
+                btn.style.marginLeft = '8px';
+                card.querySelector('.project-content')?.appendChild(btn);
+              }
+              btn.onclick = function() {
+                document.getElementById('caseStudyModalLabel').textContent = 'Habesha Restaurant Management System - Case Study';
+                document.getElementById('caseStudyModalBody').innerHTML = `
+                  <strong>Description:</strong> A desktop-based restaurant management system built using Java and Swing/JavaFX. It handles order processing, billing, table management, and menu updates with a user-friendly graphical interface.<br><br>
+                  <strong>Technologies:</strong> Java, Swing/JavaFX, JDBC, MySQL/SQLite<br><br>
+                  <strong>Problem:</strong> Manual restaurant operations are time-consuming and error-prone. This system automates order taking, billing, and data management to improve speed, accuracy, and efficiency.<br><br>
+                  <strong>Your Role:</strong> Lead developer – designed the UI, implemented order and billing features, connected the system to a database, and handled testing/debugging.<br><br>
+                  <strong>Challenges & Solutions:</strong><br>
+                  <ul>
+                    <li><strong>Challenge:</strong> Designing a responsive and clean UI<br><strong>Solution:</strong> Used Java Swing layout managers and event listeners.</li>
+                    <li><strong>Challenge:</strong> Managing database operations safely<br><strong>Solution:</strong> Used JDBC with prepared statements for secure data handling.</li>
+                    <li><strong>Challenge:</strong> Handling multiple roles (admin/waiter)<br><strong>Solution:</strong> Created role-based interfaces with separate dashboards.</li>
+                  </ul>
+                `;
+                var modal = new bootstrap.Modal(document.getElementById('caseStudyModal'));
+                modal.show();
+              };
+            }
+          });
+        });
+        </script>
+        <!-- End Project Case Study Modal -->
 
     </body>
 

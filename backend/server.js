@@ -282,3 +282,11 @@ app.listen(PORT, () => {
     console.log('TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN);
     console.log('TELEGRAM_CHAT_ID:', process.env.TELEGRAM_CHAT_ID);
 });
+
+// Integrate Brevo contact endpoint
+try {
+  const brevoContact = require('./brevo-contact');
+  app.use('/', brevoContact);
+} catch (e) {
+  console.warn('Brevo contact integration skipped:', e.message);
+}

@@ -1,40 +1,38 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Form validation only
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            const nameInput = contactForm.querySelector('input[name="name"]');
-            const emailInput = contactForm.querySelector('input[name="email"]');
-            const messageInput = contactForm.querySelector('textarea[name="message"]');
+  const contactForm = document.getElementById('contactForm');
+  const successDiv = document.getElementById('success');
+  const errorDiv = document.getElementById('error');
 
-            const name = nameInput ? nameInput.value.trim() : '';
-            const email = emailInput ? emailInput.value.trim() : '';
-            const message = messageInput ? messageInput.value.trim() : '';
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-            const errorMessageElements = contactForm.querySelectorAll('.error-message');
-            errorMessageElements.forEach(el => el.textContent = ''); // Clear previous errors
+      const formData = {
+        name: contactForm.name.value,
+        email: contactForm.email.value,
+        subject: contactForm.subject.value,
+        message: contactForm.message.value
+      };
 
-            let isValid = true;
-
-            if (!name) {
-                isValid = false;
-                if (nameInput) nameInput.nextElementSibling.textContent = 'Name is required.';
-            }
-            if (!email) {
-                isValid = false;
-                if (emailInput) emailInput.nextElementSibling.textContent = 'Email is required.';
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                isValid = false;
-                if (emailInput) emailInput.nextElementSibling.textContent = 'Invalid email format.';
-            }
-            if (!message) {
-                isValid = false;
-                if (messageInput) messageInput.nextElementSibling.textContent = 'Message is required.';
-            }
-
-            if (!isValid) {
-                e.preventDefault();
-            }
+      try {
+        const resp = await fetch('https://YOUR_RENDER_BACKEND_URL/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
         });
-    }
+        if (resp.ok) {
+          successDiv.style.display = 'block';
+          successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';
+          errorDiv.style.display = 'none';
+          contactForm.reset();
+        } else {
+          throw new Error('Failed to send');
+        }
+      } catch (error) {
+        errorDiv.style.display = 'block';
+        errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sorry, there was an error sending your message. Please try again.';
+        successDiv.style.display = 'none';
+      }
+    });
+  }
 }); 
