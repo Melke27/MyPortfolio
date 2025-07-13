@@ -3133,24 +3133,24 @@
             
             async function sendMsg(){
               const msg=chatInput.value.trim();
-              console.log('[sendMsg] Message to send:', msg); // Debug
               if(!msg||isWaiting)return;
               appendMsg('You',msg);
               chatInput.value='';
               setTyping(true);
               isWaiting=true;
+              // Debug: show sending message
+              appendMsg('DEBUG', '[Mobile Debug] Sending message to backend...');
               const backendUrl = 'https://melkamuwako27-backend.onrender.com/chat';
               try{
-                console.log('[sendMsg] Sending fetch to backend...');
                 const resp=await fetch(backendUrl,{
                   method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})
                 });
-                console.log('[sendMsg] Backend response status:', resp.status);
+                appendMsg('DEBUG', '[Mobile Debug] Backend response status: ' + resp.status);
                 if (!resp.ok) {
                   throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
                 }
                 const data=await resp.json();
-                console.log('[sendMsg] Backend response data:', data);
+                appendMsg('DEBUG', '[Mobile Debug] Backend response data: ' + JSON.stringify(data));
                 setTyping(false);
                 if(data.reply && typeof data.reply === 'string' && data.reply.trim() !== '') {
                   appendMsg('AI', data.reply);
@@ -3161,10 +3161,9 @@
                 }
               }catch(e){
                 setTyping(false);
-                console.error('[sendMsg] Network/backend error:', e);
+                appendMsg('DEBUG', '[Mobile Debug] Network/backend error: ' + e.message);
                 appendMsg('AI', 'Network or server error: ' + e.message + '. Please check your internet connection, make sure the backend is online, and that your browser allows cross-site requests. If this error appears on mobile, the backend may be sleeping or blocked by your network.');
                 showNotification('Backend is not available or there was a network error.', 'error');
-                // Show a visible error banner in the chatbot UI
                 let errorBanner = document.getElementById('chatbotErrorBanner');
                 if (!errorBanner) {
                   errorBanner = document.createElement('div');
@@ -3175,6 +3174,8 @@
                 }
               } finally {
                 isWaiting = false;
+                // Always scroll chat to bottom after any message
+                setTimeout(()=>{ chatMessages.scrollTop = chatMessages.scrollHeight; }, 100);
               }
             }
             
