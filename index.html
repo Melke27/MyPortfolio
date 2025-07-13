@@ -3158,7 +3158,7 @@
                 } else if(data.error) {
                   appendMsg('AI', 'Error: ' + data.error + (data.details ? ' (' + data.details + ')' : ''));
                 } else {
-                  appendMsg('AI', 'No reply field in backend response: ' + JSON.stringify(data));
+                  appendMsg('AI', 'Sorry, I could not get a reply from the server. Please try again later.');
                 }
               }catch(e){
                 setTyping(false);
