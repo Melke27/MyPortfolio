@@ -3038,11 +3038,24 @@
                 console.log('Showing notification:', message, 'Type:', type); // Debug log
                 
                 // Browser notification
-                if ('Notification' in window && Notification.permission === 'granted') {
-                    console.log('Browser notification permission granted');
-                    new Notification('AI Assistant', { body: message, icon: '/assets/img/myko.png' });
+                if (
+                  'Notification' in window &&
+                  Notification.permission === 'granted' &&
+                  typeof Notification === 'function' &&
+                  // Avoid on mobile browsers where Notification is not constructible
+                  (() => {
+                    try {
+                      new Notification('test');
+                      return true;
+                    } catch (e) {
+                      return false;
+                    }
+                  })()
+                ) {
+                  console.log('Browser notification permission granted');
+                  new Notification('AI Assistant', { body: message, icon: '/assets/img/myko.png' });
                 } else {
-                    console.log('Browser notification not available or permission denied');
+                  console.log('Browser notification not available, not granted, or not supported on this device.');
                 }
                 
                 // Visual toast notification
