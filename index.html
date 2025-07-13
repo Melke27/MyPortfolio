@@ -3360,16 +3360,6 @@
           }
         </script>
 
-        <div id="visitorNameOverlay">
-          <div id="visitorNameModal">
-            <h2>What is your name to see this profile?(Optional)</h2>
-            <input id="visitorNameInput" type="text" placeholder="Enter your name..." autocomplete="off" />
-            <div style="margin-top:1.2rem;">
-              <button id="visitorNameSubmit" class="visitorNameBtn">Continue</button>
-              <button id="visitorNameCancel" class="visitorNameBtn">Cancel</button>
-            </div>
-          </div>
-        </div>
         <script>
           // Helper to get device and browser info
           function getDeviceInfo() {
@@ -3377,6 +3367,8 @@
             let device = 'PC';
             if (/Mobi|Android/i.test(ua)) device = 'Phone';
             else if (/Tablet|iPad/i.test(ua)) device = 'Tablet';
+            // Fallback to 'Visitor' if device is not detected
+            if (!device) device = 'Visitor';
             return {
               device,
               browser: navigator.userAgent
@@ -3398,40 +3390,20 @@
               return {};
             }
           }
-          // Custom modal for visitor name
-          document.addEventListener('DOMContentLoaded', function() {
-            const overlay = document.getElementById('visitorNameOverlay');
-            const input = document.getElementById('visitorNameInput');
-            const submitBtn = document.getElementById('visitorNameSubmit');
-            const cancelBtn = document.getElementById('visitorNameCancel');
-            async function sendName(name) {
-              const deviceInfo = getDeviceInfo();
-              const locationInfo = await getLocationInfo();
-              fetch('https://melkamuwako27-backend.onrender.com/notify-visit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  name,
-                  ...deviceInfo,
-                  ...locationInfo
-                })
-              });
-            }
-            submitBtn.onclick = function() {
-              let name = input.value.trim();
-              if (!name) name = 'Unknown visitor';
-              sendName(name);
-              overlay.style.display = 'none';
-            };
-            cancelBtn.onclick = function() {
-              sendName('Unknown visitor');
-              overlay.style.display = 'none';
-            };
-            input.addEventListener('keydown', function(e) {
-              if (e.key === 'Enter') submitBtn.click();
+          // Auto-send device/location info on page load (no modal)
+          document.addEventListener('DOMContentLoaded', async function() {
+            const deviceInfo = getDeviceInfo();
+            const locationInfo = await getLocationInfo();
+            // Always set name as '[Device] visitor'
+            fetch('https://melkamuwako27-backend.onrender.com/notify-visit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: deviceInfo.device + ' visitor',
+                ...deviceInfo,
+                ...locationInfo
+              })
             });
-            // Autofocus input
-            setTimeout(() => { input.focus(); }, 100);
           });
         </script>
 
