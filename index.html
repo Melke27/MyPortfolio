@@ -3153,7 +3153,7 @@
                 const data=await resp.json();
                 console.log('[sendMsg] Backend response data:', data);
                 setTyping(false);
-                appendMsg('AI', '[DEBUG] Raw backend response: ' + JSON.stringify(data));
+                // appendMsg('AI', '[DEBUG] Raw backend response: ' + JSON.stringify(data)); // Remove debug line
                 if(data.reply && typeof data.reply === 'string' && data.reply.trim() !== '') {
                   appendMsg('AI', data.reply);
                 } else if(data.error) {
@@ -3164,7 +3164,7 @@
               }catch(e){
                 setTyping(false);
                 console.error('[sendMsg] Network/backend error:', e);
-                appendMsg('AI', 'Sorry, the AI backend is not available or there was a network error. Error: ' + e.message);
+                appendMsg('AI', 'Network or server error: ' + e.message + '. Please check your connection or try again later.');
                 showNotification('Backend is not available or there was a network error.', 'error');
               } finally {
                 isWaiting = false;
