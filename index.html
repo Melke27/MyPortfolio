@@ -3712,46 +3712,6 @@
         });
         </script>
 
-        <!-- Enhanced dark/light mode toggle with system preference and smooth transitions -->
-        <script>
-        (function() {
-          const themeToggle = document.getElementById('themeToggle');
-          const themeIcon = document.getElementById('themeIcon');
-          // Detect system preference on first load
-          if (!localStorage.getItem('theme')) {
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (prefersDark) {
-              document.body.classList.add('dark-mode');
-              themeIcon.textContent = '☀️';
-              localStorage.setItem('theme', 'dark');
-            } else {
-              document.body.classList.remove('dark-mode');
-              themeIcon.textContent = '🌙';
-              localStorage.setItem('theme', 'light');
-            }
-          } else {
-            // Apply saved theme
-            if (localStorage.getItem('theme') === 'dark') {
-              document.body.classList.add('dark-mode');
-              themeIcon.textContent = '☀️';
-            } else {
-              document.body.classList.remove('dark-mode');
-              themeIcon.textContent = '🌙';
-            }
-          }
-          themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            if(document.body.classList.contains('dark-mode')) {
-              themeIcon.textContent = '☀️';
-              localStorage.setItem('theme', 'dark');
-            } else {
-              themeIcon.textContent = '🌙';
-              localStorage.setItem('theme', 'light');
-            }
-          });
-        })();
-        </script>
-
         <!-- Add notification bell button below sidebar theme toggle -->
         <div class="text-center mb-3">
           <button id="sidebarNotificationBtn" class="btn btn-outline-primary position-relative" style="margin-top:10px;">
