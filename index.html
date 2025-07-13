@@ -3694,10 +3694,17 @@
           const contactForm = document.getElementById('contactForm');
           const successDiv = document.getElementById('success');
           const errorDiv = document.getElementById('error');
+          const submitButton = document.getElementById('sendMessageButton');
 
           if (contactForm) {
             contactForm.addEventListener('submit', async (e) => {
               e.preventDefault();
+
+              // Show loading state
+              if (submitButton) {
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitButton.disabled = true;
+              }
 
               const formData = {
                 name: contactForm.name.value,
@@ -3724,6 +3731,12 @@
                 errorDiv.style.display = 'block';
                 errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sorry, there was an error sending your message. Please try again.';
                 successDiv.style.display = 'none';
+              } finally {
+                // Always reset button
+                if (submitButton) {
+                  submitButton.innerHTML = 'Send Message';
+                  submitButton.disabled = false;
+                }
               }
             });
           }
