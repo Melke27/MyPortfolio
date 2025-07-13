@@ -433,6 +433,7 @@
               --sidebar-text: #222;
               --btn-bg: #8BC34A;
               --btn-text: #fff;
+              transition: background 0.4s, color 0.4s;
             }
             [data-theme="dark"] {
               --bg-main: #181818;
@@ -467,19 +468,23 @@
             body, .content, .container, .section-padding, .card, .sidebar {
               background: var(--bg-main) !important;
               color: var(--text-main) !important;
+              transition: background 0.4s, color 0.4s;
             }
             .card, .section-title, .about-content, .skills-tabs, .timeline, .footer, .sidebar {
               background: var(--card-bg) !important;
               color: var(--text-main) !important;
+              transition: background 0.4s, color 0.4s;
             }
             .sidebar {
               background: var(--sidebar-bg) !important;
               color: var(--sidebar-text) !important;
+              transition: background 0.4s, color 0.4s;
             }
             .btn, .btn-primary, .btn-success {
               background: var(--btn-bg) !important;
               color: var(--btn-text) !important;
               border-color: var(--accent) !important;
+              transition: background 0.4s, color 0.4s;
             }
             .badge, .badge-primary {
               background: var(--accent) !important;
@@ -2959,26 +2964,29 @@
                 const filterButtons = document.querySelectorAll('.project-filter button');
                 const projectItems = document.querySelectorAll('.project-item');
 
+                // Helper for fade animation
+                function fadeOutIn(item, show) {
+                  if (show) {
+                    item.classList.remove('fade-out');
+                    item.classList.add('fade-in');
+                    item.style.display = 'block';
+                  } else {
+                    item.classList.remove('fade-in');
+                    item.classList.add('fade-out');
+                    setTimeout(() => { item.style.display = 'none'; }, 400);
+                  }
+                }
+
                 // Search functionality
                 if (searchInput) {
                     searchInput.addEventListener('input', (e) => {
                         const searchTerm = e.target.value.toLowerCase();
-                        
                         projectItems.forEach(item => {
-                            const title = item.querySelector('h5').textContent.toLowerCase();
+                            const title = item.querySelector('h5')?.textContent.toLowerCase() || '';
                             const description = item.querySelector('span, p')?.textContent.toLowerCase() || '';
                             const tech = Array.from(item.querySelectorAll('.badge')).map(badge => badge.textContent.toLowerCase()).join(' ');
-                            
-                            const matches = title.includes(searchTerm) || 
-                                          description.includes(searchTerm) || 
-                                          tech.includes(searchTerm);
-                            
-                            if (matches) {
-                                item.style.display = 'block';
-                                item.classList.add('fade-in');
-                            } else {
-                                item.style.display = 'none';
-                            }
+                            const matches = title.includes(searchTerm) || description.includes(searchTerm) || tech.includes(searchTerm);
+                            fadeOutIn(item, matches);
                         });
                     });
                 }
@@ -2986,20 +2994,12 @@
                 // Filter functionality
                 filterButtons.forEach(button => {
                     button.addEventListener('click', () => {
-                        // Remove active class from all buttons
                         filterButtons.forEach(btn => btn.classList.remove('active'));
-                        // Add active class to clicked button
                         button.classList.add('active');
-
                         const filterValue = button.getAttribute('data-filter');
-
                         projectItems.forEach(item => {
-                            if (filterValue === '*' || item.classList.contains(filterValue.replace('.', ''))) {
-                                item.style.display = 'block';
-                                item.classList.add('fade-in');
-                            } else {
-                                item.style.display = 'none';
-                            }
+                            const show = filterValue === '*' || item.classList.contains(filterValue.replace('.', ''));
+                            fadeOutIn(item, show);
                         });
                     });
                 });
@@ -3741,6 +3741,46 @@
             });
           }
         });
+        </script>
+
+        <!-- Enhanced dark/light mode toggle with system preference and smooth transitions -->
+        <script>
+        (function() {
+          const themeToggle = document.getElementById('themeToggle');
+          const themeIcon = document.getElementById('themeIcon');
+          // Detect system preference on first load
+          if (!localStorage.getItem('theme')) {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (prefersDark) {
+              document.body.classList.add('dark-mode');
+              themeIcon.textContent = '☀️';
+              localStorage.setItem('theme', 'dark');
+            } else {
+              document.body.classList.remove('dark-mode');
+              themeIcon.textContent = '🌙';
+              localStorage.setItem('theme', 'light');
+            }
+          } else {
+            // Apply saved theme
+            if (localStorage.getItem('theme') === 'dark') {
+              document.body.classList.add('dark-mode');
+              themeIcon.textContent = '☀️';
+            } else {
+              document.body.classList.remove('dark-mode');
+              themeIcon.textContent = '🌙';
+            }
+          }
+          themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            if(document.body.classList.contains('dark-mode')) {
+              themeIcon.textContent = '☀️';
+              localStorage.setItem('theme', 'dark');
+            } else {
+              themeIcon.textContent = '🌙';
+              localStorage.setItem('theme', 'light');
+            }
+          });
+        })();
         </script>
 
     </body>
