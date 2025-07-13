@@ -3151,19 +3151,18 @@
               chatInput.value='';
               setTyping(true);
               isWaiting=true;
-              // Debug: show sending message
-              appendMsg('DEBUG', '[Mobile Debug] Sending message to backend...');
+              // (DEBUG log removed)
               const backendUrl = 'https://melkamuwako27-backend.onrender.com/chat';
               try{
                 const resp=await fetch(backendUrl,{
                   method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})
                 });
-                appendMsg('DEBUG', '[Mobile Debug] Backend response status: ' + resp.status);
+                // (DEBUG log removed)
                 if (!resp.ok) {
                   throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
                 }
                 const data=await resp.json();
-                appendMsg('DEBUG', '[Mobile Debug] Backend response data: ' + JSON.stringify(data));
+                // (DEBUG log removed)
                 setTyping(false);
                 if(data.reply && typeof data.reply === 'string' && data.reply.trim() !== '') {
                   appendMsg('AI', data.reply);
@@ -3174,7 +3173,7 @@
                 }
               }catch(e){
                 setTyping(false);
-                appendMsg('DEBUG', '[Mobile Debug] Network/backend error: ' + e.message);
+                // (DEBUG log removed)
                 appendMsg('AI', 'Network or server error: ' + e.message + '. Please check your internet connection, make sure the backend is online, and that your browser allows cross-site requests. If this error appears on mobile, the backend may be sleeping or blocked by your network.');
                 showNotification('Backend is not available or there was a network error.', 'error');
                 let errorBanner = document.getElementById('chatbotErrorBanner');
@@ -3187,7 +3186,6 @@
                 }
               } finally {
                 isWaiting = false;
-                // Always scroll chat to bottom after any message
                 setTimeout(()=>{ chatMessages.scrollTop = chatMessages.scrollHeight; }, 100);
               }
             }
