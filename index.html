@@ -645,6 +645,24 @@
           }
         }
         </style>
+        <style>
+.typed-text-output {
+  background: linear-gradient(90deg, #8BC34A, #1976d2, #ff9800, #e91e63, #8BC34A);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradientMove 3s ease-in-out infinite;
+  font-weight: bold;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 0px 16px #fff;
+}
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+        </style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
         <!-- Minimal Font Awesome icon test: Remove after confirming icons work -->
@@ -2182,7 +2200,7 @@
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
         <!-- JavaScript Libraries -->
-        <script src="assets/lib/jquery/jquery-3.6.0.min.js"></script>
+        <script src="assets/lib/jquery-3.6.0.min.js"></script>
         <script src="assets/lib/bootstrap/bootstrap.bundle.min.js"></script>
         <script src="assets/lib/chart.js/chart.min.js"></script>
         <script src="assets/lib/easing/easing.min.js"></script>
@@ -3424,6 +3442,20 @@
         });
         </script>
 
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.jQuery && window.Typed && $('.typed-text-output').length == 1) {
+                var typed_strings = $('.typed-text').text();
+                var typed = new Typed('.typed-text-output', {
+                    strings: typed_strings.split(', '),
+                    typeSpeed: 100,
+                    backSpeed: 20,
+                    smartBackspace: false,
+                    loop: true
+                });
+            }
+        });
+        </script>
 
     </body>
 
