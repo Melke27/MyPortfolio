@@ -3152,7 +3152,6 @@
                 const data=await resp.json();
                 console.log('[sendMsg] Backend response data:', data);
                 setTyping(false);
-                // appendMsg('AI', '[DEBUG] Raw backend response: ' + JSON.stringify(data)); // Remove debug line
                 if(data.reply && typeof data.reply === 'string' && data.reply.trim() !== '') {
                   appendMsg('AI', data.reply);
                 } else if(data.error) {
@@ -3163,8 +3162,17 @@
               }catch(e){
                 setTyping(false);
                 console.error('[sendMsg] Network/backend error:', e);
-                appendMsg('AI', 'Network or server error: ' + e.message + '. Please check your connection or try again later.');
+                appendMsg('AI', 'Network or server error: ' + e.message + '. Please check your internet connection, make sure the backend is online, and that your browser allows cross-site requests. If this error appears on mobile, the backend may be sleeping or blocked by your network.');
                 showNotification('Backend is not available or there was a network error.', 'error');
+                // Show a visible error banner in the chatbot UI
+                let errorBanner = document.getElementById('chatbotErrorBanner');
+                if (!errorBanner) {
+                  errorBanner = document.createElement('div');
+                  errorBanner.id = 'chatbotErrorBanner';
+                  errorBanner.style.cssText = 'background:#dc3545;color:#fff;padding:8px 12px;margin:8px 0;border-radius:6px;font-size:0.9rem;text-align:center;';
+                  errorBanner.innerText = '⚠️ Unable to connect to the AI server. Please check your internet connection or try again later.';
+                  chatMessages.parentNode.insertBefore(errorBanner, chatMessages);
+                }
               } finally {
                 isWaiting = false;
               }
