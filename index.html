@@ -3027,7 +3027,22 @@
         <!-- Utility Sidebar Start -->
         <!-- REMOVE the entire <div id="utilitySidebar"> ... </div> block and the <div id="accessPanelSidebar"> ... </div> block -->
         <!-- Utility Sidebar End -->
-
+        <!-- ADD settings button for dark/light mode -->
+        <button id="themeToggle" style="position:fixed;top:20px;right:20px;z-index:999;background:none;border:none;font-size:2rem;cursor:pointer;" title="Toggle dark/light mode">
+            <span id="themeIcon">🌙</span>
+          </button>
+          <script>
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            themeToggle.addEventListener('click', function() {
+              document.body.classList.toggle('dark-mode');
+              if(document.body.classList.contains('dark-mode')) {
+                themeIcon.textContent = '☀️';
+              } else {
+                themeIcon.textContent = '🌙';
+              }
+            });
+          </script>
         <!-- Minimal modals/panels for each feature -->
         <div id="chatbotModal" style="display:none;position:fixed;bottom:80px;right:60px;width:250px;height:300px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.2);overflow:hidden;z-index:10020;display:flex;flex-direction:column;">
           <div style="background:#007bff;color:#fff;padding:6px 10px;font-weight:bold;font-size:0.8rem;display:flex;align-items:center;">
@@ -3318,54 +3333,8 @@
         })();
         </script>
 
-        <!-- ADD settings button for dark/light mode -->
-        <button id="themeToggle" style="position:fixed;top:20px;right:20px;z-index:999;background:none;border:none;font-size:2rem;cursor:pointer;" title="Toggle dark/light mode">
-          <span id="themeIcon">🌙</span>
-        </button>
-        <script>
-          const themeToggle = document.getElementById('themeToggle');
-          const themeIcon = document.getElementById('themeIcon');
-          themeToggle.addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            if(document.body.classList.contains('dark-mode')) {
-              themeIcon.textContent = '☀️';
-            } else {
-              themeIcon.textContent = '🌙';
-            }
-          });
-        </script>
 
-        <!-- Notification Bell Button (Advanced) -->
-        <div id="notification-container" style="position:fixed;top:24px;right:32px;z-index:2000;">
-          <button id="notification-btn" class="btn" style="position:relative;">
-            <i class="fas fa-bell"></i>
-            <span id="notification-badge" style="position:absolute;top:-8px;right:-8px;background:#dc3545;color:#fff;font-size:0.75rem;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;display:inline;">3</span>
-          </button>
-          <div id="notification-dropdown" style="display:none;position:absolute;right:0;top:40px;background:#fff;border:1px solid #4eb941;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.08);min-width:260px;">
-            <div style="padding:12px 16px;border-bottom:1px solid #eee;font-weight:600;">Notifications</div>
-            <div style="padding:10px 16px;">Welcome to my portfolio! 🎉</div>
-            <div style="padding:10px 16px;">You have a new message.</div>
-            <div style="padding:10px 16px;">Your certificate was viewed.</div>
-            <div style="padding:10px 16px;text-align:center;border-top:1px solid #eee;">
-              <button class="btn btn-sm" style="background:#b7e4b0;color:#222;" onclick="clearNotifications()">Mark all as read</button>
-            </div>
-          </div>
-        </div>
-        <script>
-          const notifBtn = document.getElementById('notification-btn');
-          const notifDropdown = document.getElementById('notification-dropdown');
-          notifBtn.addEventListener('click', function(e) {
-            notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
-            e.stopPropagation();
-          });
-          document.addEventListener('click', function() {
-            notifDropdown.style.display = 'none';
-          });
-          function clearNotifications() {
-            document.getElementById('notification-badge').style.display = 'none';
-            notifDropdown.style.display = 'none';
-          }
-        </script>
+
 
         <!-- Notify backend of portfolio visit (auto email notification) -->
         <script>
@@ -3781,6 +3750,44 @@
             }
           });
         })();
+        </script>
+
+        <!-- Add notification bell button below sidebar theme toggle -->
+        <div class="text-center mb-3">
+          <button id="sidebarNotificationBtn" class="btn btn-outline-primary position-relative" style="margin-top:10px;">
+            <i class="fas fa-bell"></i>
+            <span id="sidebarNotificationBadge" style="position:absolute;top:-8px;right:-8px;background:#dc3545;color:#fff;font-size:0.75rem;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;display:inline;">3</span>
+          </button>
+        </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const sidebarNotifBtn = document.getElementById('sidebarNotificationBtn');
+          const notifBtn = document.getElementById('notification-btn');
+          if (sidebarNotifBtn && notifBtn) {
+            sidebarNotifBtn.addEventListener('click', function(e) {
+              notifBtn.click(); // Open the main notification dropdown
+              e.stopPropagation();
+            });
+          }
+        });
+        </script>
+
+        <!-- Add floating notification bell button above chatbot button -->
+        <button id="floatingNotificationBtn" style="position:fixed;bottom:140px;right:30px;z-index:10011;width:44px;height:44px;border-radius:50%;background:#8BC34A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 4px 16px rgba(0,0,0,0.18);border:none;cursor:pointer;" title="Notifications">
+          <i class="fas fa-bell"></i>
+          <span id="floatingNotificationBadge" style="position:absolute;top:6px;right:6px;background:#dc3545;color:#fff;font-size:0.75rem;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;display:inline;">3</span>
+        </button>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const floatingNotifBtn = document.getElementById('floatingNotificationBtn');
+          const notifBtn = document.getElementById('notification-btn');
+          if (floatingNotifBtn && notifBtn) {
+            floatingNotifBtn.addEventListener('click', function(e) {
+              notifBtn.click(); // Open the main notification dropdown
+              e.stopPropagation();
+            });
+          }
+        });
         </script>
 
     </body>
