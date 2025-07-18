@@ -302,7 +302,7 @@ app.get('/api/weather', async (req, res) => {
 app.get('/api/tech-news', async (req, res) => {
   try {
     const apiKey = '983d34a1da60487e1d0f09c5f602b2b0';
-    const url = `https://newsdata.io/api/1/news?apikey=${apiKey}&category=technology&language=en`;
+    const url = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&apikey=${apiKey}`;
     const response = await axios.get(url);
     res.json(response.data);
   } catch (error) {
