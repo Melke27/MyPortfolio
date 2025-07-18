@@ -1332,10 +1332,32 @@
                             <p class="text-center text-muted mb-4" style="max-width:600px;margin:0 auto;font-size:1.1rem;">
                                 Each certificate represents a milestone in my learning journey. I am committed to continuous growth and excellence in technology.
                             </p>
-                            <!-- Download All Certificates Button -->
-                            <div class="text-center mb-4">
-                              <a href="melkamu wako protfolio and landing page/all-certificates.zip" class="btn btn-primary" download>
-                                <i class="fas fa-file-archive mr-2"></i>Download All Certificates (ZIP)
+                            <!-- Download Portfolio as PDF Button (auto-download on click) -->
+                            <div class="mt-3 mb-3 text-center">
+                              <a href="#" id="autoDownloadPortfolio" class="btn btn-outline-primary">
+                                <i class="fas fa-file-pdf mr-2"></i>Download Portfolio (PDF)
+                              </a>
+                            </div>
+                            <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                              const autoDownloadBtn = document.getElementById('autoDownloadPortfolio');
+                              if (autoDownloadBtn) {
+                                autoDownloadBtn.addEventListener('click', function(e) {
+                                  e.preventDefault();
+                                  const link = document.createElement('a');
+                                  link.href = 'assets/resume/portfolio.pdf';
+                                  link.download = 'Melkamu_Wako_Portfolio.pdf';
+                                  document.body.appendChild(link);
+                                  link.click();
+                                  document.body.removeChild(link);
+                                });
+                              }
+                            });
+                            </script>
+                            <!-- Download All Certificates as ZIP Button (green, below PDF) -->
+                            <div class="mb-3 text-center">
+                              <a href="melkamu wako protfolio and landing page/all-certificates.zip" class="btn" style="background:#4caf50;color:#111;font-size:1.35rem;padding:16px 32px;border-radius:14px;display:inline-flex;align-items:center;gap:12px;">
+                                <i class="fas fa-file-archive" style="font-size:1.5rem;"></i> Download All Certificates (ZIP)
                               </a>
                             </div>
                         </div>
@@ -1661,7 +1683,7 @@
                                 </div>
 
                                 <!-- Enhanced E-Commerce Store Project -->
-                                <div class="col-lg-4 col-md-6 mb-4 project-item web">
+                                <div class="col-lg-8 col-md-6 mb-4 project-item web">
                                     <div class="project-card">
                                         <div class="project-img">
                                             <img src="assets/img/e-commerce-img.avif" alt="Enhanced E-Commerce Store" class="img-fluid">
@@ -1678,6 +1700,19 @@
                                                 <span class="badge badge-primary">MongoDB</span>
                                             </div>
                                             <p>A modern e-commerce platform with advanced features, product catalog, cart, and secure checkout.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
+                                    <div class="card w-100" style="min-height:100%;">
+                                        <div class="card-body">
+                                            <h2 class="title position-relative pb-2 mb-4" style="font-size:1.5rem;">AI-powered <span class="text-primary">Resume Analyzer</span></h2>
+                                            <p class="mb-3">Upload your resume (PDF or DOCX) and get instant feedback on your skills, strengths, and suggestions for improvement!</p>
+                                            <form id="resumeAnalyzerForm" enctype="multipart/form-data">
+                                                <input type="file" id="resumeFile" name="resume" accept=".pdf,.doc,.docx" class="form-control mb-3" required />
+                                                <button type="submit" class="btn btn-success w-100">Analyze Resume</button>
+                                            </form>
+                                            <div id="resumeAnalysisResult" class="mt-4" style="display:none;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2197,9 +2232,7 @@
                                 <p><i class="fas fa-map-marker-alt mr-2"></i>N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
                                 <p><i class="fas fa-envelope mr-2"></i>melkamuwako5@gmail.com</p>
                                 <p><i class="fas fa-phone-alt mr-2"></i>+251 965595251</p>
-                                <div class="mt-4">
-                                    <a href="assets/resume/Melkamu_Wako_Resume.pdf" class="btn btn-primary mr-2" download><i class="fas fa-download mr-2"></i>Download CV</a>
-                                </div>
+                                <!-- Removed download buttons from footer -->
                             </div>
                         </div>
                         <div class="row pt-3">
@@ -2220,6 +2253,19 @@
 
                 <!-- Personalized Recommendations Start -->
                 <!-- Personalized Recommendations End -->
+
+                <!-- Personalized Greeting Bar -->
+                <div id="personalGreetingBar" style="position:fixed;top:60px;left:20px;z-index:2001;background:rgba(255,255,255,0.95);color:#232946;padding:8px 22px;border-radius:18px;font-weight:600;font-size:1.05rem;box-shadow:0 2px 8px rgba(0,0,0,0.10);display:flex;align-items:center;gap:8px;min-width:220px;max-width:90vw;transition:background 0.4s;">
+                  <span id="personalGreetingText">Welcome!</span>
+                </div>
+
+                <!-- Timeline Modal Placeholder -->
+                <div id="timelineModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.45);z-index:99999;align-items:center;justify-content:center;">
+                  <div id="timelineModalContent" style="background:#fff;color:#232946;border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:2.5rem 2rem 2rem 2rem;min-width:320px;max-width:90vw;text-align:left;position:relative;">
+                    <span id="closeTimelineModal" style="position:absolute;top:12px;right:18px;font-size:1.5rem;cursor:pointer;">&times;</span>
+                    <div id="timelineModalBody"></div>
+                  </div>
+                </div>
 
             </div>
         </div>
@@ -3591,254 +3637,87 @@
         </script>
         <!-- End Language Switcher -->
 
-        <!-- Download Portfolio as PDF Button (auto-download on click) -->
-        <div class="mt-3 mb-3 text-center">
-          <a href="#" id="autoDownloadPortfolio" class="btn btn-outline-primary">
-            <i class="fas fa-file-pdf mr-2"></i>Download Portfolio (PDF)
-          </a>
+        <!-- Live Visitor Counter -->
+        <div id="visitorCounter" style="position:fixed;top:16px;left:16px;z-index:2001;background:rgba(0,0,0,0.82);color:#fff;padding:4px 12px;border-radius:16px;font-weight:500;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,0.13);display:flex;align-items:center;gap:6px;min-width:70px;max-width:90vw;transition:box-shadow 0.3s, background 0.3s;opacity:0.92;cursor:pointer;">
+          <i class="fas fa-users"></i> <span id="visitorCount">1</span> online
         </div>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const autoDownloadBtn = document.getElementById('autoDownloadPortfolio');
-          if (autoDownloadBtn) {
-            autoDownloadBtn.addEventListener('click', function(e) {
-              e.preventDefault();
-              const link = document.createElement('a');
-              link.href = 'assets/resume/portfolio.pdf';
-              link.download = 'Melkamu_Wako_Portfolio.pdf';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            });
-          }
-        });
-        </script>
+        <style>
+        #visitorCounter {
+          position: fixed;
+          top: 16px;
+          left: 16px;
+          z-index: 2001;
+          background: rgba(0,0,0,0.82);
+          color: #fff;
+          padding: 4px 12px;
+          border-radius: 16px;
+          font-weight: 500;
+          font-size: 13px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          min-width: 70px;
+          max-width: 90vw;
+          transition: box-shadow 0.3s, background 0.3s;
+          opacity: 0.92;
+          cursor: pointer;
+          animation: badge-pop 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        #visitorCounter:hover {
+          box-shadow: 0 4px 16px rgba(33,150,243,0.18);
+          background: rgba(0,0,0,0.95);
+          opacity: 1;
+        }
+        #visitorCounter i {
+          font-size: 16px;
+          animation: badge-pulse 1.2s infinite;
+        }
+        @keyframes badge-pop {
+          0% { transform: scale(0.7); opacity: 0; }
+          80% { transform: scale(1.1); opacity: 1; }
+          100% { transform: scale(1); }
+        }
+        @keyframes badge-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.18); }
+        }
+        </style>
+        <!-- Animated Background -->
+        <div id="animatedBg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;"></div>
 
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          document.querySelectorAll('.skill').forEach(function(skillDiv, idx) {
-            if (!skillDiv.querySelector('.endorse-btn')) {
-              const btn = document.createElement('button');
-              btn.className = 'endorse-btn btn btn-sm btn-outline-success';
-              btn.innerHTML = '<i class="fas fa-thumbs-up"></i> <span class="endorse-count">0</span>';
-              btn.style.marginLeft = '8px';
-              btn.onclick = function() {
-                const countSpan = btn.querySelector('.endorse-count');
-                countSpan.textContent = parseInt(countSpan.textContent) + 1;
-              };
-              skillDiv.querySelector('.d-flex').appendChild(btn);
-            }
-          });
-        });
-        </script>
-
-        <!-- Add missing Verify links to certifications -->
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          document.querySelectorAll('.certification-card').forEach(function(card) {
-            const hasVerify = card.querySelector('.btn-outline-primary, .btn-outline-secondary');
-            if (!hasVerify) {
-              const footer = card.querySelector('.certification-footer');
-              if (footer) {
-                const verifyBtn = document.createElement('a');
-                verifyBtn.className = 'btn btn-outline-primary';
-                verifyBtn.href = '#';
-                verifyBtn.target = '_blank';
-                verifyBtn.textContent = 'Verify';
-                footer.appendChild(verifyBtn);
-              }
-            }
-          });
-        });
-        </script>
-
-        <!-- Add file upload to contact form -->
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const contactForm = document.getElementById('contactForm');
-          if (contactForm && !document.getElementById('fileUpload')) {
-            const fileDiv = document.createElement('div');
-            fileDiv.className = 'control-group';
-            fileDiv.innerHTML = '<input type="file" class="form-control p-2" id="fileUpload" name="fileUpload" />';
-            contactForm.insertBefore(fileDiv, contactForm.querySelector('.control-group:last-of-type'));
-          }
-        });
-        </script>
-        <!-- Simulate auto-reply after contact form submission -->
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const contactForm = document.getElementById('contactForm');
-          if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-              setTimeout(function() {
-                successDiv.style.display = 'block';
-                successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you for contacting me! I have received your message and will respond soon.';
-                setTimeout(function() {
-                  successDiv.style.display = 'none';
-                }, 6000);
-              }, 2200);
-            });
-          }
-        });
-        </script>
-
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const newsletterForm = document.getElementById('newsletterForm');
-          if (newsletterForm) {
-            newsletterForm.addEventListener('submit', function(e) {
-              setTimeout(function() {
-                const successDiv = document.getElementById('newsletterSuccess');
-                if (successDiv) {
-                  successDiv.innerHTML += '<br><span style="font-size:0.95em;">Please check your email to confirm your subscription (double opt-in).</span>';
-                }
-              }, 1600);
-            });
-          }
-        });
-        </script>
-
-        <!-- Project Case Study Modal HTML (add at end of body) -->
-        <div class="modal fade" id="caseStudyModal" tabindex="-1" aria-labelledby="caseStudyModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="caseStudyModalLabel">Project Case Study</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body" id="caseStudyModalBody">
-                <!-- Case study content will be injected here -->
-              </div>
+        <div id="topBar" style="position:fixed;top:0;right:0;width:auto;z-index:3000;display:flex;justify-content:flex-end;align-items:flex-start;padding:0;pointer-events:none;">
+          <!-- News Ticker -->
+          <div id="newsTicker" style="margin:8px 12px 0 0;background:linear-gradient(90deg,#2563eb 60%,#10b981 100%);color:#fff;font-weight:600;font-size:13px;line-height:1.3;padding:3px 0 3px 0;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);overflow:hidden;min-width:120px;max-width:60vw;pointer-events:auto;">
+            <div id="newsTickerText" style="display:inline-block;white-space:nowrap;animation:newsScroll 18s linear infinite;padding:0 14px;">
+              <span><i class="fas fa-newspaper" style="margin-right:6px;"></i>Latest: Welcome to my portfolio! 🚀 Check out my new AI-powered Resume Analyzer and Weather Widget! &nbsp;|&nbsp; Addis Ababa: 24°C &nbsp;|&nbsp; Stay tuned for more updates!</span>
             </div>
           </div>
         </div>
+        <style>
+        @keyframes newsScroll {
+          0% { transform: translateX(100vw); }
+          100% { transform: translateX(-100%); }
+        }
+        #newsTicker:hover { background:linear-gradient(90deg,#10b981 60%,#2563eb 100%); }
+        </style>
+
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          // Add Case Study button to each project card
-          document.querySelectorAll('.project-card').forEach(function(card, idx) {
-            const title = card.querySelector('h5')?.textContent || '';
-            if (title.includes('Habesha Restaurant Management System')) {
-              let btn = card.querySelector('.case-study-btn');
-              if (!btn) {
-                btn = document.createElement('button');
-                btn.className = 'btn btn-outline-info btn-sm case-study-btn';
-                btn.textContent = 'Case Study';
-                btn.style.marginLeft = '8px';
-                card.querySelector('.project-content')?.appendChild(btn);
-              }
-              btn.onclick = function() {
-                document.getElementById('caseStudyModalLabel').textContent = 'Habesha Restaurant Management System - Case Study';
-                document.getElementById('caseStudyModalBody').innerHTML = `
-                  <strong>Description:</strong> A desktop-based restaurant management system built using Java and Swing/JavaFX. It handles order processing, billing, table management, and menu updates with a user-friendly graphical interface.<br><br>
-                  <strong>Technologies:</strong> Java, Swing/JavaFX, JDBC, MySQL/SQLite<br><br>
-                  <strong>Problem:</strong> Manual restaurant operations are time-consuming and error-prone. This system automates order taking, billing, and data management to improve speed, accuracy, and efficiency.<br><br>
-                  <strong>Your Role:</strong> Lead developer – designed the UI, implemented order and billing features, connected the system to a database, and handled testing/debugging.<br><br>
-                  <strong>Challenges & Solutions:</strong><br>
-                  <ul>
-                    <li><strong>Challenge:</strong> Designing a responsive and clean UI<br><strong>Solution:</strong> Used Java Swing layout managers and event listeners.</li>
-                    <li><strong>Challenge:</strong> Managing database operations safely<br><strong>Solution:</strong> Used JDBC with prepared statements for secure data handling.</li>
-                    <li><strong>Challenge:</strong> Handling multiple roles (admin/waiter)<br><strong>Solution:</strong> Created role-based interfaces with separate dashboards.</li>
-                  </ul>
-                `;
-                var modal = new bootstrap.Modal(document.getElementById('caseStudyModal'));
-                modal.show();
-              };
+        async function fetchTechNews() {
+          try {
+            const res = await fetch('/api/tech-news');
+            const data = await res.json();
+            if (data.results && data.results.length > 0) {
+              const headlines = data.results.map(a => a.title).join(' &nbsp;|&nbsp; ');
+              document.getElementById('newsTickerText').innerHTML =
+                `<span><i class=\"fas fa-newspaper\" style=\"margin-right:6px;\"></i>${headlines}</span>`;
             }
-          });
-        });
-        </script>
-        <!-- End Project Case Study Modal -->
-
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const contactForm = document.getElementById('contactForm');
-          const successDiv = document.getElementById('success');
-          const errorDiv = document.getElementById('error');
-          const submitButton = document.getElementById('sendMessageButton');
-
-          if (contactForm) {
-            contactForm.addEventListener('submit', async (e) => {
-              e.preventDefault();
-
-              // Show loading state
-              if (submitButton) {
-                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                submitButton.disabled = true;
-              }
-
-              const formData = {
-                name: contactForm.name.value,
-                email: contactForm.email.value,
-                subject: contactForm.subject.value,
-                message: contactForm.message.value
-              };
-
-              try {
-                const resp = await fetch('https://melkamuwako27-backend.onrender.com/contact', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(formData)
-                });
-                if (resp.ok) {
-                  successDiv.style.display = 'block';
-                  successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';
-                  errorDiv.style.display = 'none';
-                  contactForm.reset();
-                } else {
-                  throw new Error('Failed to send');
-                }
-              } catch (error) {
-                errorDiv.style.display = 'block';
-                errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sorry, there was an error sending your message. Please try again.';
-                successDiv.style.display = 'none';
-              } finally {
-                // Always reset button
-                if (submitButton) {
-                  submitButton.innerHTML = 'Send Message';
-                  submitButton.disabled = false;
-                }
-              }
-            });
+          } catch (e) {
+            document.getElementById('newsTickerText').innerHTML =
+              `<span><i class=\"fas fa-newspaper\" style=\"margin-right:6px;\"></i>Unable to load news. Please try again later.</span>`;
           }
-        });
-        </script>
-
-        <!-- Add notification bell button below sidebar theme toggle -->
-        <div class="text-center mb-3">
-          <button id="sidebarNotificationBtn" class="btn btn-outline-primary position-relative" style="margin-top:10px;">
-            <i class="fas fa-bell"></i>
-            <span id="sidebarNotificationBadge" style="position:absolute;top:-8px;right:-8px;background:#dc3545;color:#fff;font-size:0.75rem;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;display:inline;">3</span>
-          </button>
-        </div>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const sidebarNotifBtn = document.getElementById('sidebarNotificationBtn');
-          const notifBtn = document.getElementById('notification-btn');
-          if (sidebarNotifBtn && notifBtn) {
-            sidebarNotifBtn.addEventListener('click', function(e) {
-              notifBtn.click(); // Open the main notification dropdown
-              e.stopPropagation();
-            });
-          }
-        });
-        </script>
-
-        <!-- Add floating notification bell button above chatbot button -->
-        <button id="floatingNotificationBtn" style="position:fixed;bottom:140px;right:30px;z-index:10011;width:44px;height:44px;border-radius:50%;background:#8BC34A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 4px 16px rgba(0,0,0,0.18);border:none;cursor:pointer;" title="Notifications">
-          <i class="fas fa-bell"></i>
-          <span id="floatingNotificationBadge" style="position:absolute;top:6px;right:6px;background:#dc3545;color:#fff;font-size:0.75rem;padding:2px 6px;border-radius:10px;min-width:18px;text-align:center;display:inline;">3</span>
-        </button>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-          const floatingNotifBtn = document.getElementById('floatingNotificationBtn');
-          const notifBtn = document.getElementById('notification-btn');
-          if (floatingNotifBtn && notifBtn) {
-            floatingNotifBtn.addEventListener('click', function(e) {
-              notifBtn.click(); // Open the main notification dropdown
-              e.stopPropagation();
-            });
-          }
-        });
+        }
+        document.addEventListener('DOMContentLoaded', fetchTechNews);
         </script>
 
     </body>

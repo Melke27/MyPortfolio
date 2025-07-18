@@ -69,45 +69,6 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'healthy', timestamp: new Date() });
 });
 
-app.post('/api/contact', async (req, res) => {
-    try {
-        console.log('Received contact form submission:', req.body);
-        const { name, email, subject, message } = req.body;
-        if (!name || !email || !message) {
-            return res.status(400).json({ success: false, message: 'Name, email, and message are required' });
-        }
-        // Save to database
-        const newContact = new Contact({ name, email, subject, message });
-        await newContact.save();
-        console.log('Contact form saved successfully');
-        // Send email notification using Brevo HTTP API
-            try {
-            // REMOVE: const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-            // REMOVE: await apiInstance.sendTransacEmail({
-            // REMOVE:     sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
-            // REMOVE:     to: [{ email: 'melkamuwako5@gmail.com', name: 'Melkamu Wako' }],
-            // REMOVE:         subject: `New Contact Form Submission from ${name}`,
-            // REMOVE:     htmlContent: `
-            // REMOVE:         <h2>New Contact Form Submission</h2>
-            // REMOVE:         <p><strong>Name:</strong> ${name}</p>
-            // REMOVE:         <p><strong>Email:</strong> ${email}</p>
-            // REMOVE:         <p><strong>Subject:</strong> ${subject || 'No subject'}</p>
-            // REMOVE:         <p><strong>Message:</strong></p>
-            // REMOVE:         <p>${message}</p>
-            // REMOVE:     `
-            // REMOVE:     });
-            console.log('Email notification sent via Brevo HTTP API');
-            } catch (emailError) {
-            console.error('Error sending email via Brevo HTTP API:', emailError);
-            return res.status(500).json({ success: false, message: 'Failed to send email notification.' });
-        }
-        res.status(201).json({ success: true, message: 'Message sent successfully!' });
-    } catch (error) {
-        console.error('Error in /api/contact endpoint:', error);
-        res.status(500).json({ success: false, message: 'Internal server error: Failed to process message.' });
-    }
-});
-
 // Subscribe to Newsletter
 app.post('/api/subscribe', async (req, res) => {
     try {
@@ -262,6 +223,34 @@ app.post('/notify-visit', (req, res) => {
     });
 });
 
+// --- Visitor Counter ---
+let onlineVisitors = 0;
+
+// Middleware to increment/decrement visitor count
+app.use((req, res, next) => {
+    if (req.path === '/api/visitors') return next(); // avoid loop
+    onlineVisitors = Math.max(onlineVisitors, 0);
+    next();
+});
+
+// Simple polling endpoint for online visitors
+app.get('/api/visitors', (req, res) => {
+    res.json({ count: onlineVisitors });
+});
+
+// Track online visitors using a simple in-memory approach
+// Increment on each new page load (frontend should ping this endpoint)
+app.post('/api/visitors', (req, res) => {
+    onlineVisitors++;
+    res.json({ success: true, count: onlineVisitors });
+});
+
+// Decrement when user leaves (frontend should call this on unload)
+app.delete('/api/visitors', (req, res) => {
+    onlineVisitors = Math.max(onlineVisitors - 1, 0);
+    res.json({ success: true, count: onlineVisitors });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Global server error handler:', err);
@@ -289,3 +278,34 @@ try {
 } catch (e) {
   console.warn('Brevo contact integration skipped:', e.message);
 }
+
+// --- Weather API Endpoint ---
+app.get('/api/weather', async (req, res) => {
+    const city = req.query.city;
+    if (!city) {
+        return res.status(400).json({ success: false, message: 'City is required as a query parameter.' });
+    }
+    const apiKey = process.env.WEATHER_API_KEY;
+    if (!apiKey) {
+        return res.status(500).json({ success: false, message: 'Weather API key not configured.' });
+    }
+    try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+        const response = await axios.get(url);
+        res.json({ success: true, data: response.data });
+    } catch (error) {
+        console.error('Weather API error:', error.response ? error.response.data : error.message);
+        res.status(500).json({ success: false, message: 'Failed to fetch weather data.' });
+    }
+});
+
+app.get('/api/tech-news', async (req, res) => {
+  try {
+    const apiKey = '983d34a1da60487e1d0f09c5f602b2b0';
+    const url = `https://newsdata.io/api/1/news?apikey=${apiKey}&category=technology&language=en`;
+    const response = await axios.get(url);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch news' });
+  }
+});

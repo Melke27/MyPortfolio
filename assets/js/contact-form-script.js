@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const contactForm = document.getElementById('contactForm');
+    const contactForm = document.getElementById('contactForm');
   const successDiv = document.getElementById('success');
   const errorDiv = document.getElementById('error');
 
-  if (contactForm) {
+    if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+                e.preventDefault();
 
       const formData = {
         name: contactForm.name.value,
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         errorDiv.style.display = 'block';
         errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sorry, there was an error sending your message. Please try again.';
         successDiv.style.display = 'none';
-      }
-    });
-  }
+            }
+        });
+    }
 }); 
