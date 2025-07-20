@@ -267,6 +267,18 @@
             if (!blogPostsContainer || typeof blogPostsData === 'undefined') return;
             let currentBlogIndex = 0;
             let showingAllBlogs = false;
+            function getLikes(slug) {
+                return parseInt(localStorage.getItem('blog_like_' + slug) || '0', 10);
+            }
+            function isLiked(slug) {
+                return localStorage.getItem('blog_liked_' + slug) === '1';
+            }
+            function setLiked(slug, liked) {
+                localStorage.setItem('blog_liked_' + slug, liked ? '1' : '0');
+            }
+            function setLikes(slug, count) {
+                localStorage.setItem('blog_like_' + slug, count.toString());
+            }
             function renderBlogs() {
                 blogPostsContainer.innerHTML = '';
                 let postsToDisplay = [];
@@ -276,6 +288,10 @@
                     postsToDisplay = blogPostsData.slice(currentBlogIndex, currentBlogIndex + 3);
                 }
                 postsToDisplay.forEach((post, idx) => {
+                    const slug = post.slug;
+                    const likes = getLikes(slug);
+                    const liked = isLiked(slug);
+                    const likeBtnClass = liked ? 'liked' : '';
                     const postHtml = `
                       <div class="col-lg-4 col-md-6 mb-4 blog-3d-animate">
                         <div class="card h-100 position-relative">
@@ -286,6 +302,12 @@
                             <p class="card-text">${post.description}</p>
                             <div class="mb-2">${post.tags.map(tag => `<span class='badge badge-primary mr-1'>${tag}</span>`).join(' ')}</div>
                             <a href="/blog-post.html?slug=${post.slug}" class="btn btn-success btn-sm mt-2">Read More</a>
+                            <div class="like-section mt-3">
+                              <button class="like-btn ${likeBtnClass}" data-slug="${slug}" aria-label="Like this post" style="background:none;border:none;outline:none;cursor:pointer;font-size:1.3rem;vertical-align:middle;">
+                                <i class="fa${liked ? 's' : 'r'} fa-heart" style="color:${liked ? '#e53935' : '#888'};"></i>
+                              </button>
+                              <span class="like-count" data-slug="${slug}" style="font-size:1.08rem;margin-left:6px;">${likes}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -298,6 +320,23 @@
                         el.classList.add('fade-in-3d');
                     });
                 }, 10);
+                // Like button event listeners
+                document.querySelectorAll('.like-btn').forEach(btn => {
+                    btn.onclick = function() {
+                        const slug = btn.getAttribute('data-slug');
+                        let likes = getLikes(slug);
+                        let liked = isLiked(slug);
+                        if (liked) {
+                            likes = Math.max(0, likes - 1);
+                            setLiked(slug, false);
+                        } else {
+                            likes = likes + 1;
+                            setLiked(slug, true);
+                        }
+                        setLikes(slug, likes);
+                        renderBlogs();
+                    };
+                });
             }
             function nextBlogs() {
                 if (showingAllBlogs) return; // Don't auto-rotate if viewing all

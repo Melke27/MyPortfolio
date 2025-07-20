@@ -651,22 +651,53 @@
         </style>
         <style>
 .typed-text-output {
-  background: linear-gradient(90deg, #8BC34A, #1976d2, #ff9800, #e91e63, #8BC34A);
-  background-size: 200% 200%;
+  background: linear-gradient(90deg, #43e97b, #38f9d7, #1fa2ff, #a259c6, #fd6e6a);
+  background-size: 300% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
   animation: gradientMove 3s ease-in-out infinite;
   font-weight: bold;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 0px 16px #fff;
+  text-shadow: 0 2px 8px rgba(33,150,243,0.12), 0 0px 16px #fff;
+  font-size: 1.25rem;
+  letter-spacing: 0.5px;
+  transition: opacity 0.5s;
+  opacity: 1;
 }
 @keyframes gradientMove {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+.typed-text-output.fade-in {
+  opacity: 0;
+  animation: fadeInTyped 0.7s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes fadeInTyped {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
         </style>
+        <script>
+        // Enhance fade-in for each new typed string
+        if (window.Typed) {
+          var origTyped = window.Typed;
+          window.Typed = function(el, options) {
+            var userOnStringTyped = options.onStringTyped;
+            options.onStringTyped = function(arrayPos, self) {
+              var out = document.querySelector('.typed-text-output');
+              if (out) {
+                out.classList.remove('fade-in');
+                void out.offsetWidth; // force reflow
+                out.classList.add('fade-in');
+              }
+              if (userOnStringTyped) userOnStringTyped(arrayPos, self);
+            };
+            return new origTyped(el, options);
+          };
+        }
+        </script>
         <!-- SEO & Social Sharing Meta Tags -->
         <meta name="description" content="Melkamu Wako's professional portfolio: projects, blog, certifications, and contact info. Computer Science student, developer, and tech enthusiast.">
         <meta name="keywords" content="Melkamu Wako, Portfolio, Developer, Projects, Blog, Certifications, Ethiopia, ASTU, Web Development, Cybersecurity, React, Node.js">
@@ -691,8 +722,149 @@
           gtag('config', 'G-XXXXXXXXXX');
         </script>
         <!-- End Google Analytics -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+        <style>
+        #skillsPieChart {
+          transition: transform 0.4s cubic-bezier(.68,-0.55,.27,1.55), box-shadow 0.4s;
+        }
+        #skillsPieChart:hover {
+          transform: scale(1.07) rotate(-2deg);
+          box-shadow: 0 8px 32px rgba(33,150,243,0.18);
+        }
+        </style>
+        <style>
+@keyframes radarPulse {
+  0%, 100% { transform: scale(1) rotate(-2deg); box-shadow: 0 8px 32px rgba(33,150,243,0.18); }
+  50% { transform: scale(1.08) rotate(-2deg); box-shadow: 0 16px 48px rgba(33,150,243,0.22); }
+}
+#skillsPieChart.pulse {
+  animation: radarPulse 2.2s cubic-bezier(.68,-0.55,.27,1.55) infinite;
+}
+</style>
     </head>
     <body data-spy="scroll" data-target=".navbar" data-offset="51">
+        <div id="topBar">
+            <span id="welcomeText" class="typing"></span>
+            <span id="topWeather"></span>
+        </div>
+        <style>
+            #topBar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 32px;
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 24px;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #fff;
+                background: linear-gradient(90deg, #43e97b 0%, #38f9d7 25%, #1fa2ff 50%, #a259c6 75%, #fd6e6a 100%);
+                background-size: 300% 100%;
+                animation: gradientMove 4s linear infinite;
+                box-shadow: 0 2px 12px rgba(33,150,243,0.13);
+                border-radius: 0 0 16px 16px;
+                transition: box-shadow 0.3s;
+            }
+            #welcomeText {
+                font-size: 1.05rem;
+                font-weight: bold;
+                letter-spacing: 0.5px;
+                margin-right: 18px;
+                white-space: nowrap;
+                border-right: 2px solid #fff;
+                overflow: hidden;
+                display: inline-block;
+                min-width: 180px;
+            }
+            #topWeather {
+                font-size: 0.98rem;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(255,255,255,0.13);
+                border-radius: 8px;
+                padding: 2px 10px;
+                color: #fff;
+                box-shadow: 0 1px 4px rgba(33,150,243,0.08);
+                animation: weatherFadeIn 1.1s cubic-bezier(.68,-0.55,.27,1.55);
+            }
+            #topWeather img {
+                width: 20px; height: 20px; vertical-align: middle; animation: weatherPulse 1.6s infinite;
+            }
+            @keyframes gradientMove {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            @keyframes weatherFadeIn {
+                0% { opacity:0; transform:translateY(-10px) scale(0.8); }
+                100% { opacity:1; transform:translateY(0) scale(1); }
+            }
+            @keyframes weatherPulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.18); }
+            }
+            @media (max-width: 600px) {
+                #topBar { font-size: 0.92rem; height: 26px; padding: 0 8px; }
+                #welcomeText { font-size: 0.98rem; }
+                #topWeather { font-size: 0.92rem; padding: 1px 6px; }
+            }
+        </style>
+        <script>
+        // Typing animation for welcome text
+        const welcomeMsg = 'Welcome to my portfolio';
+        let i = 0;
+        let typingForward = true;
+        function typeWelcome() {
+          const el = document.getElementById('welcomeText');
+          if (typingForward) {
+            if (i <= welcomeMsg.length) {
+              el.textContent = welcomeMsg.slice(0, i);
+              i++;
+              setTimeout(typeWelcome, 80);
+            } else {
+              typingForward = false;
+              setTimeout(typeWelcome, 1200);
+            }
+          } else {
+            if (i >= 0) {
+              el.textContent = welcomeMsg.slice(0, i);
+              i--;
+              setTimeout(typeWelcome, 30);
+            } else {
+              typingForward = true;
+              setTimeout(typeWelcome, 600);
+            }
+          }
+        }
+        document.addEventListener('DOMContentLoaded', typeWelcome);
+
+        async function fetchTopWeather() {
+            const apiKey = '08ea32421f9a6ad84334291f8942dc4d';
+            let city = 'Addis Ababa';
+            try {
+                const loc = await fetch('https://ipapi.co/json/').then(r => r.json());
+                if (loc && loc.city) city = loc.city;
+            } catch {}
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const icon = data.weather[0].icon;
+                const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
+                document.getElementById('topWeather').innerHTML =
+                    `<img src="${iconUrl}" alt="Weather"> <b>${data.name}:</b> ${Math.round(data.main.temp)}°C, ${data.weather[0].main}`;
+            } catch {
+                document.getElementById('topWeather').innerText = 'Weather unavailable';
+            }
+        }
+        fetchTopWeather();
+        </script>
         <!-- Minimal Font Awesome icon test: Remove after confirming icons work -->
         <!-- <div style="position:fixed;top:10px;right:10px;z-index:9999;background:#fff;padding:8px 16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.12);font-size:1.5rem;">
           <i class="fas fa-download"></i> Font Awesome Test Icon
@@ -763,7 +935,7 @@
                 </div>
 
                 <!-- About Start -->
-                <div class="container bg-white py-5" id="about">
+                <div class="container bg-white py-5" id="about" data-aos="fade-up">
                     <div class="row px-3">
                         <div class="col-12">
                             <h2 class="title position-relative pb-2 mb-4">About <span class="text-primary">Me</span></h2>
@@ -771,16 +943,156 @@
                         <div class="col-lg-6">
                             <div class="about-content">
                                 <h2>About Me</h2>
-                                <p>I am Melkamu Wako, a diligent Computer Science and Engineering student at Adama Science and Technology University (ASTU). My passion for technology spans across multiple domains, from competitive programming to full-stack development and cybersecurity.</p>
-                                
-                                <p>My expertise in C++ has been honed through competitive programming on platforms like Codeforces and LeetCode, where I solve complex algorithmic problems efficiently. This foundation in Data Structures and Algorithms enables me to tackle real-world challenges with optimal solutions.</p>
-                                
-                                <p>In web development, I excel at creating responsive and user-friendly interfaces using HTML, CSS, JavaScript, and React. My full-stack capabilities extend to backend development with Node.js, Java, and RESTful APIs, complemented by database expertise in MySQL, MongoDB, and SQLite.</p>
-                                
-                                <p>Beyond academics, I'm actively involved in CSEC ASTU and Team Alpha Robotics ASTU. My contributions to the robotics team helped secure 2nd place at the 2025 African Robotics Championship, where I developed scratch code and software automation systems. I'm also engaged in university tech clubs and peer-learning initiatives, constantly seeking opportunities for collaborative growth.</p>
-                                
-                                <p>My commitment to cybersecurity is demonstrated through ongoing training with Cisco Networking Academy, focusing on ethical hacking, network security, and cyber defense. This dedication to security complements my goal of becoming a safe, ethical, and effective technical professional.</p>
-
+                                <p>👨‍💻 I'm Melkamu Wako, a Web Developer and Computer Science & Engineering student at ASTU. I specialize in building modern, scalable web applications with React, Node.js, and databases like MySQL and MongoDB. With a strong foundation in C++ and competitive programming, I excel at solving complex problems and optimizing solutions. As an active member of CSEC ASTU and Team Alpha Robotics, I value teamwork, innovation, and continuous learning—especially in cybersecurity and ethical hacking. Let's build secure, impactful technology together.</p>
+                                <p>👉 See my skills and achievements below.</p>
+                                <a href="#about" id="readMoreAboutMeLink" class="text-primary" style="display:inline-block;font-weight:500;text-decoration:underline;margin-bottom:10px;">
+                                  Read More About Me <i class="fas fa-arrow-right"></i>
+                                </a>
+                                <div id="aboutMoreDetails" style="display:none;margin-top:18px;">
+                                <h1># About Me - Melkamu Wako</h1>
+                                <h2>Introduction</h2>
+                                <p>I'm Melkamu Wako, a dedicated and forward-thinking Computer Science and Engineering student at Adama Science and Technology University (ASTU). My passion for technology extends across multiple domains including web development, competitive programming, robotics, and cybersecurity. I view every line of code not just as syntax, but as a step toward solving real-world problems, building a better digital experience, and growing into a responsible tech leader. This portfolio outlines my journey, skills, achievements, and aspirations.</p>
+                                <h2>Academic Background</h2>
+                                <p>Currently pursuing a Bachelor of Science in Computer Science and Engineering at ASTU, I have consistently maintained a strong academic performance. My coursework has given me a solid foundation in computer systems, algorithms, database systems, networking, and software engineering. I complement this formal education with continuous self-learning through online platforms and hands-on projects.</p>
+                                <h2>Competitive Programming</h2>
+                                <p>One of my core strengths lies in competitive programming. I actively participate in coding contests on platforms such as Codeforces and LeetCode. I specialize in solving algorithmic problems that demand high proficiency in logic, data structures, and algorithmic thinking. My expertise in C++ has been pivotal in tackling time-sensitive and memory-constrained challenges efficiently.</p>
+                                <h3>Platforms I Use:</h3>
+                                <ul>
+                                <li><b>Codeforces:</b> Regular contestant, solving problems involving dynamic programming, greedy algorithms, graphs, and more.</li>
+                                <li><b>LeetCode:</b> Practicing advanced problems related to interviews and real-world use cases.</li>
+                                </ul>
+                                <p>These experiences sharpen my problem-solving skills and equip me to think analytically and optimize solutions under pressure.</p>
+                                <h2>Web Development Skills</h2>
+                                <p>As a full-stack web developer, I'm deeply passionate about building modern, responsive, and user-friendly web applications. My projects reflect attention to detail, usability, and performance.</p>
+                                <h3>Frontend:</h3>
+                                <ul>
+                                <li><b>Languages/Frameworks:</b> HTML5, CSS3, JavaScript (ES6+), React.js</li>
+                                <li><b>Design Tools & Practices:</b> Responsive design, mobile-first development, UI/UX principles</li>
+                                </ul>
+                                <h3>Backend:</h3>
+                                <ul>
+                                <li><b>Languages/Frameworks:</b> Node.js, Java (Spring Boot basics)</li>
+                                <li><b>APIs:</b> RESTful API development and integration</li>
+                                </ul>
+                                <h3>Databases:</h3>
+                                <ul>
+                                <li>MySQL</li>
+                                <li>MongoDB</li>
+                                <li>SQLite</li>
+                                </ul>
+                                <p>I've worked on both personal and team-based projects involving authentication, CRUD operations, form validations, user dashboards, and more. My development process involves version control (Git), testing, and clean code practices.</p>
+                                <h2>Robotics & Team Alpha Experience</h2>
+                                <p>As an active member of <b>Team Alpha Robotics ASTU</b>, I had the honor of contributing to our <b>2nd place victory at the 2025 African Robotics Championship</b>. My role involved developing automation software, integrating sensor inputs, and writing scratch code to control the robot's behaviors.</p>
+                                <h3>Key Contributions:</h3>
+                                <ul>
+                                <li>Developed a scratch-based control system for robot movement and logic execution.</li>
+                                <li>Collaborated with mechanical and electronics teams to ensure smooth integration.</li>
+                                <li>Participated in testing, debugging, and refining the robot's software for live performance.</li>
+                                </ul>
+                                <p>This experience sharpened my teamwork, interdisciplinary communication, and practical problem-solving abilities.</p>
+                                <h2>Cybersecurity Training & Goals</h2>
+                                <p>Security is at the core of every system I build. Currently, I am undergoing professional training with the <b>Cisco Networking Academy</b>, focusing on:</p>
+                                <ul>
+                                <li>Ethical Hacking</li>
+                                <li>Network Security</li>
+                                <li>Cyber Defense</li>
+                                <li>Security Best Practices</li>
+                                </ul>
+                                <p>I believe a responsible developer should also be security-aware. My goal is to specialize in <b>secure software development</b> and <b>ethical hacking</b>, ensuring the systems I build are not only functional but also robust and secure.</p>
+                                <h2>Tech Communities & Clubs</h2>
+                                <p>I am an active contributor and learner in several technology-focused communities at ASTU:</p>
+                                <h3>CSEC ASTU(Computer Science& Engineering Club)</h3>
+                                <ul>
+                                <li>Engaging in group studies and ethical hacking workshops</li>
+                                <li>Participating in Capture the Flag (CTF) simulations</li>
+                                <li>Promoting awareness of digital safety on campus</li>
+                                </ul>
+                                <h3>Peer Learning Initiatives</h3>
+                                <ul>
+                                <li>Mentoring junior students in programming fundamentals</li>
+                                <li>Hosting coding sessions and problem-solving meetups</li>
+                                <li>Sharing learning resources, tools, and online course recommendations</li>
+                                </ul>
+                                <h2>Soft Skills and Work Ethics</h2>
+                                <p>Alongside my technical skills, I've cultivated strong interpersonal and soft skills:</p>
+                                <ul>
+                                <li><b>Team Collaboration:</b> Proven through successful projects with diverse teams</li>
+                                <li><b>Problem-Solving:</b> Consistently tackling real-world challenges in robotics and coding</li>
+                                <li><b>Time Management:</b> Balancing university coursework with personal development</li>
+                                <li><b>Communication:</b> Clear and professional communication with peers, mentors, and instructors</li>
+                                <li><b>Leadership:</b> Taking initiative in peer-led workshops and development clubs</li>
+                                </ul>
+                                <h2>Key Projects</h2>
+                                <p>Here are a few highlights of my recent technical projects:</p>
+                                <h3>1. <b>Full-Stack Grade Management System</b></h3>
+                                <ul>
+                                <li>Built using React.js, Node.js, Express, and MongoDB</li>
+                                <li>Role-based login (admin, student, teacher)</li>
+                                <li>Features: Grade entry, student profiles, secure authentication</li>
+                                </ul>
+                                <h3>2. <b>Portfolio Website (This Site)</b></h3>
+                                <ul>
+                                <li>Developed using HTML, CSS, JavaScript</li>
+                                <li>Showcases my resume, skills, projects, and achievements</li>
+                                <li>Responsive design for all devices</li>
+                                </ul>
+                                <h3>3. <b>Digital Clock with House Design (Python)</b></h3>
+                                <ul>
+                                <li>GUI-based project using Tkinter and custom graphics</li>
+                                <li>Functional and educational, integrating time functions and visuals</li>
+                                </ul>
+                                <h3>4. <b>Secure Login System with Hashing (Node.js)</b></h3>
+                                <ul>
+                                <li>Demonstrates understanding of password security and cryptographic practices</li>
+                                <li>Includes hashed credentials, session control, and secure database interaction</li>
+                                </ul>
+                                <h2>Certifications & Training</h2>
+                                <ul>
+                                <li><b>Cisco Networking Academy</b> – Introduction to Cybersecurity (Ongoing)</li>
+                                <li><b>Coursera</b> – Full-Stack Web Development (React, Node.js, MongoDB)</li>
+                                <li><b>FreeCodeCamp</b> – JavaScript Algorithms and Data Structures Certification</li>
+                                <li><b>LinkedIn Learning</b> – Secure Coding and OWASP Principles (Planned)</li>
+                                </ul>
+                                <h2>Achievements Summary</h2>
+                                <ul>
+                                <li>🥈 <b>2nd Place</b> – African Robotics Championship 2025 (Team Alpha Robotics ASTU)</li>
+                                <li>💡 Built several full-stack applications and web tools</li>
+                                <li>🏅 Active participant in national and university-level coding competitions</li>
+                                <li>👨‍🏫 Mentored juniors in C++ and DSA</li>
+                                <li>📚 Recognized as a top peer-mentor within CSEC ASTU</li>
+                                </ul>
+                                <h2>Future Goals</h2>
+                                <ul>
+                                <li>Deepen my expertise in <b>cybersecurity</b> and <b>ethical hacking</b></li>
+                                <li>Contribute to open-source security tools</li>
+                                <li>Intern or work in a role that bridges development and security</li>
+                                <li>Develop tools that make tech accessible, secure, and impactful for communities</li>
+                                <li>Share my knowledge through blogs, workshops, and open collaboration</li>
+                                </ul>
+                                <h2>Conclusion</h2>
+                                <p>Every project, contest, and collaboration is a step forward in my mission to become a secure, efficient, and ethical software developer. I believe in growing through learning, building with purpose, and sharing knowledge with others. Thank you for visiting my portfolio — feel free to explore my projects, skills, and achievements below!</p>
+                                <!-- At the end of #aboutMoreDetails, before </div> -->
+                                <a href="#about" id="showLessAboutMeLink" class="text-primary" style="display:inline-block;font-weight:500;text-decoration:underline;margin-top:18px;">
+                                  <i class="fas fa-arrow-left"></i> Show Less
+                                </a>
+                                </div>
+                                <script>
+                                document.getElementById('readMoreAboutMeLink').onclick = function(e) {
+                                  e.preventDefault();
+                                  var details = document.getElementById('aboutMoreDetails');
+                                  if (details.style.display === 'none' || details.style.display === '') {
+                                    details.style.display = 'block';
+                                    details.scrollIntoView({behavior: 'smooth'});
+                                  } else {
+                                    details.style.display = 'none';
+                                  }
+                                };
+                                </script>
+                                <div class="d-flex flex-wrap gap-3 mt-3 mb-4">
+                                  <a href="#projects" class="btn btn-primary me-2 mb-2"><i class="fas fa-folder-open me-1"></i> View My Projects</a>
+                                  <a href="assets/resume/resume.pdf" class="btn btn-success me-2 mb-2" download><i class="fas fa-download me-1"></i> Download CV</a>
+                                  <a href="#contact" class="btn btn-outline-primary mb-2"><i class="fas fa-paper-plane me-1"></i> Contact Me</a>
+                                </div>
                                 <div class="contact-info-block mb-4">
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
@@ -804,8 +1116,7 @@
 
                                 <div class="skills-chart mt-5">
                                     <h5 class="mb-3">My Skills Distribution</h5>
-                                    <div class="skills-chart-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center">
-                                        <div class="chart-legend mb-3 mb-lg-0 me-4">
+                                    <div class="chart-legend mb-3">
                                             <div class="legend-item">
                                                 <span class="color-box bg-primary"></span>
                                                 <span class="legend-text">Competitive Programming</span>
@@ -827,7 +1138,21 @@
                                                 <span class="legend-text">Robotics & Automation</span>
                                             </div>
                                         </div>
-                                        <canvas id="skillsPieChart" class="flex-grow-1" style="max-width: 400px; max-height: 400px;"></canvas>
+                                    <div class="skills-chart-container">
+                                        <canvas id="skillsPieChart" style="max-width: 400px; max-height: 400px;"></canvas>
+                                        <div style="display: flex; flex-direction: column; gap: 18px;">
+                                            <div class="skills-feature-row">
+                                                <div class="mini-feature-card" id="techQuoteCard">
+                                                    <div class="mini-feature-title"><i class="fas fa-quote-left"></i> Tech Quote of the Day</div>
+                                                    <div id="techQuoteText" class="mini-feature-content"></div>
+                                                </div>
+                                                <div class="mini-feature-card" id="techFactCard" style="cursor:pointer;">
+                                                    <div class="mini-feature-title"><i class="fas fa-lightbulb"></i> Random Tech Fact</div>
+                                                    <div id="techFactText" class="mini-feature-content"></div>
+                                                    <div class="mini-feature-tip">Click to see another fact</div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -887,6 +1212,40 @@
                                             height: 15px;
                                         }
                                     }
+                                </style>
+
+                                <style>
+.skills-feature-row {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  justify-content: stretch;
+  align-items: stretch;
+  margin-top: 18px;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+.skills-feature-row > div {
+  flex: 1 1 33%;
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+@media (max-width: 991.98px) {
+  .skills-feature-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .skills-feature-row > div {
+    flex: 1 1 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
                                 </style>
 
                                 <div class="mt-4">
@@ -1044,7 +1403,7 @@
                 <!-- Blog End -->
 
                 <!-- Skills Start -->
-                <div class="container bg-white py-5" id="skills">
+                <div class="container bg-white py-5" id="skills" data-aos="fade-up">
                     <div class="row px-3">
                         <div class="col-12">
                             <h2 class="title position-relative pb-2 mb-4">Technical <span class="text-primary">Skills</span></h2>
@@ -1271,60 +1630,56 @@
                 </div>
                 <!-- Skills End -->
 
-                <!-- Experience & Education -->
-                <div class="container bg-white py-5">
-                    <div class="row px-3">
-                        <div class="col-12">
-                            <h2 class="title position-relative pb-2 mb-4">Journey <span class="text-primary">Timeline</span></h2>
-                        </div>
-                        <div class="col-12">
-                            <div class="timeline">
-                                <div class="timeline-container left">
-                                    <div class="timeline-content">
-                                        <h4>2023 - Present</h4>
-                                        <h5>Computer Science and Engineering</h5>
-                                        <p>Adama Science and Technology University</p>
-                                        <p>Currently pursuing my bachelor's degree with focus on algorithms, data structures, and software engineering principles.</p>
-                                    </div>
-                                    </div>
-                                <div class="timeline-container right">
-                                    <div class="timeline-content">
-                                        <h4>July 2024</h4>
-                                        <h5>ALX Ventures Founder Academy</h5>
-                                        <p>Completed intensive entrepreneurship program covering business development, startup fundamentals, and venture creation.</p>
-                                        <a href="assets/resume/resume.pdf" target="_blank" class="btn btn-sm btn-outline-primary mr-2">View Certificate</a>
-                                        <a href="https://www.coursera.org/account/accomplishments/verify/XPZHL0UYC5KT" target="_blank" class="btn btn-sm btn-outline-secondary">Verify</a>
-                                </div>
-                                    </div>
-                                <div class="timeline-container left">
-                                    <div class="timeline-content">
-                                        <h4>2022 - Present</h4>
-                                        <h5>Freelance Web Developer</h5>
-                                        <p>Developed websites and web applications for various clients, focusing on responsive design and user experience.</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-container right">
-                                    <div class="timeline-content">
-                                        <h4>September 2024</h4>
-                                        <h5>Programming Fundamentals Nanodegree</h5>
-                                        <p>Udacity (Accenture)</p>
-                                        <p>Completed comprehensive training in programming fundamentals and computer science concepts.</p>
-                                        <a href="#" class="btn btn-sm btn-outline-primary">View Certificate</a>
-                                    </div>
-                                    </div>
-                                <div class="timeline-container left">
-                                    <div class="timeline-content">
-                                        <h4>2021</h4>
-                                        <h5>First Lines of Code</h5>
-                                        <p>Began my programming journey with HTML and CSS, quickly expanding to JavaScript and Python.</p>
-                                </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                    </div>
-                                    </div>
+                <!-- Technical Skills Section End -->
 
-                <!-- Certifications Start -->
+                <!-- Journey Timeline Section (simple vertical list, spaced, as in screenshot, with animation) -->
+                <section id="journey-timeline" style="margin: 60px 0 60px 0;">
+                  <h2 style="font-family:'Comic Sans MS', 'Poppins', Arial, sans-serif;font-size:2.2rem;font-weight:900;margin-bottom:28px;letter-spacing:-1px;">Journey <span style="color:#8BC34A;text-decoration:underline;">Timeline</span></h2>
+                  <div style="display:flex;flex-direction:column;gap:38px;max-width:700px;margin:0 auto;">
+                    <div class="jt-entry" data-aos="fade-up" data-aos-duration="900">
+                      <div style="font-size:1.15rem;font-weight:700;color:#222;margin-bottom:2px;">2023 - Present</div>
+                      <div style="font-size:1.1rem;font-weight:600;margin-bottom:2px;">Computer Science and Engineering</div>
+                      <div style="font-size:1rem;color:#444;margin-bottom:2px;">Adama Science and Technology University</div>
+                      <div style="font-size:1rem;color:#444;">Currently pursuing my bachelor's degree with focus on algorithms, data structures, and software engineering principles.</div>
+                        </div>
+                    <div class="jt-entry" data-aos="fade-up" data-aos-duration="900" data-aos-delay="100">
+                      <div style="font-size:1.15rem;font-weight:700;color:#222;margin-bottom:2px;">July 2024</div>
+                      <div style="font-size:1.1rem;font-weight:600;margin-bottom:2px;">ALX Ventures Founder Academy</div>
+                      <div style="font-size:1rem;color:#444;margin-bottom:2px;">Completed intensive entrepreneurship program covering business development, startup fundamentals, and venture creation.</div>
+                      <div style="margin-top:6px;">
+                        <a href="assets/resume/resume.pdf" target="_blank" class="btn btn-success btn-sm" style="margin-right:8px;">View Certificate</a>
+                        <a href="https://www.coursera.org/account/accomplishments/verify/XPZHL0UYC5KT" target="_blank" class="btn btn-success btn-sm">Verify</a>
+                                    </div>
+                                    </div>
+                    <div class="jt-entry" data-aos="fade-up" data-aos-duration="900" data-aos-delay="200">
+                      <div style="font-size:1.15rem;font-weight:700;color:#222;margin-bottom:2px;">2022 - Present</div>
+                      <div style="font-size:1.1rem;font-weight:600;margin-bottom:2px;">Freelance Web Developer</div>
+                      <div style="font-size:1rem;color:#444;margin-bottom:2px;">Developed websites and web applications for various clients, focusing on responsive design and user experience.</div>
+                                </div>
+                    <div class="jt-entry" data-aos="fade-up" data-aos-duration="900" data-aos-delay="300">
+                      <div style="font-size:1.15rem;font-weight:700;color:#222;margin-bottom:2px;">September 2024</div>
+                      <div style="font-size:1.1rem;font-weight:600;margin-bottom:2px;">Programming Fundamentals Nanodegree</div>
+                      <div style="font-size:1rem;color:#444;margin-bottom:2px;">Udacity (Accenture)</div>
+                      <div style="font-size:1rem;color:#444;">Completed comprehensive training in programming fundamentals and computer science concepts.</div>
+                      <div style="margin-top:6px;">
+                        <a href="#" class="btn btn-success btn-sm">View Certificate</a>
+                                    </div>
+                                    </div>
+                    <div class="jt-entry" data-aos="fade-up" data-aos-duration="900" data-aos-delay="400">
+                      <div style="font-size:1.15rem;font-weight:700;color:#222;margin-bottom:2px;">2021</div>
+                      <div style="font-size:1.1rem;font-weight:600;margin-bottom:2px;">First Lines of Code</div>
+                      <div style="font-size:1rem;color:#444;margin-bottom:2px;">Began my programming journey with HTML and CSS, quickly expanding to JavaScript and Python.</div>
+                                </div>
+                                    </div>
+                </section>
+                <!-- End Journey Timeline Section -->
+
+                <!-- Add AOS (Animate On Scroll) if not already included -->
+                <link rel="stylesheet" href="assets/lib/aos/aos.css">
+                <script src="assets/lib/aos/aos.js"></script>
+                <script>document.addEventListener('DOMContentLoaded',function(){if(window.AOS){AOS.init({once:true});}});</script>
+
+                <!-- My Certifications Section Start -->
                 <div class="container bg-white py-5" id="certifications">
                     <div class="row px-3">
                         <div class="col-12">
@@ -1467,7 +1822,7 @@
                 <!-- Certifications End -->
 
                 <!-- Projects Start -->
-                <div class="container bg-white py-5" id="projects">
+                <div class="container bg-white py-5" id="projects" data-aos="zoom-in">
                     <div class="row px-3">
                         <div class="col-12">
                             <h2 class="title position-relative pb-2 mb-4">Featured <span class="text-primary">Projects</span></h2>
@@ -2094,7 +2449,7 @@
                 </script>
 
                 <!-- Contact Start -->
-                <div class="container bg-white py-5" id="contact">
+                <div class="container bg-white py-5" id="contact" data-aos="slide-up">
                     <div class="row px-3">
                         <div class="col-12">
                             <h2 class="title position-relative pb-2 mb-4">Get In <span class="text-primary">Touch</span></h2>
@@ -2126,34 +2481,77 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="contact-form">
-                                <form name="contact" id="contactForm" method="POST">
-                                    <div class="control-group">
-                                        <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name" required="required" data-validation-required-message="Please enter your name" />
-                                        <p class="help-block text-danger"></p>
+                            <div class="contact-form" style="position:relative;">
+                                <form name="contact" id="contactForm" method="POST" autocomplete="off">
+                                    <div class="form-group floating-label mb-4">
+                                        <input type="text" class="form-control" id="name" name="name" required />
+                                        <label for="name">Your Name</label>
                                     </div>
-                                    <div class="control-group">
-                                        <input type="email" class="form-control p-4" id="email" name="email" placeholder="Your Email" required="required" data-validation-required-message="Please enter your email" />
-                                        <p class="help-block text-danger"></p>
+                                    <div class="form-group floating-label mb-4">
+                                        <input type="email" class="form-control" id="email" name="email" required />
+                                        <label for="email">Your Email</label>
                                     </div>
-                                    <div class="control-group">
-                                        <input type="text" class="form-control p-4" id="subject" name="subject" placeholder="Subject" />
-                                        <p class="help-block text-danger"></p>
+                                    <div class="form-group floating-label mb-4">
+                                        <input type="text" class="form-control" id="subject" name="subject" />
+                                        <label for="subject">Subject</label>
                                     </div>
-                                    <div class="control-group">
-                                        <textarea class="form-control py-3 px-4" rows="5" id="message" name="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
-                                        <p class="help-block text-danger"></p>
+                                    <div class="form-group floating-label mb-4">
+                                        <textarea class="form-control" rows="5" id="message" name="message" required></textarea>
+                                        <label for="message">Message</label>
                                     </div>
                                     <div id="success" class="text-success text-center mb-3" style="display: none;"></div>
                                     <div id="error" class="text-danger text-center mb-3" style="display: none;"></div>
                                     <div class="text-center">
-                                        <button class="btn btn-primary py-3 px-5" type="submit" id="sendMessageButton">Send Message</button>
+                                        <button class="btn btn-primary py-3 px-5" type="submit" id="sendMessageButton" style="transition:background 0.3s,transform 0.2s;">Send Message</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
+                <style>
+                .floating-label { position:relative; }
+                .floating-label label {
+                  position:absolute;left:16px;top:14px;color:#888;background:#fff;padding:0 4px;pointer-events:none;transition:0.2s;z-index:2;font-size:1rem;
+                }
+                .floating-label input:focus+label,
+                .floating-label input:not(:placeholder-shown)+label,
+                .floating-label textarea:focus+label,
+                .floating-label textarea:not(:placeholder-shown)+label {
+                  top:-12px;left:10px;font-size:0.92em;color:#2563eb;background:#fff;
+                }
+                .floating-label input, .floating-label textarea {
+                  background:#f8fafc;border:1.5px solid #dbeafe;border-radius:8px;padding:16px 16px 10px 16px;font-size:1rem;transition:border 0.2s;box-shadow:none;
+                }
+                .floating-label input:focus, .floating-label textarea:focus {
+                  border-color:#2563eb;outline:none;
+                }
+                #sendMessageButton:active { transform:scale(0.97); }
+                </style>
+                <script>
+                document.getElementById('contactForm').onsubmit = async function(e) {
+                  e.preventDefault();
+                  var btn = document.getElementById('sendMessageButton');
+                  var successDiv = document.getElementById('success');
+                  var errorDiv = document.getElementById('error');
+                  btn.disabled = true;
+                  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                  try {
+                    // Simulate async send (replace with real API call)
+                    await new Promise(r=>setTimeout(r,1500));
+                    successDiv.style.display = 'block';
+                    successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';
+                    errorDiv.style.display = 'none';
+                    document.getElementById('contactForm').reset();
+                  } catch {
+                    errorDiv.style.display = 'block';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Sorry, there was an error sending your message. Please try again.';
+                    successDiv.style.display = 'none';
+                  }
+                  btn.disabled = false;
+                  btn.innerHTML = 'Send Message';
+                };
+                </script>
                 <!-- Contact End -->
 
                 <!-- Map Section -->
@@ -2204,60 +2602,51 @@
                     </div>
                 </div>
                 <!-- Footer Start -->
-                <footer class="container-fluid bg-dark text-white py-5">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-4 mb-4 mb-lg-0">
-                                <h5 class="text-primary mb-4">About Me</h5>
-                                <p>Computer Science student and passionate developer dedicated to creating innovative solutions and beautiful digital experiences.</p>
-                                <div class="d-flex pt-2">
-                                    <a class="btn btn-outline-light btn-social mr-2" href="https://t.me/kidn16" target="_blank"><i class="fab fa-telegram"></i></a>
-                                    <a class="btn btn-outline-light btn-social mr-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people%3BuIEBB2OnSR%2BvVmDSU1TR6g%3D%3D" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                                    <a class="btn btn-outline-light btn-social mr-2" href="https://github.com/melke27" target="_blank"><i class="fab fa-github"></i></a>
-                                    <a class="btn btn-outline-light btn-social" href="https://youtube.com/@MelkamuWako-f3v" target="_blank"><i class="fab fa-youtube"></i></a>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 mb-4 mb-lg-0">
-                                <h5 class="text-primary mb-4">Quick Links</h5>
-                                <div class="d-flex flex-column justify-content-start">
-                                    <a class="text-white mb-2" href="#home"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                                    <a class="text-white mb-2" href="#about"><i class="fa fa-angle-right mr-2"></i>About</a>
-                                    <a class="text-white mb-2" href="#skills"><i class="fa fa-angle-right mr-2"></i>Skills</a>
-                                    <a class="text-white mb-2" href="#projects"><i class="fa fa-angle-right mr-2"></i>Projects</a>
-                                    <a class="text-white mb-2" href="#contact"><i class="fa fa-angle-right mr-2"></i>Contact</a>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <h5 class="text-primary mb-4">Contact Info</h5>
-                                <p><i class="fas fa-map-marker-alt mr-2"></i>N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
-                                <p><i class="fas fa-envelope mr-2"></i>melkamuwako5@gmail.com</p>
-                                <p><i class="fas fa-phone-alt mr-2"></i>+251 965595251</p>
-                                <!-- Removed download buttons from footer -->
-                            </div>
+                <footer style="background:#111;color:#fff;padding:40px 0 0 0;margin-top:0;">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-4 mb-4 mb-md-0">
+                        <h5 class="text-success mb-3">About Me</h5>
+                        <p style="font-size:0.98rem;">Computer Science student and passionate developer dedicated to creating innovative solutions and beautiful digital experiences.</p>
+                        <div class="d-flex pt-2">
+                          <a class="btn btn-outline-light btn-social mr-2" href="https://t.me/kidn16" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                          <a class="btn btn-outline-light btn-social mr-2" href="https://www.linkedin.com/in/melkamu-wako-536174318/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                          <a class="btn btn-outline-light btn-social mr-2" href="https://github.com/melke27" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                          <a class="btn btn-outline-light btn-social" href="https://youtube.com/@MelkamuWako-f3v" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                         </div>
-                        <div class="row pt-3">
-                            <div class="col-md-6 text-center text-md-left">
-                                <p class="m-0">&copy; <span id="year"></span> Melkamu Wako. All Rights Reserved.</p>
-                            </div>
-                            <div class="col-md-6 text-center text-md-right">
-                                <div class="footer-links">
-                                    <a class="text-white mr-3" href="privacy.html">Privacy Policy</a>
-                                    <a class="text-white mr-3" href="terms.html">Terms of Service</a>
-                                    <a class="text-white" href="sitemap.html">Sitemap</a>
-                                </div>
-                            </div>
+                      </div>
+                      <div class="col-md-4 mb-4 mb-md-0">
+                        <h5 class="text-success mb-3">Quick Links</h5>
+                        <div class="d-flex flex-column">
+                          <a class="text-white mb-2" href="#home"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                          <a class="text-white mb-2" href="#about"><i class="fa fa-angle-right mr-2"></i>About</a>
+                          <a class="text-white mb-2" href="#skills"><i class="fa fa-angle-right mr-2"></i>Skills</a>
+                          <a class="text-white mb-2" href="#projects"><i class="fa fa-angle-right mr-2"></i>Projects</a>
+                          <a class="text-white mb-2" href="#contact"><i class="fa fa-angle-right mr-2"></i>Contact</a>
                         </div>
+                      </div>
+                      <div class="col-md-4">
+                        <h5 class="text-success mb-3">Contact Info</h5>
+                        <p style="margin-bottom:8px;"><i class="fas fa-map-marker-alt mr-2"></i> N/S/Lafto woreda 11, Addis Ababa, Ethiopia</p>
+                        <p style="margin-bottom:8px;"><i class="fas fa-envelope mr-2"></i> <a href="mailto:melkamuwako5@gmail.com" class="text-white">melkamuwako5@gmail.com</a></p>
+                        <p><i class="fas fa-phone-alt mr-2"></i> <a href="tel:+251965595251" class="text-white">+251 965595251</a></p>
+                      </div>
                     </div>
+                    <div class="row pt-3 mt-2" style="border-top:1px solid #222;">
+                      <div class="col-md-6 text-center text-md-left">
+                        <p class="m-0">&copy; <span id="year"></span> Melkamu Wako. All Rights Reserved.</p>
+                      </div>
+                      <div class="col-md-6 text-center text-md-right">
+                        <a class="text-white mr-3" href="privacy-policy.html" style="margin:0 12px;color:#7ed957;text-decoration:underline;">Privacy Policy</a>
+                        <a class="text-white mr-3" href="terms-of-service.html" style="margin:0 12px;color:#7ed957;text-decoration:underline;">Terms of Service</a>
+                        <a class="text-white mr-3" href="sitemap.xml" style="margin:0 12px;color:#7ed957;text-decoration:underline;">Sitemap</a>
+                      </div>
+                    </div>
+                  </div>
                 </footer>
+                <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
                 <!-- Footer End -->
 
-                <!-- Personalized Recommendations Start -->
-                <!-- Personalized Recommendations End -->
-
-                <!-- Personalized Greeting Bar -->
-                <div id="personalGreetingBar" style="position:fixed;top:60px;left:20px;z-index:2001;background:rgba(255,255,255,0.95);color:#232946;padding:8px 22px;border-radius:18px;font-weight:600;font-size:1.05rem;box-shadow:0 2px 8px rgba(0,0,0,0.10);display:flex;align-items:center;gap:8px;min-width:220px;max-width:90vw;transition:background 0.4s;">
-                  <span id="personalGreetingText">Welcome!</span>
-                </div>
 
                 <!-- Timeline Modal Placeholder -->
                 <div id="timelineModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.45);z-index:99999;align-items:center;justify-content:center;">
@@ -2267,8 +2656,55 @@
                   </div>
                 </div>
 
+                <!-- Modal for footer descriptions -->
+                <div id="footerModal" style="display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:99999;background:rgba(0,0,0,0.35);align-items:center;justify-content:center;">
+                  <div id="footerModalContent" style="background:#fff;color:#232946;padding:24px 32px;border-radius:14px;max-width:90vw;max-height:80vh;box-shadow:0 8px 32px rgba(0,0,0,0.18);font-size:1.08rem;position:relative;">
+                    <button onclick="document.getElementById('footerModal').style.display='none'" style="position:absolute;top:8px;right:12px;font-size:1.3rem;background:none;border:none;cursor:pointer;">&times;</button>
+                    <div id="footerModalText"></div>
             </div>
         </div>
+                <script>
+                const footerDescriptions = {
+                  'privacy': 'Your privacy is important to us. We only collect personal information that you voluntarily provide (such as through contact forms or newsletter subscriptions). We do not sell or share your data with third parties. All information is used solely to improve your experience on this site.',
+                  'terms': 'By using this website, you agree to use it for lawful purposes only. All content is provided for informational purposes. We reserve the right to update or change these terms at any time. Continued use of the site means you accept any changes.',
+                  'sitemap': 'The sitemap provides an overview of all main pages and sections of this website, helping you navigate and discover content easily.'
+                };
+                document.addEventListener('DOMContentLoaded', function() {
+                  document.getElementById('privacyLink').onclick = function(e) {
+                    e.preventDefault();
+                    showFooterModal('privacy');
+                  };
+                  document.getElementById('termsLink').onclick = function(e) {
+                    e.preventDefault();
+                    showFooterModal('terms');
+                  };
+                  document.getElementById('sitemapLink').onclick = function(e) {
+                    e.preventDefault();
+                    showFooterModal('sitemap');
+                  };
+                });
+                function showFooterModal(type) {
+                  document.getElementById('footerModalText').textContent = footerDescriptions[type];
+                  document.getElementById('footerModal').style.display = 'flex';
+                }
+                </script>
+               
+                <style>
+                .timeline { position:relative; margin:0 auto; padding:20px 0; max-width:800px; }
+                .timeline-container { padding:10px 40px; position:relative; width:50%; }
+                .timeline-container.left { left:0; }
+                .timeline-container.right { left:50%; }
+                .timeline-content { background:#fff; padding:24px 32px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.07); position:relative; }
+                .timeline-container.left .timeline-content { margin-left:0; }
+                .timeline-container.right .timeline-content { margin-left:40px; }
+                .timeline h4 { margin-bottom:6px; color:#2563eb; font-size:1.1em; }
+                .timeline h5 { margin-bottom:4px; font-size:1.25em; font-weight:600; }
+                .timeline p { margin-bottom:0.5em; }
+                @media (max-width: 768px) {
+                  .timeline-container, .timeline-container.right, .timeline-container.left { width:100%; left:0; }
+                  .timeline-container.right .timeline-content { margin-left:0; }
+                }
+                </style>
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
@@ -3470,9 +3906,6 @@
         })();
         </script>
 
-
-
-
         <!-- Notify backend of portfolio visit (auto email notification) -->
         <script>
           fetch('https://melkamuwako27-backend.onrender.com/notify-visit', { method: 'POST' });
@@ -3636,98 +4069,572 @@
           });
         </script>
         <!-- End Language Switcher -->
-
-        <!-- Live Visitor Counter -->
-        <div id="visitorCounter" style="position:fixed;top:16px;left:16px;z-index:2001;background:rgba(0,0,0,0.82);color:#fff;padding:4px 12px;border-radius:16px;font-weight:500;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,0.13);display:flex;align-items:center;gap:6px;min-width:70px;max-width:90vw;transition:box-shadow 0.3s, background 0.3s;opacity:0.92;cursor:pointer;">
-          <i class="fas fa-users"></i> <span id="visitorCount">1</span> online
-        </div>
+        <script>
+        async function fetchSidebarWeather(cityOverride) {
+          const apiKey = '08ea32421f9a6ad84334291f8942dc4d';
+          let city = cityOverride || 'Addis Ababa';
+          if (!cityOverride) {
+            try {
+              const loc = await fetch('https://ipapi.co/json/').then(r => r.json());
+              if (loc && loc.city) city = loc.city;
+            } catch {}
+          }
+          const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+          try {
+            const res = await fetch(url);
+            const data = await res.json();
+            const icon = data.weather[0].icon;
+            const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
+            document.getElementById('sidebarWeather').innerHTML =
+              `<img src="${iconUrl}" style="width:18px;height:18px;vertical-align:middle;margin-right:4px;animation:weatherPulse 1.6s infinite;"> <b>${data.name}:</b> ${Math.round(data.main.temp)}°C, ${data.weather[0].main}`;
+          } catch {
+            document.getElementById('sidebarWeather').innerText = 'Unable to load weather.';
+          }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+          fetchSidebarWeather();
+          document.getElementById('sidebarCityInput').addEventListener('change', function() {
+            fetchSidebarWeather(this.value);
+          });
+        });
+        </script>
         <style>
-        #visitorCounter {
-          position: fixed;
-          top: 16px;
-          left: 16px;
-          z-index: 2001;
-          background: rgba(0,0,0,0.82);
-          color: #fff;
-          padding: 4px 12px;
-          border-radius: 16px;
-          font-weight: 500;
-          font-size: 13px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.13);
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          min-width: 70px;
-          max-width: 90vw;
-          transition: box-shadow 0.3s, background 0.3s;
-          opacity: 0.92;
-          cursor: pointer;
-          animation: badge-pop 0.7s cubic-bezier(.68,-0.55,.27,1.55);
-        }
-        #visitorCounter:hover {
-          box-shadow: 0 4px 16px rgba(33,150,243,0.18);
-          background: rgba(0,0,0,0.95);
-          opacity: 1;
-        }
-        #visitorCounter i {
-          font-size: 16px;
-          animation: badge-pulse 1.2s infinite;
-        }
-        @keyframes badge-pop {
-          0% { transform: scale(0.7); opacity: 0; }
-          80% { transform: scale(1.1); opacity: 1; }
-          100% { transform: scale(1); }
-        }
-        @keyframes badge-pulse {
+        @keyframes weatherPulse {
           0%, 100% { transform: scale(1); }
           50% { transform: scale(1.18); }
         }
-        </style>
-        <!-- Animated Background -->
-        <div id="animatedBg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;"></div>
-
-        <div id="topBar" style="position:fixed;top:0;right:0;width:auto;z-index:3000;display:flex;justify-content:flex-end;align-items:flex-start;padding:0;pointer-events:none;">
-          <!-- News Ticker -->
-          <div id="newsTicker" style="margin:8px 12px 0 0;background:linear-gradient(90deg,#2563eb 60%,#10b981 100%);color:#fff;font-weight:600;font-size:13px;line-height:1.3;padding:3px 0 3px 0;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);overflow:hidden;min-width:120px;max-width:60vw;pointer-events:auto;">
-            <div id="newsTickerText" style="display:inline-block;white-space:nowrap;animation:newsScroll 18s linear infinite;padding:0 14px;">
-              <span><i class="fas fa-newspaper" style="margin-right:6px;"></i>Latest: Welcome to my portfolio! 🚀 Check out my new AI-powered Resume Analyzer and Weather Widget! &nbsp;|&nbsp; Addis Ababa: 24°C &nbsp;|&nbsp; Stay tuned for more updates!</span>
-          </div>
-          </div>
-        </div>
-        <style>
-        @keyframes newsScroll {
-          0% { transform: translateX(100vw); }
-          100% { transform: translateX(-100%); }
+        #sidebarWeather {
+          font-size: 13px;
+          font-weight: 600;
+          margin-bottom: 8px;
+          color: #232946;
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 4px 10px;
+          display: inline-block;
         }
-        #newsTicker:hover { background:linear-gradient(90deg,#10b981 60%,#2563eb 100%); }
+        #sidebarCityInput {
+          font-size: 12px;
+          padding: 2px 8px;
+          border-radius: 8px;
+          border: 1px solid #ccc;
+          margin-bottom: 8px;
+          width: 90px;
+        }
         </style>
+        <!-- Place these inside your sidebar/profile area -->
+        <div id="sidebarWeather"></div>
+        <input id="sidebarCityInput" type="text" placeholder="Enter city">
 
+        <!-- Floating Voice Button -->
+        <button id="voiceBtn" title="Voice Input" style="position:fixed;bottom:140px;right:30px;z-index:2000;width:48px;height:48px;border-radius:50%;background:#2563eb;color:#fff;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.13);font-size:1.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <i class="fas fa-microphone"></i>
+        </button>
         <script>
-        async function fetchTechNews() {
-          try {
-            const res = await fetch('/api/tech-news');
-            const data = await res.json();
-            if (data.results && data.results.length > 0) {
-              const headlines = data.results.map(a => a.title).join(' &nbsp;|&nbsp; ');
-              document.getElementById('newsTickerText').innerHTML =
-                `<span><i class=\"fas fa-newspaper\" style=\"margin-right:6px;\"></i>${headlines}</span>`;
-            }
-          } catch (e) {
-            document.getElementById('newsTickerText').innerHTML =
-              `<span><i class=\"fas fa-newspaper\" style=\"margin-right:6px;\"></i>Unable to load news. Please try again later.</span>`;
+        document.getElementById('voiceBtn').onclick = function() {
+          if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            alert('Sorry, your browser does not support speech recognition.');
+            return;
           }
-        }
-        document.addEventListener('DOMContentLoaded', fetchTechNews);
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          const recognition = new SpeechRecognition();
+          recognition.lang = 'en-US';
+          recognition.interimResults = false;
+          recognition.maxAlternatives = 1;
+          recognition.start();
+          recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            alert('You said: ' + transcript);
+            // Optionally, send transcript to your chatbot here
+          };
+          recognition.onerror = function(event) {
+            alert('Voice recognition error: ' + event.error);
+          };
+        };
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          AOS.init({ duration: 900, once: true });
+        });
         </script>
 
-        <footer style="width:100%;text-align:center;padding:18px 0 10px 0;background:#f8fafc;color:#222;font-size:14px;">
-          <a href="/privacy-policy.html" style="margin:0 12px;color:#2563eb;text-decoration:underline;" title="Read how we protect your data and privacy.">Privacy Policy</a>
-          <a href="/terms-of-service.html" style="margin:0 12px;color:#2563eb;text-decoration:underline;" title="Review the rules and conditions for using this site.">Terms of Service</a>
-          <a href="/sitemap.xml" style="margin:0 12px;color:#2563eb;text-decoration:underline;" title="View the structure and all pages of this website.">Sitemap</a>
-          <br>
-          <span style="color:#888;">&copy; 2024 Melkamu Wako. All rights reserved.</span>
-        </footer>
 
+       
+        </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          if (window.Chart && document.getElementById('skillsPieChart')) {
+            const ctx = document.getElementById('skillsPieChart').getContext('2d');
+            new Chart(ctx, {
+              type: 'radar',
+              data: {
+                labels: ['Frontend', 'Backend', 'Algorithms', 'Problem Solving', 'UI/UX', 'Database'],
+                datasets: [{
+                  label: 'Skills',
+                  data: [95, 75, 80, 65, 85, 70],
+                  backgroundColor: 'rgba(33,150,243,0.15)',
+                  borderColor: 'rgba(33,150,243,1)',
+                  borderWidth: 3,
+                  pointBackgroundColor: '#fff',
+                  pointBorderColor: '#2196f3',
+                  pointBorderWidth: 2,
+                  pointRadius: 5,
+                  pointHoverRadius: 8,
+                  pointHoverBorderWidth: 3
+                }]
+              },
+              options: {
+                animation: {
+                  duration: 1800,
+                  easing: 'easeOutElastic'
+                },
+                scales: {
+                  r: {
+                    angleLines: { display: true },
+                    suggestedMin: 0,
+                    suggestedMax: 100,
+                    pointLabels: { font: { size: 16 } }
+                  }
+                },
+                plugins: {
+                  legend: { display: false }
+                }
+              }
+            });
+          }
+        });
+        </script>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+  function animateCounters() {
+    document.querySelectorAll('.counter').forEach(function(counter) {
+      if (counter.getBoundingClientRect().top < window.innerHeight - 60 && !counter.classList.contains('counted')) {
+        counter.classList.add('counted');
+        let start = 0;
+        const end = parseInt(counter.getAttribute('data-count'));
+        const duration = 1200;
+        const step = Math.ceil(end / (duration / 16));
+        function update() {
+          start += step;
+          if (start >= end) {
+            counter.textContent = end;
+          } else {
+            counter.textContent = start;
+            requestAnimationFrame(update);
+          }
+        }
+        update();
+      }
+    });
+  }
+  window.addEventListener('scroll', animateCounters);
+  animateCounters();
+});
+</script>
+        <!-- Project Details Modal -->
+        <div id="projectModal" style="display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:99999;background:rgba(0,0,0,0.35);align-items:center;justify-content:center;">
+          <div id="projectModalContent" style="background:#fff;color:#232946;padding:24px 32px;border-radius:14px;max-width:90vw;max-height:80vh;box-shadow:0 8px 32px rgba(0,0,0,0.18);font-size:1.08rem;position:relative;overflow:auto;">
+            <button onclick="document.getElementById('projectModal').style.display='none'" style="position:absolute;top:8px;right:12px;font-size:1.3rem;background:none;border:none;cursor:pointer;">&times;</button>
+            <div id="projectModalBody"></div>
+        </div>
+          </div>
+        <script>
+        // Example project data (replace with your real data or fetch dynamically)
+        const projectDetails = {
+          'project1': {
+            title: 'Weather App',
+            description: 'A modern weather app using OpenWeatherMap API, with animated UI and city search.',
+            image: 'assets/img/weather-app.jpg',
+            github: 'https://github.com/melke27/weather-app',
+            demo: '#',
+            tech: 'JavaScript, HTML/CSS, API'
+          },
+          'project2': {
+            title: 'E-Commerce Platform',
+            description: 'A full-featured online store with product catalog, cart, and user accounts.',
+            image: 'assets/img/e-commerce.jpg',
+            github: 'https://github.com/melke27/enhanced-ecommerce-store',
+            demo: '#',
+            tech: 'React, Node.js, MongoDB'
+          }
+          // Add more projects as needed
+        };
+        // Attach click handlers to project cards/buttons
+        function setupProjectModals() {
+          document.querySelectorAll('[data-project-id]').forEach(function(card) {
+            card.onclick = function() {
+              const id = card.getAttribute('data-project-id');
+              const proj = projectDetails[id];
+              if (!proj) return;
+              document.getElementById('projectModalBody').innerHTML =
+                `<h2 style='margin-top:0;'>${proj.title}</h2>` +
+                `<img src='${proj.image}' alt='' style='max-width:320px;width:100%;border-radius:10px;margin-bottom:16px;'>` +
+                `<p>${proj.description}</p>` +
+                `<p><b>Tech:</b> ${proj.tech}</p>` +
+                `<a href='${proj.github}' target='_blank' style='color:#2563eb;margin-right:18px;'>GitHub</a>` +
+                (proj.demo ? `<a href='${proj.demo}' target='_blank' style='color:#23d160;'>Live Demo</a>` : '');
+              document.getElementById('projectModal').style.display = 'flex';
+            };
+          });
+        }
+        document.addEventListener('DOMContentLoaded', setupProjectModals);
+        </script>
+        <!-- Example usage: add data-project-id to your project cards/buttons -->
+        <!-- <div class="project-card" data-project-id="project1">...</div> -->
+        <!-- <button data-project-id="project2">View Details</button> -->
+
+        <!-- Floating QR Code Button -->
+        <button id="qrBtn" title="Show QR Code" style="position:fixed;bottom:200px;right:30px;z-index:2000;width:48px;height:48px;border-radius:50%;background:#23d160;color:#fff;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.13);font-size:1.5rem;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <i class="fas fa-qrcode"></i>
+        </button>
+        <!-- QR Code Modal -->
+        <div id="qrModal" style="display:none;position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:99999;background:rgba(0,0,0,0.35);align-items:center;justify-content:center;">
+          <div style="background:#fff;color:#232946;padding:24px 32px;border-radius:14px;max-width:90vw;max-height:80vh;box-shadow:0 8px 32px rgba(0,0,0,0.18);font-size:1.08rem;position:relative;text-align:center;">
+            <button onclick="document.getElementById('qrModal').style.display='none'" style="position:absolute;top:8px;right:12px;font-size:1.3rem;background:none;border:none;cursor:pointer;">&times;</button>
+            <h3 style="margin-top:0;">Scan to open on your phone</h3>
+            <img id="qrImage" src="" alt="QR Code" style="width:180px;height:180px;margin:18px auto;display:block;">
+            <div style="font-size:0.95em;color:#888;">Point your phone camera at the QR code to open this site.</div>
+          </div>
+        </div>
+        <script>
+        document.getElementById('qrBtn').onclick = function() {
+          var url = window.location.origin + window.location.pathname;
+          document.getElementById('qrImage').src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' + encodeURIComponent(url);
+          document.getElementById('qrModal').style.display = 'flex';
+        };
+        </script>
+
+        <!-- Back to Top Button -->
+        <button id="backToTop" title="Back to Top" style="display:none;position:fixed;bottom:140px;right:30px;z-index:2000;width:48px;height:48px;border-radius:50%;background:#232946;color:#fff;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.13);font-size:1.5rem;align-items:center;justify-content:center;cursor:pointer;transition:opacity 0.3s;">
+          <i class="fas fa-arrow-up"></i>
+        </button>
+        <script>
+        // Show/hide Back to Top button
+        window.addEventListener('scroll', function() {
+          var btn = document.getElementById('backToTop');
+          if (window.scrollY > 300) {
+            btn.style.display = 'flex';
+            btn.style.opacity = '1';
+          } else {
+            btn.style.opacity = '0';
+            setTimeout(function(){btn.style.display='none';}, 300);
+          }
+        });
+        // Smooth scroll to top
+        if(document.getElementById('backToTop')){
+          document.getElementById('backToTop').onclick = function() {
+            window.scrollTo({top:0,behavior:'smooth'});
+          };
+        }
+        </script>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+  var radar = document.getElementById('skillsPieChart');
+  if (radar) radar.classList.add('pulse');
+});
+</script>
+
+        <style>
+.skills-chart-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 32px;
+  width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+#skillsPieChart {
+  max-width: 100%;
+  min-width: 220px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 991.98px) {
+  .skills-chart-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+}
+        </style>
+       
+
+        <!-- Live Chat Widget Start -->
+        <style>
+        #floatingChatBtn {
+          position: fixed;
+          bottom: 32px;
+          right: 32px;
+          z-index: 9999;
+          background: #8BC34A;
+          color: #fff;
+          border: none;
+          border-radius: 50%;
+          width: 56px;
+          height: 56px;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+          font-size: 2rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        #floatingChatBtn:hover { background: #43a047; }
+        #chatModalOverlay {
+          display: none;
+          position: fixed;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.35);
+          z-index: 10000;
+          align-items: center;
+          justify-content: center;
+        }
+        #chatModal {
+          background: #fff;
+          border-radius: 16px;
+          box-shadow: 0 8px 32px rgba(33,150,243,0.18);
+          padding: 2rem 1.5rem 1.2rem 1.5rem;
+          min-width: 320px;
+          max-width: 95vw;
+          text-align: left;
+          position: relative;
+          animation: fadeIn 0.3s;
+        }
+        #chatModal h3 { margin-top: 0; color: #8BC34A; font-size: 1.3rem; }
+        #chatModal input, #chatModal textarea {
+          width: 100%;
+          margin-bottom: 12px;
+          padding: 8px 10px;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          font-size: 1rem;
+        }
+        #chatModal textarea { min-height: 70px; resize: vertical; }
+        #chatModal .closeBtn {
+          position: absolute;
+          top: 10px; right: 16px;
+          background: none;
+          border: none;
+          font-size: 1.3rem;
+          color: #888;
+          cursor: pointer;
+        }
+        #chatModal .closeBtn:hover { color: #e53935; }
+        #chatModal .sendBtn {
+          background: #8BC34A;
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 8px 22px;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+        #chatModal .sendBtn:hover { background: #43a047; }
+        #chatModal .successMsg {
+          color: #43a047;
+          font-weight: 600;
+          margin-top: 10px;
+          text-align: center;
+        }
+        </style>
+        <button id="floatingChatBtn" title="Chat with me"><i class="fas fa-comments"></i></button>
+        <div id="chatModalOverlay">
+          <div id="chatModal">
+            <button class="closeBtn" onclick="closeChatModal()">&times;</button>
+            <h3>Live Chat</h3>
+            <div id="chatGreeting">Hi there! 👋<br>Send me a message and I'll reply to your email soon.</div>
+            <input type="text" id="chatName" placeholder="Your Name" required />
+            <input type="email" id="chatEmail" placeholder="Your Email" required />
+            <textarea id="chatMessage" placeholder="Type your message..." required></textarea>
+            <button class="sendBtn" onclick="sendChatMessage()">Send</button>
+            <div class="successMsg" id="chatSuccessMsg" style="display:none;">Thank you! Your message has been sent.</div>
+          </div>
+        </div>
+        <script>
+        function openChatModal() {
+          document.getElementById('chatModalOverlay').style.display = 'flex';
+        }
+        function closeChatModal() {
+          document.getElementById('chatModalOverlay').style.display = 'none';
+          document.getElementById('chatSuccessMsg').style.display = 'none';
+          document.getElementById('chatName').value = '';
+          document.getElementById('chatEmail').value = '';
+          document.getElementById('chatMessage').value = '';
+        }
+        document.getElementById('floatingChatBtn').onclick = openChatModal;
+        function sendChatMessage() {
+          var name = document.getElementById('chatName').value.trim();
+          var email = document.getElementById('chatEmail').value.trim();
+          var message = document.getElementById('chatMessage').value.trim();
+          if (!name || !email || !message) {
+            alert('Please fill in all fields.');
+            return;
+          }
+          // Simulate sending (replace with backend integration if needed)
+          document.getElementById('chatSuccessMsg').style.display = 'block';
+          setTimeout(closeChatModal, 1800);
+        }
+        </script>
+        <!-- Live Chat Widget End -->
+
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const techQuotes = [
+    '"Programs must be written for people to read, and only incidentally for machines to execute." – Harold Abelson',
+    '"First, solve the problem. Then, write the code." – John Johnson',
+    '"Any fool can write code that a computer can understand. Good programmers write code that humans can understand." – Martin Fowler',
+    '"Experience is the name everyone gives to their mistakes." – Oscar Wilde',
+    '"Simplicity is the soul of efficiency." – Austin Freeman',
+    '"Code is like humor. When you have to explain it, it\'s bad." – Cory House',
+    '"Before software can be reusable it first has to be usable." – Ralph Johnson',
+    '"Make it work, make it right, make it fast." – Kent Beck'
+
+  ];
+  let techQuoteIdx = 0;
+  function showTechQuote() {
+    const el = document.getElementById('techQuoteText');
+    if (!el) return;
+    el.style.opacity = 0;
+    setTimeout(() => {
+      el.textContent = techQuotes[techQuoteIdx];
+      el.style.opacity = 1;
+      techQuoteIdx = (techQuoteIdx + 1) % techQuotes.length;
+    }, 350);
+  }
+  showTechQuote();
+  setInterval(showTechQuote, 7000);
+});
+</script>
+
+<style>
+.mini-feature-card {
+  background: linear-gradient(135deg, #f8fcff 60%, #e3f9e5 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(33,150,243,0.10);
+  padding: 22px 18px 18px 18px;
+  min-width: 220px;
+  max-width: 320px;
+  margin-bottom: 0;
+  transition: box-shadow 0.3s, transform 0.3s;
+  font-size: 1.08rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  color: #222;
+  border: 1.5px solid #e3f9e5;
+}
+.mini-feature-card:hover {
+  box-shadow: 0 12px 32px rgba(33,150,243,0.16);
+  transform: translateY(-2px) scale(1.03);
+}
+.mini-feature-title {
+  font-weight: 700;
+  color: #1976d2;
+  font-size: 1.13rem;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mini-feature-content {
+  color: #333;
+  font-size: 1.05rem;
+  min-height: 32px;
+  transition: opacity 0.6s, transform 0.6s;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeInUp 0.7s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mini-feature-tip {
+  font-size: 0.92rem;
+  color: #888;
+  margin-top: 4px;
+}
+</style>
+<style>
+.fab-btn-min {
+  width: 36px !important;
+  height: 36px !important;
+  font-size: 1.1rem !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10) !important;
+}
+.fab-btn-min i {
+  font-size: 1.1rem !important;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Minimize floating action buttons
+  var btns = [
+    document.getElementById('qrBtn'),
+    document.getElementById('backToTop'),
+    document.getElementById('floatingChatbotBtn'),
+    document.getElementById('floatingChatBtn')
+  ];
+  btns.forEach(function(btn) {
+    if (btn) btn.classList.add('fab-btn-min');
+  });
+});
+</script>
+
+<style>
+@keyframes fadeInAbout {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var readMore = document.getElementById('readMoreAboutMeLink');
+  var showLess = document.getElementById('showLessAboutMeLink');
+  var details = document.getElementById('aboutMoreDetails');
+  if (readMore && details) {
+    readMore.onclick = function(e) {
+      e.preventDefault();
+      details.style.display = 'block';
+      details.style.animation = 'fadeInAbout 0.7s cubic-bezier(.4,0,.2,1)';
+      details.scrollIntoView({behavior: 'smooth'});
+    };
+  }
+  if (showLess && details) {
+    showLess.onclick = function(e) {
+      e.preventDefault();
+      details.style.display = 'none';
+      readMore.scrollIntoView({behavior: 'smooth'});
+    };
+  }
+});
+</script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/687cde5dad8045191444e5ad/1j0js982q';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
     </body>
-
 </html> 
