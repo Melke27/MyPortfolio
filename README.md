@@ -25,13 +25,20 @@ Welcome to my professional portfolio website! This repository contains the sourc
 ## 📁 Project Structure
 
 ```
-portfolio/
-├── index.html          # Main portfolio page
-├── css/               # Stylesheets
-├── js/                # JavaScript files
-├── img/               # Images and assets
-├── lib/               # Third-party libraries
-└── _config.yml        # Jekyll configuration
+MyPortfolio/
+├── assets/            # Static assets (images, icons, etc.)
+├── backend/           # Backend server code
+├── frontend/          # Frontend source files
+├── docs/              # Documentation
+├── node_modules/      # Node.js dependencies
+├── index.html         # Main portfolio page
+├── blog-post.html     # Blog post template
+├── calculator2.html   # Calculator application
+├── privacy-policy.html # Privacy policy page
+├── terms-of-service.html # Terms of service page
+├── _config.yml        # Jekyll configuration
+├── package.json       # Project dependencies
+└── server.js          # Main server file
 ```
 
 ## 🔗 Live Demo
