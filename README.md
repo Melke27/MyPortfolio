@@ -1,6 +1,18 @@
 # Melkamu Wako's Portfolio
 
-Welcome to my professional portfolio website! This repository contains the source code for my personal portfolio website hosted on GitHub Pages.
+Welcome to my professional portfolio website! This repository contains the source code for my personal portfolio website that showcases my skills, projects, and professional experience.
+
+## 🏆 Project Overview
+
+This portfolio website serves as a comprehensive showcase of my work, skills, and professional journey. It features a modern, responsive design with interactive elements to provide an engaging user experience. The website includes sections for projects, skills, experience, and a contact form for potential collaborations or job opportunities.
+
+Key components include:
+- Professional introduction and about section
+- Interactive project showcase with live demos
+- Skills and technologies I'm proficient in
+- Professional experience and education
+- Contact form for direct communication
+- Blog section for sharing insights and tutorials
 
 ## 🚀 Features
 
@@ -10,6 +22,63 @@ Welcome to my professional portfolio website! This repository contains the sourc
 - Project showcase
 - Skills and experience display
 - Interactive UI elements
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm (comes with Node.js)
+- MongoDB Atlas account (for database)
+- OpenAI API key (for chatbot functionality)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Melke27/MyPortfolio.git
+   cd MyPortfolio
+   ```
+
+2. **Install dependencies**
+   ```bash
+   # Install root dependencies
+   npm install
+   
+   # Install frontend dependencies
+   cd frontend
+   npm install
+   
+   # Install backend dependencies
+   cd ../backend
+   npm install
+   cd ..
+   ```
+
+3. **Set up environment variables**
+   - Create a `.env` file in the backend directory with the following variables:
+     ```
+     MONGODB_URI=your_mongodb_connection_string
+     OPENAI_API_KEY=your_openai_api_key
+     PORT=5000
+     ```
+
+### Running the Application
+
+1. **Start the backend server**
+   ```bash
+   cd backend
+   npm start
+   ```
+
+2. **Start the frontend development server**
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+3. **Access the application**
+   - Frontend: `http://localhost:3000`
+   - Backend API: `http://localhost:5000`
 
 ## 🛠️ Technologies Used
 
@@ -45,12 +114,30 @@ MyPortfolio/
 
 Visit my portfolio at: [https://melkamuwako27.netlify.app](https://melkamuwako27.netlify.app)
 
-## 📫 Contact
+## 👨‍💻 Author
 
-Feel free to reach out to me through:
-- Email: [Your Email]
-- LinkedIn: [Your LinkedIn]
-- GitHub: [Your GitHub]
+**Melkamu Wako**
+
+- 🌐 [Portfolio Website](https://melkamuwako27.netlify.app)
+- 💼 [LinkedIn](https://linkedin.com/in/melkamu-wako-6a9b3b1b0/)
+- 🐱 [GitHub](https://github.com/Melke27)
+- 📧 Email: melkamuwako27@gmail.com
+- 🐦 [Twitter](https://twitter.com/yourhandle)
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Melke27/MyPortfolio/issues) if you would like to contribute.
+
+## 📄 License
+
+This project is [MIT](LICENSE.txt) licensed.
+
+## 🙏 Acknowledgments
+
+- [Bootstrap](https://getbootstrap.com/)
+- [Font Awesome](https://fontawesome.com/)
+- [Google Fonts](https://fonts.google.com/)
+- All the amazing open-source libraries and tools that made this project possible
 
 ## 📝 License
 
