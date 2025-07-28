@@ -219,6 +219,8 @@ This project is [MIT](LICENSE.txt) licensed.
    - `OPENAI_API_KEY` = your OpenAI API key
    - `OPENROUTER_API_KEY` = your OpenRouter API key
    - `BREVO_API_KEY` = your Brevo API key
+- `BREVO_SMTP_USER` = your Brevo SMTP username
+- `BREVO_SMTP_PASS` = your Brevo SMTP password
    - `JWT_SECRET` = your JWT secret key
    - `WEATHER_API_KEY` = your OpenWeatherMap API key
    - `GNEWS_API_KEY` = your GNews API key
@@ -273,6 +275,8 @@ This project uses environment variables for all sensitive configuration. **Never
 - `MONGODB_URI` - Database connection string
 - `JWT_SECRET` - Secret key for JWT authentication
 - `BREVO_API_KEY` - Email service API key
+- `BREVO_SMTP_USER` - Brevo SMTP username
+- `BREVO_SMTP_PASS` - Brevo SMTP password
 - `OPENAI_API_KEY` - OpenAI API key for AI features
 - `OPENROUTER_API_KEY` - OpenRouter API key for AI chat
 - `WEATHER_API_KEY` - OpenWeatherMap API key

@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
       };
 
       try {
-        const resp = await fetch('https://YOUR_RENDER_BACKEND_URL/contact', {
+        const resp = await fetch('https://melkamuwako27-backend.onrender.com/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)

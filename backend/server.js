@@ -56,10 +56,12 @@ const Subscriber = mongoose.model('Subscriber', subscriberSchema);
 // Import routes
 const blogRoutes = require('./routes/blogRoutes');
 const authRoutes = require('./routes/auth');
+const contactRoutes = require('./routes/contact');
 
 // Routes
 app.use('/api', blogRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/contact', contactRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
