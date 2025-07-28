@@ -845,7 +845,7 @@
         document.addEventListener('DOMContentLoaded', typeWelcome);
 
         async function fetchTopWeather() {
-            const apiKey = '08ea32421f9a6ad84334291f8942dc4d';
+    const apiKey = '08ea32421f9a6ad84334291f8942dc4d'; // This is a public API key for demo
             let city = 'Addis Ababa';
             try {
                 const loc = await fetch('https://ipapi.co/json/').then(r => r.json());
@@ -4136,7 +4136,7 @@
         <!-- End Language Switcher -->
         <script>
         async function fetchSidebarWeather(cityOverride) {
-          const apiKey = '08ea32421f9a6ad84334291f8942dc4d';
+    const apiKey = '08ea32421f9a6ad84334291f8942dc4d'; // This is a public API key for demo
           let city = cityOverride || 'Addis Ababa';
           if (!cityOverride) {
             try {
