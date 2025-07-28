@@ -166,6 +166,9 @@ app.post('/chat', async (req, res) => {
   if (!message) {
     return res.status(400).json({ error: 'Message is required.' });
   }
+  if (!process.env.OPENROUTER_API_KEY) {
+    return res.status(500).json({ error: 'AI server misconfiguration: OPENROUTER_API_KEY is missing.' });
+  }
   // Custom about-me reply
   if (/about (you|melkamu|yourself)/i.test(message) || /melkamu wako/i.test(message)) {
     return res.json({
@@ -177,6 +180,9 @@ app.post('/chat', async (req, res) => {
     res.json({ reply });
   } catch (error) {
     console.error('Error in /chat endpoint:', error);
+    if (error.response && error.response.data) {
+      return res.status(500).json({ error: 'AI request failed', details: error.response.data });
+    }
     res.status(500).json({ error: 'AI request failed', details: error.message });
   }
 });
