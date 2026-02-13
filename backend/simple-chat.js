@@ -1,7 +1,8 @@
 // Simple Chat Backend - Expanded Knowledge Base for Melkamu Wako
 const express = require('express');
 const cors = require('cors');
-// const dotenv = require('dotenv');
+const dotenv = require('dotenv');
+dotenv.config();
 const axios = require('axios');
 
 const app = express();
