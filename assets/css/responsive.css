@@ -43,6 +43,24 @@ section,
     padding-bottom: 2rem !important;
 }
 
+/* Make containers full-width — remove left/right gaps */
+.content > .container,
+.content > .container.bg-white {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Remove extra row side padding */
+.content > .container .row.px-3,
+.content > .container .row.px-lg-5 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 /* Reduce spacing between sections */
 section + section,
 .container.bg-white + .container.bg-white {
