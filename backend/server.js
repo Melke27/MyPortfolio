@@ -125,37 +125,88 @@ app.post('/api/subscribe', async (req, res) => {
 });
 
 // --- Chatbot Logic (from simple-chat.js) ---
+const MELKAMU_SYSTEM_PROMPT = `You are melke27 AI Assistant, the personal AI assistant for Melkamu Wako's portfolio website. You are knowledgeable, friendly, and professional.
+
+## About Melkamu Wako
+- Computer Science & Engineering student at Adama Science and Technology University (ASTU), Ethiopia
+- Passionate fullstack web developer with experience in modern web technologies
+- Active member of CSEC ASTU (Computer Science & Engineering Club) and Team Alpha Robotics ASTU
+- Email: melkamuwako5@gmail.com
+- GitHub: github.com/melke27
+
+## Technical Skills
+- Frontend: HTML5, CSS3, JavaScript (ES6+), React.js, responsive design, UI/UX
+- Backend: Node.js, Express.js, Java (Spring Boot basics)
+- Databases: MySQL, MongoDB, SQLite
+- Languages: JavaScript, Python, Java, C++, C#, HTML/CSS
+- Tools: Git, VS Code, REST APIs
+- Currently learning: Cybersecurity, Ethical Hacking (Cisco Networking Academy)
+
+## Projects
+1. **EthioHeritage360** - National-scale digital heritage platform built during INSA Summer Camp 2025. Tech: React, Node.js, Express, MongoDB, 3D/AR, multilingual, analytics. Melkamu was a fullstack developer on this team project.
+2. **Grade Management System** - Full-stack app with role-based login (admin, student, teacher). Tech: React.js, Node.js, Express, MongoDB. Features: grade entry, student profiles, secure authentication.
+3. **Portfolio Website** - This website! Built with HTML, CSS, JavaScript. Responsive design for all devices.
+4. **Weather App** - Weather application. GitHub: github.com/melke27/weather-app
+5. **E-Commerce Store** - Enhanced e-commerce site. GitHub: github.com/melke27/enhanced-ecommerce-store
+6. **Digital Clock with House Design** - Python GUI project using Tkinter and custom graphics.
+7. **Secure Login System** - Node.js app demonstrating password hashing, session control, and secure database interaction.
+
+## Achievements
+- 🥈 2nd Place at the 2025 African Robotics Championship (Team Alpha Robotics ASTU)
+- Official graduate of INSA Summer Camp 2025 full-stack development track
+- Active competitive programmer on Codeforces and LeetCode (C++ specialist)
+- Peer mentor for junior students in C++ and Data Structures & Algorithms
+- Recognized as top peer-mentor within CSEC ASTU
+
+## Certifications
+- INSA Summer Camp 2025 - Full-Stack Web Development
+- Cisco Networking Academy - Introduction to Cybersecurity
+- Coursera - Full-Stack Web Development
+- FreeCodeCamp - JavaScript Algorithms and Data Structures
+
+Rules:
+- Answer questions about Melkamu, his projects, skills, and achievements accurately using the info above.
+- For general tech questions, answer helpfully as an AI assistant.
+- Be concise but thorough.
+- At the end of every reply, add: "Created by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com"`;
+
 async function askOpenRouter(message) {
-  try {
-    const response = await axios.post(
-      'https://openrouter.ai/api/v1/chat/completions',
-      {
-        model: 'mistralai/mistral-small-3.1-24b-instruct:free',
-        messages: [
-          {
-            role: 'system',
-            content: `You are Melkamu Wako's AI assistant. You can answer general questions, provide technical help, and chat about a wide range of topics. If someone asks about Melkamu Wako, you know he is a Computer Science and Engineering student and fullstack developer from Ethiopia, with experience in JavaScript, React, Python, Java, C++, C#, HTML/CSS, and projects like a weather app, e-commerce site, and grade management system. For all other questions, answer as a helpful AI assistant.\nAt the end of every reply, add: 'Created by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com'.`
-          },
-          { role: 'user', content: message }
-        ]
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json'
+  const models = [
+    'mistralai/mistral-small-3.1-24b-instruct:free',
+    'meta-llama/llama-3.1-8b-instruct:free',
+    'google/gemma-3-1b-it:free'
+  ];
+  let lastError = null;
+  for (const model of models) {
+    try {
+      const response = await axios.post(
+        'https://openrouter.ai/api/v1/chat/completions',
+        {
+          model: model,
+          messages: [
+            { role: 'system', content: MELKAMU_SYSTEM_PROMPT },
+            { role: 'user', content: message }
+          ]
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
         }
+      );
+      let reply = response.data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
+      const footer = "\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com";
+      if (!reply.includes("Created by Melkamu Wako")) {
+        reply += footer;
       }
-    );
-    let reply = response.data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
-    const footer = "\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com";
-    if (!reply.includes("Created by Melkamu Wako")) {
-      reply += footer;
+      return reply;
+    } catch (err) {
+      console.error(`OpenRouter API error with model ${model}:`, err.response ? err.response.data : err.message);
+      lastError = err;
     }
-    return reply;
-  } catch (err) {
-    console.error('OpenRouter API error:', err.response ? err.response.data : err.message);
-    throw err;
   }
+  throw lastError;
 }
 
 app.post('/chat', async (req, res) => {
