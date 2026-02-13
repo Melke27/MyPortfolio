@@ -172,9 +172,9 @@ Rules:
 
 async function askOpenRouter(message) {
   const models = [
-    'mistralai/mistral-small-3.1-24b-instruct:free',
-    'meta-llama/llama-3.1-8b-instruct:free',
-    'google/gemma-3-1b-it:free'
+    'google/gemma-2-9b-it',
+    'meta-llama/llama-3-8b-instruct',
+    'mistralai/mistral-7b-instruct'
   ];
   let lastError = null;
   for (const model of models) {
