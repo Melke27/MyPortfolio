@@ -1,0 +1,424 @@
+/* ============================================
+   Responsive CSS for Melkamu Wako Portfolio
+   ============================================ */
+
+/* --- Global Responsive Fixes --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Prevent horizontal scroll from any element */
+.container,
+.container-fluid,
+.row {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* --- Tablet (max-width: 991px) --- */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.98);
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-nav .nav-link {
+        padding: 0.5rem 1rem !important;
+        font-size: 1rem;
+    }
+
+    /* About section */
+    #about .row {
+        flex-direction: column;
+    }
+
+    #about .col-lg-6 {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Skills chart */
+    .skills-chart-container {
+        flex-direction: column !important;
+        align-items: center;
+    }
+
+    .skills-chart-container canvas {
+        max-width: 100% !important;
+        max-height: 300px !important;
+    }
+
+    /* Projects grid */
+    .portfolio-item {
+        width: 50% !important;
+    }
+
+    /* Blog cards */
+    .blog-card,
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    /* Timeline */
+    .jt-entry {
+        padding-left: 1rem !important;
+    }
+}
+
+/* --- Mobile (max-width: 767px) --- */
+@media (max-width: 767.98px) {
+    /* Top bar */
+    #topBar {
+        height: auto !important;
+        min-height: 28px;
+        padding: 2px 10px !important;
+        font-size: 0.8rem !important;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+
+    #welcomeText {
+        font-size: 0.8rem !important;
+        min-width: auto !important;
+        white-space: normal !important;
+        border-right: none !important;
+        margin-right: 8px !important;
+    }
+
+    #topWeather {
+        font-size: 0.75rem !important;
+        padding: 1px 6px !important;
+    }
+
+    /* Navbar */
+    .navbar {
+        padding: 0.5rem 1rem !important;
+    }
+
+    .navbar-brand {
+        font-size: 1.1rem !important;
+    }
+
+    /* Hero / Banner section */
+    .banner,
+    .hero-section,
+    [class*="banner"],
+    [class*="hero"] {
+        padding: 2rem 1rem !important;
+        min-height: auto !important;
+    }
+
+    .banner h1,
+    .hero-section h1 {
+        font-size: 1.8rem !important;
+    }
+
+    .banner h2,
+    .hero-section h2 {
+        font-size: 1.3rem !important;
+    }
+
+    .banner p,
+    .hero-section p {
+        font-size: 0.95rem !important;
+    }
+
+    /* Section headings */
+    h1 {
+        font-size: 1.8rem !important;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+    }
+
+    h3 {
+        font-size: 1.2rem !important;
+    }
+
+    /* About section */
+    .about-content {
+        padding: 0 !important;
+    }
+
+    .about-content h2 {
+        font-size: 1.4rem !important;
+    }
+
+    /* Profile photo */
+    .profile-photo {
+        max-width: 130px !important;
+        width: 50% !important;
+    }
+
+    /* Button groups */
+    .d-flex.flex-wrap.gap-3 {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .d-flex.flex-wrap.gap-3 .btn,
+    .d-flex.flex-wrap.gap-3 .btn-group {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+    }
+
+    /* Skills section */
+    .skills-chart-container {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .skills-chart-container canvas {
+        max-width: 280px !important;
+        max-height: 280px !important;
+        margin: 0 auto;
+    }
+
+    .skill-category {
+        margin-bottom: 12px;
+    }
+
+    /* Skills legend */
+    .skills-legend {
+        flex-wrap: wrap;
+        gap: 6px !important;
+    }
+
+    .skills-legend .legend-item {
+        font-size: 0.85rem;
+    }
+
+    /* Projects grid */
+    .portfolio-item {
+        width: 100% !important;
+        padding: 0.5rem !important;
+    }
+
+    /* Blog section */
+    #blog .blog-line-long {
+        width: 150px !important;
+    }
+
+    #blog .blog-line-short {
+        width: 80px !important;
+    }
+
+    #blog .blog-title {
+        font-size: 1.8rem !important;
+    }
+
+    .blog-card {
+        margin-bottom: 1rem;
+    }
+
+    /* Contact section */
+    .contact-form {
+        padding: 1rem !important;
+    }
+
+    /* Timeline */
+    .jt-entry {
+        padding-left: 0.5rem !important;
+    }
+
+    /* Certificates */
+    .certificate-card,
+    .cert-card {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Modals */
+    #chatbotModal {
+        width: 90vw !important;
+        right: 5vw !important;
+        left: 5vw !important;
+        bottom: 70px !important;
+        height: 60vh !important;
+    }
+
+    /* FAQ accordion */
+    .accordion-button {
+        font-size: 0.95rem !important;
+        padding: 0.75rem 1rem !important;
+    }
+
+    .accordion-body {
+        font-size: 0.9rem !important;
+        padding: 0.75rem 1rem !important;
+    }
+
+    /* Map */
+    .map-container iframe {
+        height: 250px !important;
+    }
+
+    /* Footer */
+    footer .row {
+        text-align: center;
+    }
+
+    footer .col-lg-4,
+    footer .col-lg-3 {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Floating buttons stack */
+    .fab-stack {
+        right: 10px !important;
+        bottom: 10px !important;
+        gap: 8px !important;
+    }
+
+    .fab-btn-min {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* Container padding */
+    .container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    /* Section padding */
+    .section-padding,
+    section {
+        padding: 2rem 0 !important;
+    }
+
+    /* Tables */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* Sidebar weather */
+    #sidebarWeather,
+    #sidebarCityInput {
+        display: none !important;
+    }
+}
+
+/* --- Small Mobile (max-width: 480px) --- */
+@media (max-width: 480px) {
+    #topBar {
+        font-size: 0.7rem !important;
+        padding: 2px 6px !important;
+        border-radius: 0 !important;
+    }
+
+    #welcomeText {
+        font-size: 0.7rem !important;
+    }
+
+    .profile-photo {
+        max-width: 110px !important;
+    }
+
+    h1 {
+        font-size: 1.5rem !important;
+    }
+
+    h2 {
+        font-size: 1.3rem !important;
+    }
+
+    .btn {
+        font-size: 0.85rem !important;
+        padding: 0.4rem 0.8rem !important;
+    }
+
+    /* Chatbot */
+    #chatbotModal {
+        width: 95vw !important;
+        right: 2.5vw !important;
+        left: 2.5vw !important;
+        height: 65vh !important;
+    }
+
+    /* Project modal */
+    #projectDetailModal > div,
+    #timelineModalContent {
+        min-width: auto !important;
+        max-width: 95vw !important;
+        padding: 1.2rem 1rem !important;
+    }
+
+    /* Certificate modal */
+    .modal-content {
+        margin: 0.5rem !important;
+        padding: 1rem !important;
+    }
+
+    /* Skills chart even smaller */
+    .skills-chart-container canvas {
+        max-width: 240px !important;
+        max-height: 240px !important;
+    }
+
+    /* Journey timeline */
+    .jt-entry h3 {
+        font-size: 1rem !important;
+    }
+
+    .jt-entry p {
+        font-size: 0.85rem !important;
+    }
+}
+
+/* --- Landscape phone fix --- */
+@media (max-height: 500px) and (orientation: landscape) {
+    #chatbotModal {
+        height: 80vh !important;
+        bottom: 10px !important;
+    }
+
+    .banner,
+    .hero-section {
+        min-height: auto !important;
+        padding: 1rem !important;
+    }
+}
+
+/* --- Print styles --- */
+@media print {
+    #topBar,
+    .fab-stack,
+    #chatbotModal,
+    #floatingChatbotBtn,
+    #floatingChatBtn,
+    #backToTop,
+    .navbar {
+        display: none !important;
+    }
+
+    body {
+        font-size: 12pt;
+    }
+}
