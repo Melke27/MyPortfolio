@@ -31,6 +31,92 @@ img {
     overflow-x: hidden;
 }
 
+/* --- Reduce Unnecessary Gaps & Borders --- */
+section,
+.section-padding {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+}
+
+.container.bg-white {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* Reduce spacing between sections */
+section + section,
+.container.bg-white + .container.bg-white {
+    margin-top: 0 !important;
+}
+
+/* Clean up borders */
+.container.bg-white {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Reduce heading margins */
+h2.title {
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.section-title {
+    margin-bottom: 2rem !important;
+}
+
+/* Reduce card gaps */
+.row {
+    --bs-gutter-y: 1rem;
+}
+
+/* Reduce about section gaps */
+.about-content p {
+    margin-bottom: 0.75rem;
+}
+
+/* Reduce button group gaps */
+.d-flex.flex-wrap.gap-3 {
+    gap: 0.5rem !important;
+}
+
+/* Reduce social links spacing */
+.social-links {
+    margin-top: 1.5rem !important;
+}
+
+/* Reduce skill bars spacing */
+.skill-category {
+    margin-bottom: 12px;
+}
+
+/* Reduce timeline gaps */
+.jt-entry + .jt-entry {
+    margin-top: 0;
+}
+
+/* Reduce certificate card gaps */
+.cert-card,
+.certificate-card {
+    margin-bottom: 1rem;
+}
+
+/* Reduce blog card gaps */
+.blog-card {
+    margin-bottom: 1rem;
+}
+
+/* Reduce accordion gaps */
+.accordion-item + .accordion-item {
+    margin-top: 0;
+}
+
+/* Clean up footer spacing */
+footer {
+    padding-top: 2rem !important;
+    padding-bottom: 1rem !important;
+}
+
 /* --- Tablet (max-width: 991px) --- */
 @media (max-width: 991.98px) {
     .navbar-collapse {
