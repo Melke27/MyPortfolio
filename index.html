@@ -856,35 +856,6 @@
         </script>
         <!-- End Google Analytics -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
-        <style>
-            #skillsPieChart {
-                transition: transform 0.4s cubic-bezier(.68, -0.55, .27, 1.55), box-shadow 0.4s;
-            }
-
-            #skillsPieChart:hover {
-                transform: scale(1.07) rotate(-2deg);
-                box-shadow: 0 8px 32px rgba(33, 150, 243, 0.18);
-            }
-        </style>
-        <style>
-            @keyframes radarPulse {
-
-                0%,
-                100% {
-                    transform: scale(1) rotate(-2deg);
-                    box-shadow: 0 8px 32px rgba(33, 150, 243, 0.18);
-                }
-
-                50% {
-                    transform: scale(1.08) rotate(-2deg);
-                    box-shadow: 0 16px 48px rgba(33, 150, 243, 0.22);
-                }
-            }
-
-            #skillsPieChart.pulse {
-                animation: radarPulse 2.2s cubic-bezier(.68, -0.55, .27, 1.55) infinite;
-            }
-        </style>
 </head>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="51">
@@ -1275,158 +1246,8 @@
                                 </div>
                             </div>
 
-                            <div class="skills-chart mt-5">
-                                <h5 class="mb-3">My Skills Distribution</h5>
-                                <div class="chart-legend mb-3">
-                                    <div class="legend-item">
-                                        <span class="color-box bg-primary"></span>
-                                        <span class="legend-text">Competitive Programming</span>
-                                    </div>
-                                    <div class="legend-item">
-                                        <span class="color-box bg-success"></span>
-                                        <span class="legend-text">Full-Stack Development</span>
-                                    </div>
-                                    <div class="legend-item">
-                                        <span class="color-box bg-info"></span>
-                                        <span class="legend-text">Database Management</span>
-                                    </div>
-                                    <div class="legend-item">
-                                        <span class="color-box bg-warning"></span>
-                                        <span class="legend-text">Cybersecurity</span>
-                                    </div>
-                                    <div class="legend-item">
-                                        <span class="color-box bg-danger"></span>
-                                        <span class="legend-text">Robotics & Automation</span>
-                                    </div>
-                                </div>
-                                <div class="skills-chart-container">
-                                    <canvas id="skillsPieChart" style="max-width: 400px; max-height: 400px;"></canvas>
-                                </div>
-                            </div>
 
-                            <style>
-                                .skills-chart-container {
-                                    gap: 20px;
-                                }
 
-                                .chart-legend {
-                                    display: flex;
-                                    flex-direction: column;
-                                    gap: 10px;
-                                }
-
-                                .legend-item {
-                                    display: flex;
-                                    align-items: center;
-                                    font-size: 0.95rem;
-                                    color: #333;
-                                    /* Adjust color as needed */
-                                }
-
-                                .color-box {
-                                    width: 18px;
-                                    height: 18px;
-                                    margin-right: 8px;
-                                    border-radius: 4px;
-                                }
-
-                                /* Additional colors for subcategories if needed, but not in the main legend */
-                                .bg-purple {
-                                    background-color: #6f42c1;
-                                }
-
-                                /* Example, if needed */
-                                .bg-dark {
-                                    background-color: #343a40;
-                                }
-
-                                /* Example, if needed */
-
-                                /* Ensure canvas takes available space, but with limits */
-                                #skillsPieChart {
-                                    flex-basis: 0;
-                                    /* Allows it to shrink below max-width */
-                                    min-width: 250px;
-                                    /* Ensure it's not too small on narrow screens */
-                                }
-
-                                /* Responsive adjustments for the chart legend and container */
-                                @media (max-width: 991.98px) {
-
-                                    /* On medium devices and smaller */
-                                    .skills-chart-container {
-                                        flex-direction: column;
-                                        /* Stack legend and chart vertically */
-                                        align-items: center;
-                                        /* Center items when stacked */
-                                    }
-
-                                    .chart-legend {
-                                        flex-direction: row;
-                                        /* Keep legend items in a row if space allows */
-                                        flex-wrap: wrap;
-                                        /* Allow legend items to wrap */
-                                        justify-content: center;
-                                        margin-right: 0 !important;
-                                        /* Remove right margin when stacked */
-                                    }
-
-                                    .legend-item {
-                                        margin-bottom: 5px;
-                                        /* Add some space between wrapped items */
-                                    }
-                                }
-
-                                @media (max-width: 575.98px) {
-
-                                    /* On extra small devices */
-                                    .legend-item {
-                                        font-size: 0.85rem;
-                                    }
-
-                                    .color-box {
-                                        width: 15px;
-                                        height: 15px;
-                                    }
-                                }
-                            </style>
-
-                            <style>
-                                .skills-feature-row {
-                                    display: flex;
-                                    flex-direction: row;
-                                    gap: 18px;
-                                    justify-content: stretch;
-                                    align-items: stretch;
-                                    margin-top: 18px;
-                                    width: 100%;
-                                    flex-wrap: nowrap;
-                                }
-
-                                .skills-feature-row>div {
-                                    flex: 1 1 33%;
-                                    margin: 0;
-                                    max-width: 100%;
-                                    min-width: 0;
-                                    box-sizing: border-box;
-                                }
-
-                                @media (max-width: 991.98px) {
-                                    .skills-feature-row {
-                                        flex-direction: column;
-                                        align-items: center;
-                                        gap: 16px;
-                                        width: 100%;
-                                        flex-wrap: wrap;
-                                    }
-
-                                    .skills-feature-row>div {
-                                        flex: 1 1 100%;
-                                        max-width: 100%;
-                                        min-width: 0;
-                                    }
-                                }
-                            </style>
 
 
                             <div class="social-links mt-4">
@@ -3425,76 +3246,6 @@
                 }
             </script>
             <script>
-                // Wait for the DOM to be fully loaded (for skillsPieChart)
-                window.addEventListener('load', function () {
-                    try {
-                        const ctx = document.getElementById('skillsPieChart');
-                        if (!ctx) {
-                            console.error('Canvas element not found');
-                            return;
-                        }
-
-                        new Chart(ctx, {
-                            type: 'radar', // Changed to radar chart
-                            data: {
-                                labels: [
-                                    'Frontend',
-                                    'Backend',
-                                    'Algorithms',
-                                    'Problem Solving',
-                                    'UI/UX',
-                                    'Database'
-                                ],
-                                datasets: [{
-                                    label: 'Skills Level',
-                                    data: [90, 70, 75, 60, 80, 70], // Approximate values from image
-                                    backgroundColor: 'rgba(0, 123, 255, 0.2)', // Light blue fill
-                                    borderColor: '#007bff', // Blue line
-                                    pointBackgroundColor: '#007bff', // Blue points
-                                    pointBorderColor: '#fff',
-                                    pointHoverBackgroundColor: '#fff',
-                                    pointHoverBorderColor: '#007bff',
-                                    borderWidth: 2
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                elements: {
-                                    line: {
-                                        borderWidth: 3
-                                    }
-                                },
-                                scales: {
-                                    r: {
-                                        angleLines: {
-                                            display: true // Display radar lines
-                                        },
-                                        suggestedMin: 0,
-                                        suggestedMax: 100, // Max value on the scale
-                                        ticks: {
-                                            display: true, // Display tick labels
-                                            beginAtZero: true,
-                                            stepSize: 20 // Adjust step size as needed
-                                        },
-                                        grid: {
-                                            color: 'rgba(0, 0, 0, 0.1)' // Light grid lines
-                                        }
-                                    }
-                                },
-                                plugins: {
-                                    legend: {
-                                        display: true // Show the Chart.js legend
-                                    }
-                                }
-                            }
-                        });
-                    } catch (error) {
-                        console.error('Error initializing chart:', error);
-                    }
-                });
-            </script>
-            <script>
                 // Blog posts data (20 posts, various topics)
                 const blogPostsData = [
                     // NEWEST BLOG POSTS (add at the top)
@@ -4862,50 +4613,6 @@
 
 
 
-            </script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    if (window.Chart && document.getElementById('skillsPieChart')) {
-                        const ctx = document.getElementById('skillsPieChart').getContext('2d');
-                        new Chart(ctx, {
-                            type: 'radar',
-                            data: {
-                                labels: ['Frontend', 'Backend', 'Algorithms', 'Problem Solving', 'UI/UX', 'Database'],
-                                datasets: [{
-                                    label: 'Skills',
-                                    data: [95, 75, 80, 65, 85, 70],
-                                    backgroundColor: 'rgba(33,150,243,0.15)',
-                                    borderColor: 'rgba(33,150,243,1)',
-                                    borderWidth: 3,
-                                    pointBackgroundColor: '#fff',
-                                    pointBorderColor: '#2196f3',
-                                    pointBorderWidth: 2,
-                                    pointRadius: 5,
-                                    pointHoverRadius: 8,
-                                    pointHoverBorderWidth: 3
-                                }]
-                            },
-                            options: {
-                                animation: {
-                                    duration: 1800,
-                                    easing: 'easeOutElastic'
-                                },
-                                scales: {
-                                    r: {
-                                        angleLines: { display: true },
-                                        suggestedMin: 0,
-                                        suggestedMax: 100,
-                                        pointLabels: { font: { size: 16 } }
-                                    }
-                                },
-                                plugins: {
-                                    legend: { display: false }
-                                }
-                            }
-                        });
-                    }
-                });
-            </script>
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     function animateCounters() {
@@ -5014,42 +4721,9 @@
                     };
                 }
             </script>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    var radar = document.getElementById('skillsPieChart');
-                    if (radar) radar.classList.add('pulse');
-                });
-            </script>
 
-            <style>
-                .skills-chart-container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: center;
-                    align-items: flex-start;
-                    gap: 40px;
-                    margin-bottom: 32px;
-                    width: 100%;
-                    overflow-x: auto;
-                    box-sizing: border-box;
-                }
 
-                #skillsPieChart {
-                    max-width: 100%;
-                    min-width: 220px;
-                    height: auto;
-                    display: block;
-                    margin: 0 auto;
-                }
 
-                @media (max-width: 991.98px) {
-                    .skills-chart-container {
-                        flex-direction: column;
-                        align-items: center;
-                        gap: 24px;
-                    }
-                }
-            </style>
 
 
             <!-- Live Chat Widget Start -->
