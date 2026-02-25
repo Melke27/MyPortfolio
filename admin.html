@@ -546,7 +546,6 @@
         }
 
         async function save(type) {
-            const endpoints = { blog: 'blogposts', project: 'projects', skill: 'skills', cert: 'certifications', exp: 'experiences' };
             const id = document.getElementById('editId')?.value;
             let data = {};
 
@@ -574,7 +573,6 @@
 
         async function del(type, id) {
             if (!confirm('Delete?')) return;
-            const endpoints = { blog: 'blogposts', project: 'projects', skill: 'skills', cert: 'certifications', exp: 'experiences', contact: 'contacts', sub: 'subscribers' };
             await fetch(apiUrl + '/' + endpoints[type] + '/' + id, { method: 'DELETE' });
             showToast('Deleted', 'success');
             loadData();
