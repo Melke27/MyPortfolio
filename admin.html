@@ -658,6 +658,52 @@
         }
 
         function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+        
+        // Settings functions
+        function updatePassword() {
+            const newPass = document.getElementById('adminNewPass').value;
+            if(newPass && newPass.length >= 6) {
+                localStorage.setItem('adminPassword', btoa(newPass));
+                showToast('Password updated successfully!', 'success');
+            } else {
+                showToast('Password must be at least 6 characters', 'danger');
+            }
+        }
+        
+        function saveApiSettings() {
+            const apiUrl = document.getElementById('settingsApiUrl').value;
+            if(apiUrl) {
+                localStorage.setItem('blogAdminApiUrl', apiUrl);
+                showToast('API settings saved!', 'success');
+            }
+        }
+        
+        function logoutAll() {
+            if(confirm('Logout from all devices?')) {
+                localStorage.removeItem('blogAdminToken');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        function clearAllData() {
+            if(confirm('WARNING: This will delete ALL data! Are you sure?')) {
+                if(confirm('This cannot be undone! Confirm?')) {
+                    showToast('Data cleared - contact developer to restore', 'warning');
+                }
+            }
+        }
+        
+        function loadSettings() {
+            document.getElementById('settingsApiUrl').value = localStorage.getItem('blogAdminApiUrl') || 'http://localhost:10000/api';
+        }
+        
+        function loadStats() {
+            // Update settings page stats
+            document.getElementById('statBlogs').textContent = document.getElementById('blogCount').textContent;
+            document.getElementById('statSkills').textContent = document.getElementById('skillCount').textContent;
+            document.getElementById('statCerts').textContent = document.getElementById('certCount').textContent;
+            document.getElementById('statExp').textContent = document.getElementById('expCount').textContent;
+        }
         function showToast(m, t) {
             const toast = document.createElement('div');
             toast.className = 'toast align-items-center text-white bg-' + (t || 'info') + ' border-0';
