@@ -8,9 +8,18 @@ const axios = require('axios');
 dotenv.config();
 
 const app = express();
+const path = require('path');
 
 // Enable CORS for all origins (for troubleshooting CORS errors)
 app.use(cors());
+
+// Serve static files from parent directory
+app.use(express.static(path.join(__dirname, '..')));
+
+// Serve admin.html
+app.get('/admin.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'admin.html'));
+});
 
 // Middleware
 app.use(express.json());
@@ -57,15 +66,47 @@ const Subscriber = mongoose.model('Subscriber', subscriberSchema);
 const blogRoutes = require('./routes/blogRoutes');
 const authRoutes = require('./routes/auth');
 const contactRoutes = require('./routes/contact');
+const projectRoutes = require('./routes/projects');
+const skillRoutes = require('./routes/skills');
+const certRoutes = require('./routes/certifications');
+const expRoutes = require('./routes/experiences');
 
 // Routes
 app.use('/api', blogRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/contact', contactRoutes);
+app.use('/api/contacts', contactRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/skills', skillRoutes);
+app.use('/api/certifications', certRoutes);
+app.use('/api/experiences', expRoutes);
+
+// Subscribers API
+app.get('/api/subscribers', async (req, res) => {
+    try {
+        const subscribers = await Subscriber.find().sort({ subscribedAt: -1 });
+        res.json(subscribers);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+app.delete('/api/subscribers/:id', async (req, res) => {
+    try {
+        await Subscriber.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Subscriber deleted' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
     res.json({ status: 'healthy', timestamp: new Date() });
+});
+
+// Test endpoint for blog
+app.get('/api/test', (req, res) => {
+    res.json({ message: 'API is working', routes: 'blogRoutes loaded' });
 });
 
 // Subscribe to Newsletter

@@ -3246,280 +3246,102 @@
                 }
             </script>
             <script>
-                // Blog posts data (20 posts, various topics)
-                const blogPostsData = [
-                    // NEWEST BLOG POSTS (add at the top)
-                    {
-                        id: 21,
-                        title: "AI Agents: The Next Leap in Automation",
-                        description: "How autonomous AI agents are transforming business workflows and personal productivity.",
-                        date: "2025-07-10",
-                        imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-                        slug: "ai-agents-automation",
-                        tags: ["AI", "Automation"]
-                    },
-                    {
-                        id: 22,
-                        title: "Edge Computing: Bringing Cloud Closer",
-                        description: "Why edge computing is critical for IoT, 5G, and real-time applications in 2025.",
-                        date: "2025-07-09",
-                        imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
-                        slug: "edge-computing-iot",
-                        tags: ["Cloud", "IoT"]
-                    },
-                    {
-                        id: 23,
-                        title: "Sustainable Tech: Green Coding Practices",
-                        description: "How developers can reduce carbon footprint with efficient code and eco-friendly hosting.",
-                        date: "2025-07-08",
-                        imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-                        slug: "sustainable-tech-green-coding",
-                        tags: ["Sustainability", "Best Practices"]
-                    },
-                    {
-                        id: 24,
-                        title: "WebGPU: The Future of Browser Graphics",
-                        description: "Explore how WebGPU is unlocking new levels of performance for web-based games and apps.",
-                        date: "2025-07-07",
-                        imageUrl: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=800&q=80",
-                        slug: "webgpu-browser-graphics",
-                        tags: ["Web Development", "Graphics"]
-                    },
-                    {
-                        id: 25,
-                        title: "Zero-Knowledge Proofs: Privacy in Blockchain",
-                        description: "A beginner's guide to zero-knowledge proofs and their role in privacy-preserving blockchain apps.",
-                        date: "2025-07-06",
-                        imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
-                        slug: "zkp-blockchain-privacy",
-                        tags: ["Blockchain", "Privacy"]
-                    },
-                    {
-                        id: 26,
-                        title: "Serverless Databases: Scaling Without Limits",
-                        description: "How serverless databases are changing the way developers build scalable applications.",
-                        date: "2025-07-05",
-                        imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
-                        slug: "serverless-databases-scaling",
-                        tags: ["Cloud", "Databases"]
-                    },
-                    {
-                        id: 27,
-                        title: "Quantum-Safe Cryptography: Preparing for Tomorrow",
-                        description: "What is quantum-safe cryptography and why should developers care in 2025?",
-                        date: "2025-07-04",
-                        imageUrl: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80",
-                        slug: "quantum-safe-cryptography",
-                        tags: ["Cybersecurity", "Quantum"]
-                    },
-                    {
-                        id: 28,
-                        title: "Composable UIs: Micro-Frontends in Practice",
-                        description: "How micro-frontend architecture is enabling scalable, maintainable web apps.",
-                        date: "2025-07-03",
-                        imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-                        slug: "micro-frontends-composable-ui",
-                        tags: ["Web Development", "Frontend"]
-                    },
-                    {
-                        id: 29,
-                        title: "The Rise of Prompt Engineering",
-                        description: "Why prompt engineering is becoming a must-have skill for AI developers.",
-                        date: "2025-07-02",
-                        imageUrl: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=800&q=80",
-                        slug: "prompt-engineering-ai",
-                        tags: ["AI", "Development"]
-                    },
-                    {
-                        id: 30,
-                        title: "Next-Gen CSS: Cascade Layers & Nesting",
-                        description: "A look at the latest CSS features—cascade layers, nesting, and what they mean for modern web design.",
-                        date: "2025-07-01",
-                        imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-                        slug: "next-gen-css-layers-nesting",
-                        tags: ["Web Development", "CSS"]
-                    },
-                    {
-                        id: 1,
-                        title: "The Rise of WebAssembly: Next-Gen Web Apps",
-                        description: "How WebAssembly is changing the future of web development, enabling near-native performance and new possibilities for the browser.",
-                        date: "2025-07-01",
-                        imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
-                        slug: "webassembly-future",
-                        tags: ["Web Development", "WebAssembly", "Performance"]
-                    },
-                    {
-                        id: 2,
-                        title: "Zero Trust Security: The New Standard",
-                        description: "Why Zero Trust is the future of cybersecurity for businesses and how to implement it.",
-                        date: "2025-06-28",
-                        imageUrl: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=800&q=80",
-                        slug: "zero-trust-security",
-                        tags: ["Cybersecurity", "Zero Trust"]
-                    },
-                    {
-                        id: 3,
-                        title: "Solidity vs. Rust: Blockchain Smart Contracts",
-                        description: "Comparing Solidity and Rust for building secure blockchain applications and smart contracts.",
-                        date: "2025-06-25",
-                        imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
-                        slug: "solidity-vs-rust",
-                        tags: ["Blockchain", "Programming Languages"]
-                    },
-                    {
-                        id: 4,
-                        title: "TypeScript 5.0: What's New?",
-                        description: "A look at the latest features in TypeScript 5.0 and how they improve developer productivity.",
-                        date: "2025-06-22",
-                        imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-                        slug: "typescript-5-features",
-                        tags: ["Programming Languages", "TypeScript"]
-                    },
-                    {
-                        id: 5,
-                        title: "AI-Powered Code Review Tools",
-                        description: "How AI is making code reviews faster, smarter, and more reliable for developers.",
-                        date: "2025-06-20",
-                        imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-                        slug: "ai-code-review",
-                        tags: ["AI", "Web Development"]
-                    },
-                    {
-                        id: 6,
-                        title: "Next.js 14: The Ultimate React Framework?",
-                        description: "Exploring the new features and performance improvements in Next.js 14 for modern React apps.",
-                        date: "2025-06-18",
-                        imageUrl: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80",
-                        slug: "nextjs-14-review",
-                        tags: ["Web Development", "React"]
-                    },
-                    {
-                        id: 7,
-                        title: "Quantum Computing for Developers",
-                        description: "What every developer should know about quantum computing and its future impact.",
-                        date: "2025-06-15",
-                        imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-                        slug: "quantum-computing-basics",
-                        tags: ["Quantum", "Latest Technologies"]
-                    },
-                    {
-                        id: 8,
-                        title: "Serverless Security: Best Practices",
-                        description: "How to secure your serverless applications in the cloud with practical best practices.",
-                        date: "2025-06-12",
-                        imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-                        slug: "serverless-security-best-practices",
-                        tags: ["Cybersecurity", "Cloud"]
-                    },
-                    {
-                        id: 9,
-                        title: "Python 4.0: What to Expect",
-                        description: "A preview of the most anticipated features and changes in Python 4.0 for developers.",
-                        date: "2025-06-10",
-                        imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
-                        slug: "python-4-preview",
-                        tags: ["Programming Languages", "Python"]
-                    },
-                    {
-                        id: 10,
-                        title: "The Future of CSS: Container Queries & More",
-                        description: "How new CSS features like container queries are making responsive design easier and more powerful.",
-                        date: "2025-06-08",
-                        imageUrl: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80",
-                        slug: "css-container-queries",
-                        tags: ["Web Development", "CSS"]
-                    },
-                    {
-                        id: 11,
-                        title: "Web3 Explained: Beyond the Hype",
-                        description: "A practical guide to what Web3 really means for developers and the future of the internet.",
-                        date: "2025-06-06",
-                        imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
-                        slug: "web3-explained",
-                        tags: ["Blockchain", "Web Development"]
-                    },
-                    {
-                        id: 12,
-                        title: "Go vs. Rust: The Battle for Backend Supremacy",
-                        description: "Which language should you choose for your next backend project? A comparison of Go and Rust.",
-                        date: "2025-06-04",
-                        imageUrl: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-                        slug: "go-vs-rust-backend",
-                        tags: ["Programming Languages", "Backend"]
-                    },
-                    {
-                        id: 13,
-                        title: "How to Build a Secure REST API",
-                        description: "Step-by-step guide to building and securing REST APIs for modern web applications.",
-                        date: "2025-06-02",
-                        imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-                        slug: "secure-rest-api-guide",
-                        tags: ["Web Development", "Cybersecurity"]
-                    },
-                    {
-                        id: 14,
-                        title: "React Server Components: The Next Big Thing?",
-                        description: "What are React Server Components and why do they matter for the future of React?",
-                        date: "2025-05-30",
-                        imageUrl: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80",
-                        slug: "react-server-components",
-                        tags: ["Web Development", "React"]
-                    },
-                    {
-                        id: 15,
-                        title: "Kubernetes for Beginners: A 2025 Guide",
-                        description: "Everything you need to know to get started with Kubernetes and container orchestration.",
-                        date: "2025-05-28",
-                        imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-                        slug: "kubernetes-beginners-guide",
-                        tags: ["Cloud", "Latest Technologies"]
-                    },
-                    {
-                        id: 16,
-                        title: "The State of JavaScript 2025",
-                        description: "Trends and insights from the latest State of JS survey and what they mean for developers.",
-                        date: "2025-05-26",
-                        imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
-                        slug: "state-of-js-2025",
-                        tags: ["Web Development", "JavaScript"]
-                    },
-                    {
-                        id: 17,
-                        title: "Penetration Testing: Tools & Techniques",
-                        description: "A hands-on guide to modern penetration testing tools and techniques for cybersecurity professionals.",
-                        date: "2025-05-24",
-                        imageUrl: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=800&q=80",
-                        slug: "penetration-testing-tools",
-                        tags: ["Cybersecurity", "Testing"]
-                    },
-                    {
-                        id: 18,
-                        title: "Deno vs. Node.js: The 2025 Showdown",
-                        description: "Is Deno ready to replace Node.js for backend development? A deep dive into both platforms.",
-                        date: "2025-05-22",
-                        imageUrl: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
-                        slug: "deno-vs-nodejs",
-                        tags: ["Web Development", "Backend"]
-                    },
-                    {
-                        id: 19,
-                        title: "The Power of GraphQL in Modern Apps",
-                        description: "Why GraphQL is becoming the go-to API technology for modern web and mobile apps.",
-                        date: "2025-05-20",
-                        imageUrl: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
-                        slug: "graphql-modern-apps",
-                        tags: ["Web Development", "APIs"]
-                    },
-                    {
-                        id: 20,
-                        title: "Top 10 New Programming Languages in 2025",
-                        description: "A rundown of the hottest new languages and what makes them unique in 2025.",
-                        date: "2025-05-18",
-                        imageUrl: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
-                        slug: "top-10-new-languages-2025",
-                        tags: ["Programming Languages", "Latest Technologies"]
+                // Blog posts from API
+                let blogPostsData = [];
+                let blogLoading = true;
+                let blogError = null;
+
+                // Fetch blog posts from API
+                async function fetchBlogPosts() {
+                    const blogPostsContainer = document.getElementById('blog-posts-container');
+                    if (!blogPostsContainer) return;
+                    
+                    try {
+                        // Try to fetch from backend API
+                        const response = await fetch('/api/blogposts/latest?limit=6');
+                        if (response.ok) {
+                            const posts = await response.json();
+                            blogPostsData = posts.map(post => ({
+                                id: post._id,
+                                title: post.title,
+                                description: post.description,
+                                date: post.date,
+                                imageUrl: post.imageUrl,
+                                slug: post.slug,
+                                tags: post.tags || [],
+                                author: post.author,
+                                content: post.content,
+                                views: post.views || 0
+                            }));
+                            console.log('Loaded', blogPostsData.length, 'blog posts from API');
+                        } else {
+                            throw new Error('Failed to fetch blog posts');
+                        }
+                    } catch (error) {
+                        console.warn('Could not load blog posts from API, using static fallback:', error.message);
+                        blogError = error.message;
+                        // Static fallback data if API is not available
+                        blogPostsData = [
+                            {
+                                id: 1,
+                                title: "Getting Started with React in 2025",
+                                description: "Learn how to build modern web applications with React, the most popular JavaScript library.",
+                                date: "2025-02-20",
+                                imageUrl: "assets/img/Discover the power of JSON in web development! Our….jpg",
+                                slug: "getting-started-react-2025",
+                                tags: ["React", "JavaScript", "Web Development"]
+                            },
+                            {
+                                id: 2,
+                                title: "Understanding Node.js and Express Backend Development",
+                                description: "A comprehensive guide to building robust backend applications using Node.js and Express.",
+                                date: "2025-02-18",
+                                imageUrl: "assets/img/cloud.jpg",
+                                slug: "nodejs-express-backend",
+                                tags: ["Node.js", "Express", "Backend"]
+                            },
+                            {
+                                id: 3,
+                                title: "Mastering MongoDB: From Basics to Advanced",
+                                description: "Everything you need to know about MongoDB, the most popular NoSQL database.",
+                                date: "2025-02-15",
+                                imageUrl: "assets/img/cyper.jpg",
+                                slug: "mastering-mongodb",
+                                tags: ["MongoDB", "Database", "NoSQL"]
+                            },
+                            {
+                                id: 4,
+                                title: "The Future of Web Development: Trends to Watch in 2025",
+                                description: "Explore the latest trends shaping the future of web development.",
+                                date: "2025-02-10",
+                                imageUrl: "assets/img/AI.jpg",
+                                slug: "web-development-trends-2025",
+                                tags: ["Web Development", "Trends", "AI"]
+                            },
+                            {
+                                id: 5,
+                                title: "Building a Portfolio Website That Stands Out",
+                                description: "Tips and best practices for creating an impressive developer portfolio.",
+                                date: "2025-02-05",
+                                imageUrl: "assets/img/portfolio-1.jpg",
+                                slug: "portfolio-website-guide",
+                                tags: ["Portfolio", "Career", "Web Development"]
+                            },
+                            {
+                                id: 6,
+                                title: "Introduction to Cybersecurity Fundamentals",
+                                description: "Learn the basics of cybersecurity and how to protect your applications.",
+                                date: "2025-01-28",
+                                imageUrl: "assets/img/cyper.jpg",
+                                slug: "cybersecurity-fundamentals",
+                                tags: ["Cybersecurity", "Security", "Web Development"]
+                            }
+                        ];
+                    } finally {
+                        blogLoading = false;
+                        renderBlogs();
                     }
-                ];
+                }
 
                 let currentBlogIndex = 0;
                 let showingAllBlogs = false;
@@ -3527,6 +3349,19 @@
                 function renderBlogs() {
                     const blogPostsContainer = document.getElementById('blog-posts-container');
                     if (!blogPostsContainer) return;
+                    
+                    // Show loading state
+                    if (blogLoading) {
+                        blogPostsContainer.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-success" role="status"><span class="sr-only">Loading...</span></div></div>';
+                        return;
+                    }
+                    
+                    // Show error message if API failed
+                    if (blogError && blogPostsData.length === 0) {
+                        blogPostsContainer.innerHTML = '<div class="col-12 text-center text-muted"><p>Unable to load blog posts. Please try again later.</p></div>';
+                        return;
+                    }
+                    
                     blogPostsContainer.innerHTML = '';
                     let postsToDisplay = [];
                     if (showingAllBlogs) {
@@ -3619,10 +3454,14 @@
                 }
 
                 document.addEventListener('DOMContentLoaded', () => {
-                    renderBlogs();
+                    // Fetch blog posts from API
+                    fetchBlogPosts();
+                    
+                    // Auto-rotate blogs every minute
                     setInterval(() => {
-                        if (!showingAllBlogs) nextBlogs();
-                    }, 60000); // 1 minute
+                        if (!showingAllBlogs && !blogLoading && blogPostsData.length > 0) nextBlogs();
+                    }, 60000);
+                    
                     const viewAllBtn = document.getElementById('view-all-posts-btn');
                     if (viewAllBtn) {
                         viewAllBtn.addEventListener('click', (e) => {

@@ -15,11 +15,22 @@ document.addEventListener('DOMContentLoaded', function() {
       };
 
       try {
-        const resp = await fetch('https://melkamuwako27-backend.onrender.com/contact', {
+        // Try local server first, then fallback to remote
+        let resp = await fetch('/api/contacts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData)
         });
+        
+        // If local fails, try remote
+        if (!resp.ok) {
+          resp = await fetch('https://melkamuwako27-backend.onrender.com/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          });
+        }
+        
         if (resp.ok) {
           successDiv.style.display = 'block';
           successDiv.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.';

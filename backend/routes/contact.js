@@ -36,11 +36,21 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get all contact submissions (admin only)
+// Get all contact submissions
 router.get('/', async (req, res) => {
   try {
     const contacts = await Contact.find().sort({ createdAt: -1 });
     res.json(contacts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Delete contact
+router.delete('/:id', async (req, res) => {
+  try {
+    await Contact.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Contact deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
