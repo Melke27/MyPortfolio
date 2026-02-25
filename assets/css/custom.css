@@ -1,13 +1,19 @@
-/* Skills Distribution Styles */
+/* ============================================
+   Custom CSS for Melkamu Wako Portfolio
+   Enhanced Styles & Margin Fixes
+   ============================================ */
+
+/* --- Skills Distribution Styles --- */
 .skills-distribution {
     padding: 20px;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
 }
 
 .skill-category {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
 }
 
 .skill-category:last-child {
@@ -17,12 +23,13 @@
 .skill-header {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .skill-header i {
     font-size: 1.2rem;
     margin-right: 10px;
+    color: #8BC34A;
 }
 
 .skill-header h6 {
@@ -30,11 +37,13 @@
     flex-grow: 1;
     font-size: 0.9rem;
     font-weight: 600;
+    color: #333;
 }
 
 .skill-percentage {
     font-weight: 600;
     color: #666;
+    font-size: 0.85rem;
 }
 
 .progress {
@@ -42,6 +51,7 @@
     background-color: #f0f0f0;
     border-radius: 4px;
     overflow: hidden;
+    margin-bottom: 0;
 }
 
 .progress-bar {
@@ -56,4 +66,298 @@
 
 .progress-bar {
     animation: progressAnimation 1s ease-in-out forwards;
-} 
+}
+
+/* --- Section Layout Fixes --- */
+#expertise,
+#skills,
+#services {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+/* --- Card Layout Fixes --- */
+.card {
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* --- Blog Card Fixes --- */
+.blog-card {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+}
+
+.blog-card .card-body {
+    padding: 1.25rem;
+}
+
+/* --- Portfolio Item Fixes --- */
+.portfolio-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.portfolio-item img {
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+
+.portfolio-item:hover img {
+    transform: scale(1.05);
+}
+
+/* --- Timeline Fixes --- */
+.journey-timeline {
+    padding: 1rem 0;
+}
+
+.jt-entry {
+    position: relative;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    background: #fff;
+    border-radius: 8px;
+    border-left: 4px solid #8BC34A;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.jt-entry:last-child {
+    margin-bottom: 0;
+}
+
+.jt-entry h4 {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.jt-entry p {
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.jt-entry p:last-child {
+    margin-bottom: 0;
+}
+
+/* --- Certificate Card Fixes --- */
+.cert-card,
+.certificate-card {
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+}
+
+.cert-card:hover,
+.certificate-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+/* --- Footer Fixes --- */
+footer {
+    background: #111;
+    color: #fff;
+    padding: 3rem 0 1rem;
+    margin-top: 0;
+}
+
+footer h5 {
+    margin-bottom: 1rem;
+    color: #8BC34A;
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+    color: #ccc;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #8BC34A;
+}
+
+/* --- Navbar Fixes --- */
+.navbar {
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 0.75rem 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #8BC34A !important;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #8BC34A !important;
+}
+
+/* --- Button Fixes --- */
+.btn {
+    border-radius: 5px;
+    padding: 0.5rem 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.btn-success,
+.btn-primary {
+    background: #8BC34A;
+    border-color: #8BC34A;
+}
+
+.btn-success:hover,
+.btn-primary:hover {
+    background: #689F38;
+    border-color: #689F38;
+}
+
+/* --- Form Fixes --- */
+.form-control {
+    border-radius: 5px;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    margin-bottom: 1rem;
+}
+
+.form-control:focus {
+    border-color: #8BC34A;
+    box-shadow: 0 0 0 0.2rem rgba(139, 195, 74, 0.25);
+}
+
+/* --- Testimonial Fixes --- */
+.testimonial-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.testimonial-card p {
+    font-style: italic;
+    color: #666;
+}
+
+/* --- Modal Fixes --- */
+.modal-content {
+    border-radius: 10px;
+    border: none;
+}
+
+.modal-header {
+    border-bottom: 1px solid #eee;
+    padding: 1rem 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #eee;
+    padding: 1rem 1.5rem;
+}
+
+/* --- Section Titles --- */
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #333;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #8BC34A;
+    margin-top: 0.5rem;
+}
+
+/* --- Badge Fixes --- */
+.badge {
+    padding: 0.35em 0.65em;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.badge-success {
+    background: #8BC34A;
+}
+
+.badge-primary {
+    background: #2196F3;
+}
+
+/* --- Icon Fixes --- */
+.fa {
+    margin-right: 0.25rem;
+}
+
+/* --- Image Fixes --- */
+.img-fluid {
+    border-radius: 8px;
+}
+
+.rounded-circle {
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .skills-distribution {
+        padding: 15px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .jt-entry {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    footer {
+        padding: 2rem 0 1rem;
+    }
+}

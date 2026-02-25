@@ -136,7 +136,7 @@
                     <button type="submit" class="btn btn-primary w-100"><i
                             class="fas fa-sign-in-alt me-2"></i>Login</button>
                 </form>
-                
+
             </div>
         </div>
     </div>
@@ -163,6 +163,8 @@
                                 class="fas fa-envelope me-2"></i>Messages</a>
                         <a class="nav-link" href="#" data-page="subs"><i class="fas fa-users me-2"></i>Subscribers</a>
                         <a class="nav-link" href="#" data-page="settings"><i class="fas fa-cog me-2"></i>Settings</a>
+                        <a class="nav-link" href="#" data-page="testimonials"><i
+                                class="fas fa-quote-left me-2"></i>Testimonials</a>
                         <a class="nav-link" href="/" target="_blank"><i class="fas fa-external-link-alt me-2"></i>View
                             Website</a>
                         <a class="nav-link" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a>
@@ -400,9 +402,11 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Change Password</label>
-                                            <input type="password" class="form-control" id="adminNewPass" placeholder="New password">
+                                            <input type="password" class="form-control" id="adminNewPass"
+                                                placeholder="New password">
                                         </div>
-                                        <button class="btn btn-primary" onclick="updatePassword()"><i class="fas fa-save me-2"></i>Update Password</button>
+                                        <button class="btn btn-primary" onclick="updatePassword()"><i
+                                                class="fas fa-save me-2"></i>Update Password</button>
                                     </div>
                                 </div>
                             </div>
@@ -412,13 +416,16 @@
                                     <div class="card-body">
                                         <div class="mb-3">
                                             <label class="form-label">API Base URL</label>
-                                            <input type="text" class="form-control" id="settingsApiUrl" placeholder="http://localhost:10000/api">
+                                            <input type="text" class="form-control" id="settingsApiUrl"
+                                                placeholder="http://localhost:10000/api">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Database Status</label>
-                                            <div><span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Connected</span></div>
+                                            <div><span class="badge bg-success"><i
+                                                        class="fas fa-check-circle me-1"></i>Connected</span></div>
                                         </div>
-                                        <button class="btn btn-primary" onclick="saveApiSettings()"><i class="fas fa-save me-2"></i>Save Settings</button>
+                                        <button class="btn btn-primary" onclick="saveApiSettings()"><i
+                                                class="fas fa-save me-2"></i>Save Settings</button>
                                     </div>
                                 </div>
                             </div>
@@ -426,7 +433,8 @@
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header"><i class="fas fa-database me-2"></i>Database Statistics</div>
+                                    <div class="card-header"><i class="fas fa-database me-2"></i>Database Statistics
+                                    </div>
                                     <div class="card-body">
                                         <div class="row text-center">
                                             <div class="col-md-3">
@@ -455,8 +463,10 @@
                                 <div class="card">
                                     <div class="card-header"><i class="fas fa-shield-alt me-2"></i>Security</div>
                                     <div class="card-body">
-                                        <button class="btn btn-warning" onclick="logoutAll()"><i class="fas fa-sign-out-alt me-2"></i>Logout All Sessions</button>
-                                        <button class="btn btn-danger ms-2" onclick="clearAllData()"><i class="fas fa-trash me-2"></i>Clear All Data</button>
+                                        <button class="btn btn-warning" onclick="logoutAll()"><i
+                                                class="fas fa-sign-out-alt me-2"></i>Logout All Sessions</button>
+                                        <button class="btn btn-danger ms-2" onclick="clearAllData()"><i
+                                                class="fas fa-trash me-2"></i>Clear All Data</button>
                                     </div>
                                 </div>
                             </div>
@@ -520,10 +530,10 @@
             lastPage = page;
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.querySelector('.nav-link[data-page="' + page + '"]')?.classList.add('active');
-            ['dashboardPage', 'blogsPage', 'projectsPage', 'skillsPage', 'certsPage', 'expPage', 'contactsPage', 'subsPage', 'settingsPage', 'formPage'].forEach(p => document.getElementById(p).classList.add('hidden'));
+            ['dashboardPage', 'blogsPage', 'projectsPage', 'skillsPage', 'certsPage', 'expPage', 'contactsPage', 'subsPage', 'settingsPage', 'testimonialsPage', 'formPage'].forEach(p => document.getElementById(p).classList.add('hidden'));
             document.getElementById(page + 'Page').classList.remove('hidden');
             loadData();
-            if(page === 'settings') { loadSettings(); loadStats(); }
+            if (page === 'settings') { loadSettings(); loadStats(); }
         }
 
         function showDashboard() {
@@ -534,14 +544,15 @@
 
         async function loadData() {
             try {
-                const [blogs, projects, skills, certs, exp, contacts, subs] = await Promise.all([
+                const [blogs, projects, skills, certs, exp, contacts, subs, testimonials] = await Promise.all([
                     fetch(apiUrl + '/blogposts').then(r => r.ok ? r.json() : []),
                     fetch(apiUrl + '/projects').then(r => r.ok ? r.json() : []),
                     fetch(apiUrl + '/skills').then(r => r.ok ? r.json() : []),
                     fetch(apiUrl + '/certifications').then(r => r.ok ? r.json() : []),
                     fetch(apiUrl + '/experiences').then(r => r.ok ? r.json() : []),
                     fetch(apiUrl + '/contacts').then(r => r.ok ? r.json() : []),
-                    fetch(apiUrl + '/subscribers').then(r => r.ok ? r.json() : [])
+                    fetch(apiUrl + '/subscribers').then(r => r.ok ? r.json() : []),
+                    fetch(apiUrl + '/testimonials').then(r => r.ok ? r.json() : [])
                 ]);
                 document.getElementById('blogCount').textContent = blogs.length;
                 document.getElementById('projectCount').textContent = projects.length;
@@ -557,6 +568,7 @@
                 renderTable('expTable', exp, ['title', 'company', 'startDate'], 'exp');
                 renderTable('contactsTable', contacts, ['name', 'email', 'subject', 'createdAt'], 'contact');
                 renderTable('subsTable', subs, ['email', 'subscribedAt'], 'sub');
+                renderTable('testimonialsTable', testimonials, ['name', 'company', 'rating'], 'testimonial');
             } catch (e) { console.error(e); }
         }
 
@@ -591,7 +603,7 @@
             }
         }
 
-        const endpoints = { blog: 'blogposts', project: 'projects', skill: 'skills', cert: 'certifications', exp: 'experiences', contact: 'contacts', sub: 'subscribers' };
+        const endpoints = { blog: 'blogposts', project: 'projects', skill: 'skills', cert: 'certifications', exp: 'experiences', contact: 'contacts', sub: 'subscribers', testimonial: 'testimonials' };
         async function edit(type, id) {
             console.log('Edit called with type:', type, 'id:', id);
             const url = apiUrl + '/' + endpoints[type];
@@ -659,45 +671,45 @@
         }
 
         function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-        
+
         // Settings functions
         function updatePassword() {
             const newPass = document.getElementById('adminNewPass').value;
-            if(newPass && newPass.length >= 6) {
+            if (newPass && newPass.length >= 6) {
                 localStorage.setItem('adminPassword', btoa(newPass));
                 showToast('Password updated successfully!', 'success');
             } else {
                 showToast('Password must be at least 6 characters', 'danger');
             }
         }
-        
+
         function saveApiSettings() {
             const apiUrl = document.getElementById('settingsApiUrl').value;
-            if(apiUrl) {
+            if (apiUrl) {
                 localStorage.setItem('blogAdminApiUrl', apiUrl);
                 showToast('API settings saved!', 'success');
             }
         }
-        
+
         function logoutAll() {
-            if(confirm('Logout from all devices?')) {
+            if (confirm('Logout from all devices?')) {
                 localStorage.removeItem('blogAdminToken');
                 window.location.href = 'login.html';
             }
         }
-        
+
         function clearAllData() {
-            if(confirm('WARNING: This will delete ALL data! Are you sure?')) {
-                if(confirm('This cannot be undone! Confirm?')) {
+            if (confirm('WARNING: This will delete ALL data! Are you sure?')) {
+                if (confirm('This cannot be undone! Confirm?')) {
                     showToast('Data cleared - contact developer to restore', 'warning');
                 }
             }
         }
-        
+
         function loadSettings() {
             document.getElementById('settingsApiUrl').value = localStorage.getItem('blogAdminApiUrl') || 'http://localhost:10000/api';
         }
-        
+
         function loadStats() {
             // Update settings page stats
             document.getElementById('statBlogs').textContent = document.getElementById('blogCount').textContent;

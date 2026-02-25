@@ -10,59 +10,45 @@ dotenv.config();
 const app = express();
 const path = require('path');
 
-// Enable CORS for all origins (for troubleshooting CORS errors)
+// Enable CORS for all origins
 app.use(cors());
 
-// Serve static files from parent directory
-app.use(express.static(path.join(__dirname, '..')));
-
-// Serve admin.html
-app.get('/admin.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'admin.html'));
-});
-
-// Serve login.html
-app.get('/login.html', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'login.html'));
-});
-
-// Middleware
+// Middleware - must be before routes
 app.use(express.json());
 
 // MongoDB Connection with retry logic
 const connectDB = async () => {
-    try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            serverSelectionTimeoutMS: 5000
-        });
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (error) {
-        console.error('MongoDB connection error:', error);
-        // Retry connection after 5 seconds
-        setTimeout(connectDB, 5000);
-    }
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    setTimeout(connectDB, 5000);
+  }
 };
 
 connectDB();
 
 // Contact Schema
 const contactSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    subject: { type: String },
-    message: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    status: { type: String, enum: ['new', 'read', 'replied'], default: 'new' }
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  subject: { type: String },
+  message: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  status: { type: String, enum: ['new', 'read', 'replied'], default: 'new' }
 });
 
 const Contact = mongoose.model('Contact', contactSchema);
 
 // Subscriber Schema
 const subscriberSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true },
-    subscribedAt: { type: Date, default: Date.now }
+  email: { type: String, required: true, unique: true },
+  subscribedAt: { type: Date, default: Date.now }
 });
 
 const Subscriber = mongoose.model('Subscriber', subscriberSchema);
@@ -75,8 +61,9 @@ const projectRoutes = require('./routes/projects');
 const skillRoutes = require('./routes/skills');
 const certRoutes = require('./routes/certifications');
 const expRoutes = require('./routes/experiences');
+const testimonialRoutes = require('./routes/testimonials');
 
-// Routes
+// API Routes - BEFORE static files
 app.use('/api', blogRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/contacts', contactRoutes);
@@ -84,90 +71,104 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/certifications', certRoutes);
 app.use('/api/experiences', expRoutes);
+app.use('/api/testimonials', testimonialRoutes);
 
 // Subscribers API
 app.get('/api/subscribers', async (req, res) => {
-    try {
-        const subscribers = await Subscriber.find().sort({ subscribedAt: -1 });
-        res.json(subscribers);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const subscribers = await Subscriber.find().sort({ subscribedAt: -1 });
+    res.json(subscribers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 app.delete('/api/subscribers/:id', async (req, res) => {
-    try {
-        await Subscriber.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Subscriber deleted' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    await Subscriber.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Subscriber deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
-    res.json({ status: 'healthy', timestamp: new Date() });
+  res.json({ status: 'healthy', timestamp: new Date() });
+});
+
+// Serve static files from parent directory (after API routes)
+app.use(express.static(path.join(__dirname, '..')));
+
+// Serve admin.html
+app.get('/admin.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'admin.html'));
+});
+
+// Serve login.html
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'login.html'));
 });
 
 // Test endpoint for blog
 app.get('/api/test', (req, res) => {
-    res.json({ message: 'API is working', routes: 'blogRoutes loaded' });
+  res.json({ message: 'API is working', routes: 'blogRoutes loaded' });
 });
 
 // Subscribe to Newsletter
 app.post('/api/subscribe', async (req, res) => {
-    try {
-        const { email } = req.body;
+  try {
+    const { email } = req.body;
 
-        if (!email) {
-            console.error('Validation Error: Email is required for subscription.');
-            return res.status(400).json({ success: false, message: 'Email is required.' });
-        }
+    if (!email) {
+      console.error('Validation Error: Email is required for subscription.');
+      return res.status(400).json({ success: false, message: 'Email is required.' });
+    }
 
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            console.error('Validation Error: Invalid email format for subscription.');
-            return res.status(400).json({ success: false, message: 'Invalid email format.' });
-        }
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      console.error('Validation Error: Invalid email format for subscription.');
+      return res.status(400).json({ success: false, message: 'Invalid email format.' });
+    }
 
-        const existingSubscriber = await Subscriber.findOne({ email });
-        if (existingSubscriber) {
-            console.warn(`Subscription Warning: Email ${email} already subscribed.`);
-            return res.status(409).json({ success: false, message: 'You are already subscribed!' });
-        }
+    const existingSubscriber = await Subscriber.findOne({ email });
+    if (existingSubscriber) {
+      console.warn(`Subscription Warning: Email ${email} already subscribed.`);
+      return res.status(409).json({ success: false, message: 'You are already subscribed!' });
+    }
 
-        const newSubscriber = new Subscriber({ email });
-        await newSubscriber.save();
+    const newSubscriber = new Subscriber({ email });
+    await newSubscriber.save();
 
-        // Send confirmation email if configured
-        if (process.env.BREVO_API_KEY) {
-            try {
-                const SibApiV3Sdk = require('@sendinblue/client');
-                const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-                apiInstance.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
-                await apiInstance.sendTransacEmail({
-                    sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
-                    to: [{ email: email, name: 'Melkamu Wako' }],
-                    subject: 'Thank you for subscribing!',
-                    htmlContent: `
+    // Send confirmation email if configured
+    if (process.env.BREVO_API_KEY) {
+      try {
+        const SibApiV3Sdk = require('@sendinblue/client');
+        const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+        apiInstance.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+        await apiInstance.sendTransacEmail({
+          sender: { email: 'melkamuwako5@gmail.com', name: 'Portfolio Contact' },
+          to: [{ email: email, name: 'Melkamu Wako' }],
+          subject: 'Thank you for subscribing!',
+          htmlContent: `
                         <h2>Hello!</h2>
                         <p>Thank you for subscribing to my newsletter. You will receive updates, articles, and resources directly to your inbox.</p>
                         <p>Best regards,<br/>Melkamu Wako</p>
                     `
-                });
-                console.log('Confirmation email sent to new subscriber:', email);
-            } catch (emailError) {
-                console.error('Error sending confirmation email via Brevo HTTP API:', emailError);
-                // Do not fail the subscription if confirmation email fails
-            }
-        }
-
-        res.status(201).json({ success: true, message: 'Subscription successful!' });
-    } catch (error) {
-        console.error('Error in /api/subscribe endpoint:', error);
-        res.status(500).json({ success: false, message: 'Internal server error: Subscription failed.' });
+        });
+        console.log('Confirmation email sent to new subscriber:', email);
+      } catch (emailError) {
+        console.error('Error sending confirmation email via Brevo HTTP API:', emailError);
+        // Do not fail the subscription if confirmation email fails
+      }
     }
+
+    res.status(201).json({ success: true, message: 'Subscription successful!' });
+  } catch (error) {
+    console.error('Error in /api/subscribe endpoint:', error);
+    res.status(500).json({ success: false, message: 'Internal server error: Subscription failed.' });
+  }
 });
 
 // --- Chatbot Logic (from simple-chat.js) ---
@@ -332,47 +333,47 @@ let onlineVisitors = 0;
 
 // Middleware to increment/decrement visitor count
 app.use((req, res, next) => {
-    if (req.path === '/api/visitors') return next(); // avoid loop
-    onlineVisitors = Math.max(onlineVisitors, 0);
-    next();
+  if (req.path === '/api/visitors') return next(); // avoid loop
+  onlineVisitors = Math.max(onlineVisitors, 0);
+  next();
 });
 
 // Simple polling endpoint for online visitors
 app.get('/api/visitors', (req, res) => {
-    res.json({ count: onlineVisitors });
+  res.json({ count: onlineVisitors });
 });
 
 // Track online visitors using a simple in-memory approach
 // Increment on each new page load (frontend should ping this endpoint)
 app.post('/api/visitors', (req, res) => {
-    onlineVisitors++;
-    res.json({ success: true, count: onlineVisitors });
+  onlineVisitors++;
+  res.json({ success: true, count: onlineVisitors });
 });
 
 // Decrement when user leaves (frontend should call this on unload)
 app.delete('/api/visitors', (req, res) => {
-    onlineVisitors = Math.max(onlineVisitors - 1, 0);
-    res.json({ success: true, count: onlineVisitors });
+  onlineVisitors = Math.max(onlineVisitors - 1, 0);
+  res.json({ success: true, count: onlineVisitors });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error('Global server error handler:', err);
-    res.status(500).json({
-        success: false,
-        message: 'An unexpected internal server error occurred.'
-    });
+  console.error('Global server error handler:', err);
+  res.status(500).json({
+    success: false,
+    message: 'An unexpected internal server error occurred.'
+  });
 });
 
 // Start server
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log('Environment:', process.env.NODE_ENV || 'development');
-    console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Configured' : 'Not configured');
-    console.log('Brevo API key configured:', !!process.env.BREVO_API_KEY);
-    console.log('TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN ? 'Configured' : 'Not configured');
-    console.log('TELEGRAM_CHAT_ID:', process.env.TELEGRAM_CHAT_ID ? 'Configured' : 'Not configured');
+  console.log(`Server running on port ${PORT}`);
+  console.log('Environment:', process.env.NODE_ENV || 'development');
+  console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Configured' : 'Not configured');
+  console.log('Brevo API key configured:', !!process.env.BREVO_API_KEY);
+  console.log('TELEGRAM_BOT_TOKEN:', process.env.TELEGRAM_BOT_TOKEN ? 'Configured' : 'Not configured');
+  console.log('TELEGRAM_CHAT_ID:', process.env.TELEGRAM_CHAT_ID ? 'Configured' : 'Not configured');
 });
 
 // Integrate Brevo contact endpoint
@@ -385,29 +386,29 @@ try {
 
 // --- Weather API Endpoint ---
 app.get('/api/weather', async (req, res) => {
-    const city = req.query.city;
-    if (!city) {
-        return res.status(400).json({ success: false, message: 'City is required as a query parameter.' });
-    }
-    const apiKey = process.env.WEATHER_API_KEY;
-    if (!apiKey) {
-        return res.status(500).json({ success: false, message: 'Weather API key not configured.' });
-    }
-    try {
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
-        const response = await axios.get(url);
-        res.json({ success: true, data: response.data });
-    } catch (error) {
-        console.error('Weather API error:', error.response ? error.response.data : error.message);
-        res.status(500).json({ success: false, message: 'Failed to fetch weather data.' });
-    }
+  const city = req.query.city;
+  if (!city) {
+    return res.status(400).json({ success: false, message: 'City is required as a query parameter.' });
+  }
+  const apiKey = process.env.WEATHER_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ success: false, message: 'Weather API key not configured.' });
+  }
+  try {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+    const response = await axios.get(url);
+    res.json({ success: true, data: response.data });
+  } catch (error) {
+    console.error('Weather API error:', error.response ? error.response.data : error.message);
+    res.status(500).json({ success: false, message: 'Failed to fetch weather data.' });
+  }
 });
 
 app.get('/api/tech-news', async (req, res) => {
   try {
     const apiKey = process.env.GNEWS_API_KEY;
     if (!apiKey) {
-        return res.status(500).json({ success: false, message: 'GNews API key not configured.' });
+      return res.status(500).json({ success: false, message: 'GNews API key not configured.' });
     }
     const url = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&apikey=${apiKey}`;
     const response = await axios.get(url);
