@@ -523,6 +523,7 @@
             ['dashboardPage', 'blogsPage', 'projectsPage', 'skillsPage', 'certsPage', 'expPage', 'contactsPage', 'subsPage', 'settingsPage', 'formPage'].forEach(p => document.getElementById(p).classList.add('hidden'));
             document.getElementById(page + 'Page').classList.remove('hidden');
             loadData();
+            if(page === 'settings') { loadSettings(); loadStats(); }
         }
 
         function showDashboard() {

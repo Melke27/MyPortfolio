@@ -21,6 +21,11 @@ app.get('/admin.html', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'admin.html'));
 });
 
+// Serve login.html
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'login.html'));
+});
+
 // Middleware
 app.use(express.json());
 
