@@ -387,6 +387,33 @@
                         </div>
                     </div>
 
+                    <!-- Testimonials Page -->
+                    <div id="testimonialsPage" class="hidden">
+                        <h3><i class="fas fa-quote-left me-2"></i>Testimonials</h3>
+                        <div class="card mt-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-list me-2"></i>All Testimonials</span>
+                                <button class="btn btn-sm btn-primary" onclick="showForm('testimonial')"><i
+                                        class="fas fa-plus me-1"></i>Add Testimonial</button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Company</th>
+                                                <th>Rating</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="testimonialsTable"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Settings Page -->
                     <div id="settingsPage" class="hidden">
                         <h3><i class="fas fa-cog me-2"></i>Settings</h3>
@@ -517,8 +544,10 @@
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('blogAdminToken');
             authToken = null;
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('dashboard').classList.add('hidden');
+            const loginScreen = document.getElementById('loginScreen');
+            const dashboard = document.getElementById('dashboard');
+            if (loginScreen) loginScreen.classList.remove('hidden');
+            if (dashboard) dashboard.classList.add('hidden');
         });
 
         document.querySelectorAll('.nav-link[data-page]').forEach(l => l.addEventListener('click', e => {
@@ -530,15 +559,17 @@
             lastPage = page;
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             document.querySelector('.nav-link[data-page="' + page + '"]')?.classList.add('active');
-            ['dashboardPage', 'blogsPage', 'projectsPage', 'skillsPage', 'certsPage', 'expPage', 'contactsPage', 'subsPage', 'settingsPage', 'testimonialsPage', 'formPage'].forEach(p => document.getElementById(p).classList.add('hidden'));
-            document.getElementById(page + 'Page').classList.remove('hidden');
+            ['dashboardPage', 'blogsPage', 'projectsPage', 'skillsPage', 'certsPage', 'expPage', 'contactsPage', 'subsPage', 'settingsPage', 'testimonialsPage', 'formPage'].forEach(p => document.getElementById(p)?.classList.add('hidden'));
+            document.getElementById(page + 'Page')?.classList.remove('hidden');
             loadData();
             if (page === 'settings') { loadSettings(); loadStats(); }
         }
 
         function showDashboard() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('dashboard').classList.remove('hidden');
+            const loginScreenEl = document.getElementById('loginScreen');
+            const dashboardEl = document.getElementById('dashboard');
+            if (loginScreenEl) loginScreenEl.classList.add('hidden');
+            if (dashboardEl) dashboardEl.classList.remove('hidden');
             showPage('dashboard');
         }
 
@@ -554,12 +585,18 @@
                     fetch(apiUrl + '/subscribers').then(r => r.ok ? r.json() : []),
                     fetch(apiUrl + '/testimonials').then(r => r.ok ? r.json() : [])
                 ]);
-                document.getElementById('blogCount').textContent = blogs.length;
-                document.getElementById('projectCount').textContent = projects.length;
-                document.getElementById('skillCount').textContent = skills.length;
-                document.getElementById('certCount').textContent = certs.length;
-                document.getElementById('expCount').textContent = exp.length;
-                document.getElementById('contactCount').textContent = contacts.length;
+                const countElements = {
+                    blogCount: blogs.length,
+                    projectCount: projects.length,
+                    skillCount: skills.length,
+                    certCount: certs.length,
+                    expCount: exp.length,
+                    contactCount: contacts.length
+                };
+                Object.entries(countElements).forEach(([id, value]) => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = value;
+                });
 
                 renderTable('blogsTable', blogs, ['title', 'slug', 'date'], 'blog');
                 renderTable('projectsTable', projects, ['name', 'category'], 'project');
@@ -568,12 +605,13 @@
                 renderTable('expTable', exp, ['title', 'company', 'startDate'], 'exp');
                 renderTable('contactsTable', contacts, ['name', 'email', 'subject', 'createdAt'], 'contact');
                 renderTable('subsTable', subs, ['email', 'subscribedAt'], 'sub');
-                renderTable('testimonialsTable', testimonials, ['name', 'company', 'rating'], 'testimonial');
+                renderTable('testimonialsTable', testimonials, ['name', 'company', 'role', 'rating'], 'testimonial');
             } catch (e) { console.error(e); }
         }
 
         function renderTable(id, data, fields, type) {
             const tbody = document.getElementById(id);
+            if (!tbody) return;
             if (!data.length) { tbody.innerHTML = '<tr><td colspan="5" class="text-muted">No data</td></tr>'; return; }
             tbody.innerHTML = data.map(d => '<tr>' + fields.map(f => '<td>' + (f === 'date' || f === 'createdAt' || f === 'startDate' ? new Date(d[f]).toLocaleDateString() : escapeHtml(d[f] || '-')) + '</td>').join('') +
                 '<td><button class="btn btn-sm btn-primary me-1" onclick="edit(\'' + type + '\',\'' + d._id + '\')"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="del(\'' + type + '\',\'' + d._id + '\')"><i class="fas fa-trash"></i></button></td></tr>').join('');
@@ -581,25 +619,49 @@
 
         function showForm(type) {
             editingId = null;
-            document.getElementById(lastPage + 'Page').classList.add('hidden');
-            document.getElementById('formPage').classList.remove('hidden');
-            const titles = { blog: 'Blog Post', project: 'Project', skill: 'Skill', cert: 'Certification', exp: 'Experience' };
-            document.getElementById('formTitle').textContent = 'New ' + titles[type];
+            const lastPageEl = document.getElementById(lastPage + 'Page');
+            const formPageEl = document.getElementById('formPage');
+            if (lastPageEl) lastPageEl.classList.add('hidden');
+            if (formPageEl) formPageEl.classList.remove('hidden');
+            const titles = { blog: 'Blog Post', project: 'Project', skill: 'Skill', cert: 'Certification', exp: 'Experience', testimonial: 'Testimonial' };
+            const formTitleEl = document.getElementById('formTitle');
+            if (formTitleEl) formTitleEl.textContent = 'New ' + titles[type];
             const forms = {
                 blog: '<input type="hidden" id="editId"><div class="mb-3"><label>Title</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Slug</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f3" required></textarea></div><div class="mb-3"><label>Content</label><textarea class="form-control" id="f4" rows="5"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f5"></div><div class="mb-3"><label>Tags</label><input type="text" class="form-control" id="f6" placeholder="tag1, tag2"></div><button type="submit" class="btn btn-primary">Save</button>',
                 project: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Slug</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f3"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f4"></div><div class="mb-3"><label>Category</label><input type="text" class="form-control" id="f5"></div><div class="mb-3"><label>Live URL</label><input type="text" class="form-control" id="f6"></div><div class="mb-3"><label>GitHub URL</label><input type="text" class="form-control" id="f7"></div><button type="submit" class="btn btn-primary">Save</button>',
                 skill: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Category</label><input type="text" class="form-control" id="f2" placeholder="Frontend, Backend, etc."></div><div class="mb-3"><label>Level (0-100)</label><input type="number" class="form-control" id="f3" min="0" max="100"></div><button type="submit" class="btn btn-primary">Save</button>',
                 cert: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Issuer</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f3"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f4"></div><div class="mb-3"><label>Date</label><input type="date" class="form-control" id="f5"></div><div class="mb-3"><label>URL</label><input type="text" class="form-control" id="f6"></div><button type="submit" class="btn btn-primary">Save</button>',
-                exp: '<input type="hidden" id="editId"><div class="mb-3"><label>Title</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Company</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Location</label><input type="text" class="form-control" id="f3"></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f4"></textarea></div><div class="mb-3"><label>Start Date</label><input type="date" class="form-control" id="f5"></div><div class="mb-3"><label>End Date</label><input type="date" class="form-control" id="f6"></div><div class="mb-3"><label><input type="checkbox" id="f7"> Current Position</label></div><button type="submit" class="btn btn-primary">Save</button>'
+                exp: '<input type="hidden" id="editId"><div class="mb-3"><label>Title</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Company</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Location</label><input type="text" class="form-control" id="f3"></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f4"></textarea></div><div class="mb-3"><label>Start Date</label><input type="date" class="form-control" id="f5"></div><div class="mb-3"><label>End Date</label><input type="date" class="form-control" id="f6"></div><div class="mb-3"><label><input type="checkbox" id="f7"> Current Position</label></div><button type="submit" class="btn btn-primary">Save</button>',
+                testimonial: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Company</label><input type="text" class="form-control" id="f2"></div><div class="mb-3"><label>Role/Position</label><input type="text" class="form-control" id="f3"></div><div class="mb-3"><label>Rating (1-5)</label><input type="number" class="form-control" id="f4" min="1" max="5"></div><div class="mb-3"><label>Message</label><textarea class="form-control" id="f5" rows="4"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f6" onchange="previewTestimonialImage(this.value)"><div id="testimonialImagePreview" class="mt-2"></div></div><div class="mb-3"><label><input type="checkbox" id="f7"> Featured</label></div><button type="submit" class="btn btn-primary">Save</button>'
             };
             document.getElementById('dataForm').innerHTML = forms[type];
-            document.getElementById('dataForm').onsubmit = (e) => { e.preventDefault(); save(type); };
+            document.getElementById('dataForm')?.addEventListener('submit', (e) => { e.preventDefault(); save(type); });
 
             // Auto slug for blog/project
             if (type === 'blog' || type === 'project') {
                 document.getElementById('f1').oninput = () => {
                     if (!editingId) document.getElementById('f2').value = document.getElementById('f1').value.toLowerCase().replace(/[^a-z0-9]/g, '-');
                 };
+            }
+
+            // Image preview for testimonial
+            if (type === 'testimonial') {
+                const f6 = document.getElementById('f6');
+                if (f6) {
+                    f6.addEventListener('input', function() {
+                        previewTestimonialImage(this.value);
+                    });
+                }
+            }
+        }
+
+        function previewTestimonialImage(url) {
+            const preview = document.getElementById('testimonialImagePreview');
+            if (!preview) return;
+            if (url) {
+                preview.innerHTML = `<img src="${url}" alt="Preview" class="rounded" style="width:100px;height:100px;object-fit:cover;">`;
+            } else {
+                preview.innerHTML = '';
             }
         }
 
@@ -614,10 +676,13 @@
             if (!item) return;
 
             editingId = id;
-            document.getElementById(lastPage + 'Page').classList.add('hidden');
-            document.getElementById('formPage').classList.remove('hidden');
-            const titles = { blog: 'Edit Blog Post', project: 'Edit Project', skill: 'Edit Skill', cert: 'Edit Certification', exp: 'Edit Experience' };
-            document.getElementById('formTitle').textContent = titles[type];
+            const editLastPageEl = document.getElementById(lastPage + 'Page');
+            const editFormPageEl = document.getElementById('formPage');
+            if (editLastPageEl) editLastPageEl.classList.add('hidden');
+            if (editFormPageEl) editFormPageEl.classList.remove('hidden');
+            const titles = { blog: 'Edit Blog Post', project: 'Edit Project', skill: 'Edit Skill', cert: 'Edit Certification', exp: 'Edit Experience', testimonial: 'Edit Testimonial' };
+            const formTitleEl = document.getElementById('formTitle');
+            if (formTitleEl) formTitleEl.textContent = titles[type];
 
             // Reuse form but set values
             showForm(type);
@@ -627,14 +692,20 @@
                 project: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7'],
                 skill: ['f1', 'f2', 'f3'],
                 cert: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'],
-                exp: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7']
+                exp: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7'],
+                testimonial: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7']
             };
-            const fields = { blog: ['title', 'slug', 'description', 'content', 'imageUrl', 'tags'], project: ['name', 'slug', 'description', 'imageUrl', 'category', 'liveUrl', 'githubUrl'], skill: ['name', 'category', 'level'], cert: ['name', 'issuer', 'description', 'imageUrl', 'date', 'url'], exp: ['title', 'company', 'location', 'description', 'startDate', 'endDate', 'current'] };
+            const fields = { blog: ['title', 'slug', 'description', 'content', 'imageUrl', 'tags'], project: ['name', 'slug', 'description', 'imageUrl', 'category', 'liveUrl', 'githubUrl'], skill: ['name', 'category', 'level'], cert: ['name', 'issuer', 'description', 'imageUrl', 'date', 'url'], exp: ['title', 'company', 'location', 'description', 'startDate', 'endDate', 'current'], testimonial: ['name', 'company', 'role', 'rating', 'message', 'imageUrl', 'featured'] };
             maps[type].forEach((f, i) => {
                 const val = item[fields[type][i]];
-                if (fields[type][i] === 'current') document.getElementById(f).checked = val;
+                if (fields[type][i] === 'current' || fields[type][i] === 'featured') document.getElementById(f).checked = val;
                 else document.getElementById(f).value = val || '';
             });
+            
+            // Show image preview for testimonial when editing
+            if (type === 'testimonial' && item.imageUrl) {
+                previewTestimonialImage(item.imageUrl);
+            }
         }
 
         async function save(type) {
@@ -650,7 +721,9 @@
             } else if (type === 'cert') {
                 data = { name: f('f1'), issuer: f('f2'), description: f('f3'), imageUrl: f('f4'), date: f('f5'), url: f('f6') };
             } else if (type === 'exp') {
-                data = { title: f('f1'), company: f('f2'), location: f('f3'), description: f('f4'), startDate: f('f5'), endDate: f('f6'), current: document.getElementById('f7').checked };
+                data = { title: f('f1'), company: f('f2'), location: f('f3'), description: f('f4'), startDate: f('f5'), endDate: f('f6'), current: document.getElementById('f7')?.checked || false };
+            } else if (type === 'testimonial') {
+                data = { name: f('f1'), company: f('f2'), role: f('f3'), rating: parseInt(f('f4')) || 5, message: f('f5'), imageUrl: f('f6'), featured: document.getElementById('f7')?.checked || false };
             }
 
             const url = id ? apiUrl + '/' + endpoints[type] + '/' + id : apiUrl + '/' + endpoints[type];
@@ -661,7 +734,7 @@
             else showToast('Error', 'danger');
         }
 
-        function f(id) { return document.getElementById(id).value; }
+        function f(id) { const el = document.getElementById(id); return el ? el.value : ''; }
 
         async function del(type, id) {
             if (!confirm('Delete?')) return;
@@ -707,15 +780,23 @@
         }
 
         function loadSettings() {
-            document.getElementById('settingsApiUrl').value = localStorage.getItem('blogAdminApiUrl') || 'http://localhost:10000/api';
+            const settingsApiUrlEl = document.getElementById('settingsApiUrl');
+            if (settingsApiUrlEl) settingsApiUrlEl.value = localStorage.getItem('blogAdminApiUrl') || 'http://localhost:10000/api';
         }
 
         function loadStats() {
             // Update settings page stats
-            document.getElementById('statBlogs').textContent = document.getElementById('blogCount').textContent;
-            document.getElementById('statSkills').textContent = document.getElementById('skillCount').textContent;
-            document.getElementById('statCerts').textContent = document.getElementById('certCount').textContent;
-            document.getElementById('statExp').textContent = document.getElementById('expCount').textContent;
+            const statMappings = [
+                ['statBlogs', 'blogCount'],
+                ['statSkills', 'skillCount'],
+                ['statCerts', 'certCount'],
+                ['statExp', 'expCount']
+            ];
+            statMappings.forEach(([statId, countId]) => {
+                const statEl = document.getElementById(statId);
+                const countEl = document.getElementById(countId);
+                if (statEl && countEl) statEl.textContent = countEl.textContent;
+            });
         }
         function showToast(m, t) {
             const toast = document.createElement('div');

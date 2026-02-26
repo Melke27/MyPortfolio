@@ -2590,23 +2590,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                            <div class="card text-center p-4 shadow-sm">
-                                <div class="card-body">
-                                    <p class="card-text mb-4" style="font-size:1.2rem; color:#6c757d;">Coming soon...
-                                    </p>
-                                    <div class="d-flex align-items-center justify-content-center">
-                                        <img src="assets/img/MELKAMU.jpg" alt="Melkamu Wako" class="rounded-circle mr-3"
-                                            style="width:60px; height:60px; object-fit:cover; border:2px solid #007bff;">
-                                        <div class="text-left ms-3">
-                                            <h5 class="mb-0">Melkamu Wako</h5>
-                                            <small class="text-muted">Portfolio Owner</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row justify-content-center" id="testimonialsContainer">
+                        <!-- Testimonials will be loaded dynamically -->
                     </div>
                 </div>
             </section>
@@ -3479,6 +3464,76 @@
             </script>
 
             <script>
+                // Load Testimonials from Backend
+                async function loadTestimonials() {
+                    const container = document.getElementById('testimonialsContainer');
+                    if (!container) return;
+
+                    try {
+                        const response = await fetch('/api/testimonials/featured');
+                        if (response.ok) {
+                            const testimonials = await response.json();
+                            
+                            if (testimonials && testimonials.length > 0) {
+                                container.innerHTML = testimonials.map(t => `
+                                    <div class="col-lg-6 mb-4">
+                                        <div class="card text-center p-4 shadow-sm h-100">
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    ${t.imageUrl ? `<img src="${t.imageUrl}" alt="${t.name}" class="rounded-circle" style="width:80px; height:80px; object-fit:cover; border:3px solid #007bff;">` : `<div class="rounded-circle d-inline-flex align-items-center justify-content-center" style="width:80px; height:80px; background:#007bff; color:white; font-size:2rem; font-weight:bold;">${t.name.charAt(0)}</div>`}
+                                                </div>
+                                                <p class="card-text mb-4" style="font-size:1.1rem; color:#555;">"${t.message}"</p>
+                                                <div class="mb-3">
+                                                    ${Array(t.rating).fill().map(() => '<i class="fas fa-star text-warning"></i>').join('')}
+                                                    ${Array(5 - t.rating).fill().map(() => '<i class="far fa-star text-warning"></i>').join('')}
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <div class="text-left">
+                                                        <h5 class="mb-0">${t.name}</h5>
+                                                        <small class="text-muted">${t.role ? t.role + ' at ' : ''}${t.company || ''}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('');
+                            } else {
+                                showDefaultTestimonial(container);
+                            }
+                        } else {
+                            throw new Error('Failed to fetch testimonials');
+                        }
+                    } catch (error) {
+                        console.warn('Could not load testimonials from API:', error.message);
+                        showDefaultTestimonial(container);
+                    }
+                }
+
+                function showDefaultTestimonial(container) {
+                    container.innerHTML = `
+                        <div class="col-lg-6 mb-4">
+                            <div class="card text-center p-4 shadow-sm h-100">
+                                <div class="card-body">
+                                    <p class="card-text mb-4" style="font-size:1.2rem; color:#6c757d;">Welcome to my portfolio! Feel free to explore my work and projects.</p>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <img src="assets/img/MELKAMU.jpg" alt="Melkamu Wako" class="rounded-circle"
+                                            style="width:60px; height:60px; object-fit:cover; border:2px solid #007bff;">
+                                        <div class="text-left ms-3">
+                                            <h5 class="mb-0">Melkamu Wako</h5>
+                                            <small class="text-muted">Portfolio Owner</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Load testimonials when DOM is ready
+                document.addEventListener('DOMContentLoaded', loadTestimonials);
+            </script>
+
+            <script>
                 // Skills Animation with Progress Bars
                 function animateSkills() {
                     const skills = document.querySelectorAll('.skill .progress-bar');
@@ -4054,7 +4109,7 @@
                         setTyping(true);
                         isWaiting = true;
                         // (DEBUG log removed)
-                        const backendUrl = 'https://melkamuwako27-backend.onrender.com/chat';
+                        const backendUrl = '/chat';
                         try {
                             const resp = await fetch(backendUrl, {
                                 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg })
@@ -4205,7 +4260,7 @@
 
             <!-- Notify backend of portfolio visit (auto email notification) -->
             <script>
-                fetch('https://melkamuwako27-backend.onrender.com/notify-visit', { method: 'POST' });
+                fetch('/notify-visit', { method: 'POST' });
             </script>
 
             <!-- Add floating chatbot button -->
@@ -4257,7 +4312,7 @@
                     const deviceInfo = getDeviceInfo();
                     const locationInfo = await getLocationInfo();
                     // Always set name as '[Device] visitor'
-                    fetch('https://melkamuwako27-backend.onrender.com/notify-visit', {
+                    fetch('/notify-visit', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

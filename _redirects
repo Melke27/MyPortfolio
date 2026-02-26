@@ -1,5 +1,9 @@
 # Handle API routes - redirect to deployed backend
-/api/* https://myportfolio-melkamuwako.onrender.com/api/:splat 200 
+# Replace YOUR-RENDER-BACKEND with your actual Render backend URL
+# Example: https://melkamuwako27-backend.onrender.com
+/api/* https://YOUR-RENDER-BACKEND.onrender.com/api/:splat 200 
+/chat https://YOUR-RENDER-BACKEND.onrender.com/chat 200
+/notify-visit https://YOUR-RENDER-BACKEND.onrender.com/notify-visit 200
 
 # Handle SPA routing - redirect all routes to index.html
 /*    /index.html   200 

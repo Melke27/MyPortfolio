@@ -1,4 +1,4 @@
-// Sample data for Skills, Certifications, and Experiences
+// Sample data for Skills, Certifications, Experiences, and Testimonials
 // Run: node seed-data.js
 
 const sampleSkills = [
