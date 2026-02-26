@@ -73,6 +73,35 @@ app.use('/api/certifications', certRoutes);
 app.use('/api/experiences', expRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 
+// Chat API (under /api for consistency)
+app.post('/api/chat', async (req, res) => {
+  console.log('--- /api/chat endpoint hit ---');
+  console.log('Request body:', req.body);
+  const { message } = req.body;
+  if (!message) {
+    return res.status(400).json({ error: 'Message is required.' });
+  }
+  if (!process.env.OPENROUTER_API_KEY) {
+    return res.status(500).json({ error: 'AI server misconfiguration: OPENROUTER_API_KEY is missing.' });
+  }
+  // Custom about-me reply
+  if (/about (you|melkamu|yourself)/i.test(message) || /melkamu wako/i.test(message)) {
+    return res.json({
+      reply: "I'm Melkamu Wako's AI assistant. Melkamu Wako is a Computer Science and Engineering student and passionate fullstack developer from Ethiopia. He has experience with JavaScript, React, Python, Java, C++, C#, and HTML/CSS. His projects include a weather app, e-commerce site, grade management system, and more.\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com"
+    });
+  }
+  try {
+    const reply = await askOpenRouter(message);
+    res.json({ reply });
+  } catch (error) {
+    console.error('Error in /api/chat endpoint:', error);
+    if (error.response && error.response.data) {
+      return res.status(500).json({ error: 'AI request failed', details: error.response.data });
+    }
+    res.status(500).json({ error: 'AI request failed', details: error.message });
+  }
+});
+
 // Subscribers API
 app.get('/api/subscribers', async (req, res) => {
   try {

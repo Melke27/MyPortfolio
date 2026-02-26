@@ -4109,7 +4109,7 @@
                         setTyping(true);
                         isWaiting = true;
                         // (DEBUG log removed)
-                        const backendUrl = '/chat';
+                        const backendUrl = 'https://melkamuwako27-backend.onrender.com/api/chat';
                         try {
                             const resp = await fetch(backendUrl, {
                                 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg })
