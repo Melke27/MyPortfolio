@@ -1821,7 +1821,7 @@
                         </div>
                     </div>
                     <!-- Start certification cards row -->
-                    <div class="row">
+                    <div class="row" id="certifications-container">
                         <div class="col-md-6 mb-4">
                             <div class="certification-card">
                                 <div class="certification-header">
@@ -4860,6 +4860,113 @@
                             fabStack.appendChild(btn);
                         }
                     });
+                });
+            </script>
+            <!-- Dynamic Data Loader -->
+            <script>
+                const API_BASE = 'https://melkamuwako27-backend.onrender.com/api';
+                
+                // Load Certifications
+                async function loadCertifications() {
+                    const container = document.getElementById('certifications-container');
+                    if (!container) return;
+                    try {
+                        const resp = await fetch(API_BASE + '/certifications');
+                        if (!resp.ok) return;
+                        const certs = await resp.json();
+                        if (!certs || certs.length === 0) return;
+                        
+                        let html = '';
+                        certs.forEach(cert => {
+                            const img = cert.image || 'assets/img/portfolio-3.jpg';
+                            const date = cert.date ? new Date(cert.date).toLocaleDateString() : '';
+                            html += `<div class="col-md-6 mb-4">
+                                <div class="certification-card">
+                                    <div class="certification-header">
+                                        <img src="${img}" alt="${cert.name}" class="certification-logo">
+                                        <div class="certification-title">
+                                            <h5>${cert.name}</h5>
+                                            <p class="text-muted">Issued: ${date}</p>
+                                        </div>
+                                    </div>
+                                    <div class="certification-body">
+                                        <p>${cert.description || ''}</p>
+                                    </div>
+                                    <div class="certification-footer">
+                                        ${cert.url ? `<a href="${cert.url}" class="btn btn-primary mr-2" target="_blank">View Certificate</a>` : ''}
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+                        container.innerHTML = html;
+                    } catch (e) { console.error('Error loading certifications:', e); }
+                }
+                
+                // Load Skills
+                async function loadSkills() {
+                    const container = document.getElementById('skills-container');
+                    if (!container) return;
+                    try {
+                        const resp = await fetch(API_BASE + '/skills');
+                        if (!resp.ok) return;
+                        const skills = await resp.json();
+                        if (!skills || skills.length === 0) return;
+                        
+                        let html = '';
+                        skills.forEach(skill => {
+                            html += `<div class="col-md-6 col-lg-4 mb-4">
+                                <div class="service-box">
+                                    <div class="service-icon">
+                                        <span class="fa-stack fa-2x">
+                                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                                            <i class="fas fa-code fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </div>
+                                    <h4>${skill.name}</h4>
+                                    <p class="text-muted">${skill.category || ''}</p>
+                                </div>
+                            </div>`;
+                        });
+                        container.innerHTML = html;
+                    } catch (e) { console.error('Error loading skills:', e); }
+                }
+                
+                // Load Projects
+                async function loadProjects() {
+                    const container = document.getElementById('projects-container');
+                    if (!container) return;
+                    try {
+                        const resp = await fetch(API_BASE + '/projects');
+                        if (!resp.ok) return;
+                        const projects = await resp.json();
+                        if (!projects || projects.length === 0) return;
+                        
+                        let html = '';
+                        projects.slice(0, 6).forEach(project => {
+                            const img = project.image || 'assets/img/portfolio-1.jpg';
+                            html += `<div class="col-lg-4 col-md-6 project-item mobile">
+                                <div class="portfolio-wrap">
+                                    <figure>
+                                        <img src="${img}" class="img-fluid" alt="${project.name}">
+                                        <a href="${img}" data-lightbox="portfolio" data-title="${project.name}" class="link-preview" title="Preview"><i class="fas fa-eye"></i></a>
+                                        <a href="${project.liveUrl || '#'}" class="link-details" title="More Details" target="_blank"><i class="fas fa-link"></i></a>
+                                    </figure>
+                                    <div class="portfolio-info">
+                                        <h4><a href="#">${project.name}</a></h4>
+                                        <p>${project.category || 'Project'}</p>
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+                        container.innerHTML = html;
+                    } catch (e) { console.error('Error loading projects:', e); }
+                }
+                
+                // Load on page load
+                document.addEventListener('DOMContentLoaded', function() {
+                    loadCertifications();
+                    loadSkills();
+                    loadProjects();
                 });
             </script>
 </body>
