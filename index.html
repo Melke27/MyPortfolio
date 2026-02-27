@@ -2057,7 +2057,7 @@
 
                     <!-- Projects Grid -->
                     <div class="col-12">
-                        <div class="row project-container">
+                        <div class="row project-container" id="projects-container">
                             <!-- Scientific Calculator -->
                             <div class="col-lg-4 col-md-6 mb-4 project-item mobile">
                                 <div class="project-card">
@@ -4902,35 +4902,6 @@
                     } catch (e) { console.error('Error loading certifications:', e); }
                 }
                 
-                // Load Skills
-                async function loadSkills() {
-                    const container = document.getElementById('skills-container');
-                    if (!container) return;
-                    try {
-                        const resp = await fetch(API_BASE + '/skills');
-                        if (!resp.ok) return;
-                        const skills = await resp.json();
-                        if (!skills || skills.length === 0) return;
-                        
-                        let html = '';
-                        skills.forEach(skill => {
-                            html += `<div class="col-md-6 col-lg-4 mb-4">
-                                <div class="service-box">
-                                    <div class="service-icon">
-                                        <span class="fa-stack fa-2x">
-                                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                                            <i class="fas fa-code fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </div>
-                                    <h4>${skill.name}</h4>
-                                    <p class="text-muted">${skill.category || ''}</p>
-                                </div>
-                            </div>`;
-                        });
-                        container.innerHTML = html;
-                    } catch (e) { console.error('Error loading skills:', e); }
-                }
-                
                 // Load Projects
                 async function loadProjects() {
                     const container = document.getElementById('projects-container');
@@ -4944,16 +4915,17 @@
                         let html = '';
                         projects.slice(0, 6).forEach(project => {
                             const img = project.image || 'assets/img/portfolio-1.jpg';
-                            html += `<div class="col-lg-4 col-md-6 project-item mobile">
-                                <div class="portfolio-wrap">
-                                    <figure>
+                            html += `<div class="col-lg-4 col-md-6 mb-4 project-item mobile">
+                                <div class="project-card">
+                                    <div class="project-img">
                                         <img src="${img}" class="img-fluid" alt="${project.name}">
-                                        <a href="${img}" data-lightbox="portfolio" data-title="${project.name}" class="link-preview" title="Preview"><i class="fas fa-eye"></i></a>
-                                        <a href="${project.liveUrl || '#'}" class="link-details" title="More Details" target="_blank"><i class="fas fa-link"></i></a>
-                                    </figure>
-                                    <div class="portfolio-info">
-                                        <h4><a href="#">${project.name}</a></h4>
-                                        <p>${project.category || 'Project'}</p>
+                                        <div class="project-overlay">
+                                            <a class="btn btn-primary" href="${project.liveUrl || '#'}" target="_blank">Live Demo</a>
+                                        </div>
+                                    </div>
+                                    <div class="project-content">
+                                        <h5>${project.name}</h5>
+                                        <span>${project.category || 'Project'}</span>
                                     </div>
                                 </div>
                             </div>`;
@@ -4962,11 +4934,65 @@
                     } catch (e) { console.error('Error loading projects:', e); }
                 }
                 
+                // Load Blog Posts
+                async function loadBlogs() {
+                    const container = document.getElementById('blog-posts-container');
+                    if (!container) return;
+                    try {
+                        const resp = await fetch(API_BASE + '/blogposts');
+                        if (!resp.ok) return;
+                        const blogs = await resp.json();
+                        if (!blogs || blogs.length === 0) return;
+                        
+                        let html = '';
+                        blogs.slice(0, 3).forEach(blog => {
+                            const img = blog.image || 'assets/img/portfolio-3.jpg';
+                            const date = blog.date ? new Date(blog.date).toLocaleDateString() : '';
+                            html += `<div class="col-md-4 mb-4">
+                                <div class="blog-card">
+                                    <img src="${img}" alt="${blog.title}" class="img-fluid">
+                                    <div class="blog-content">
+                                        <h5>${blog.title}</h5>
+                                        <p>${blog.description ? blog.description.substring(0, 100) + '...' : ''}</p>
+                                        <a href="#" class="btn btn-sm btn-primary">Read More</a>
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+                        container.innerHTML = html;
+                    } catch (e) { console.error('Error loading blogs:', e); }
+                }
+                
+                // Load Testimonials
+                async function loadTestimonials() {
+                    const container = document.getElementById('testimonialsContainer');
+                    if (!container) return;
+                    try {
+                        const resp = await fetch(API_BASE + '/testimonials');
+                        if (!resp.ok) return;
+                        const testimonials = await resp.json();
+                        if (!testimonials || testimonials.length === 0) return;
+                        
+                        let html = '';
+                        testimonials.forEach(t => {
+                            html += `<div class="col-md-4 mb-4">
+                                <div class="testimonial-card">
+                                    <p>"${t.message || ''}"</p>
+                                    <h6>${t.name || 'Anonymous'}</h6>
+                                    <span>${t.company || ''}</span>
+                                </div>
+                            </div>`;
+                        });
+                        container.innerHTML = html;
+                    } catch (e) { console.error('Error loading testimonials:', e); }
+                }
+                
                 // Load on page load
                 document.addEventListener('DOMContentLoaded', function() {
                     loadCertifications();
-                    loadSkills();
                     loadProjects();
+                    loadBlogs();
+                    loadTestimonials();
                 });
             </script>
 </body>
