@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://melkamuwako27-backend.onrender.com/api';
 
 // Project API calls
 async function getProjects() {
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const formData = {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,

@@ -4,19 +4,19 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://YOUR-RENDER-BACKEND.onrender.com/api/:splat"
+  to = "https://melkamuwako27-backend.onrender.com/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/chat"
-  to = "https://YOUR-RENDER-BACKEND.onrender.com/chat"
+  to = "https://melkamuwako27-backend.onrender.com/chat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/notify-visit"
-  to = "https://YOUR-RENDER-BACKEND.onrender.com/notify-visit"
+  to = "https://melkamuwako27-backend.onrender.com/notify-visit"
   status = 200
   force = true
 

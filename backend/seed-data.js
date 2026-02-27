@@ -88,7 +88,7 @@ async function seedData() {
     try {
         // Add Skills
         for (const skill of sampleSkills) {
-            await fetch('http://localhost:10000/api/skills', {
+            await fetch('https://melkamuwako27-backend.onrender.com/api/skills', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(skill)
@@ -98,7 +98,7 @@ async function seedData() {
 
         // Add Certifications
         for (const cert of sampleCerts) {
-            await fetch('http://localhost:10000/api/certifications', {
+            await fetch('https://melkamuwako27-backend.onrender.com/api/certifications', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(cert)
@@ -108,7 +108,7 @@ async function seedData() {
 
         // Add Experiences
         for (const exp of sampleExp) {
-            await fetch('http://localhost:10000/api/experiences', {
+            await fetch('https://melkamuwako27-backend.onrender.com/api/experiences', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(exp)

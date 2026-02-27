@@ -231,7 +231,7 @@ React Hooks make code more readable and reusable. Start using them in your proje
 
 async function addBlogs() {
     try {
-        const response = await fetch('http://localhost:10000/api/blogposts/bulk', {
+        const response = await fetch('https://melkamuwako27-backend.onrender.com/api/blogposts/bulk', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(sampleBlogs)
@@ -242,7 +242,7 @@ async function addBlogs() {
         } else {
             // Try adding one by one
             for (const blog of sampleBlogs) {
-                await fetch('http://localhost:10000/api/blogposts', {
+                await fetch('https://melkamuwako27-backend.onrender.com/api/blogposts', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(blog)
