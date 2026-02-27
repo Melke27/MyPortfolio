@@ -633,6 +633,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Clear old cached localhost URL if exists
+        const oldUrl = localStorage.getItem('blogAdminApiUrl');
+        if (oldUrl && oldUrl.includes('localhost')) {
+            localStorage.removeItem('blogAdminApiUrl');
+        }
         let apiUrl = 'https://melkamuwako27-backend.onrender.com/api', authToken = null, lastPage = 'dashboard', editingId = null;
 
         document.addEventListener('DOMContentLoaded', () => {
