@@ -73,6 +73,26 @@ app.use('/api/certifications', certRoutes);
 app.use('/api/experiences', expRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 
+const CHAT_FOOTER = "\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com";
+const SENSITIVE_PERSONAL_QUERY_REGEX = /(family|father|mother|brother|sister|wife|husband|girlfriend|boyfriend|fiance|fiancee|son|daughter|children|parents|relative|home address|house address|where do you live|private life|personal life|secret|passport|id number|bank account|salary)/i;
+
+function withChatFooter(text) {
+  if (!text) return CHAT_FOOTER.trim();
+  return text.includes("Created by Melkamu Wako") ? text : text + CHAT_FOOTER;
+}
+
+function isSensitivePersonalQuery(message = '') {
+  return SENSITIVE_PERSONAL_QUERY_REGEX.test(String(message));
+}
+
+function getPrivacySafeReply() {
+  return withChatFooter("I can only share public professional portfolio information. I can’t provide private personal or family details.");
+}
+
+function getAboutProfileReply() {
+  return withChatFooter("I'm Melkamu Wako's AI assistant. Melkamu Wako is a Computer Science and Engineering student and passionate fullstack developer from Ethiopia. He has experience with JavaScript, React, Python, Java, C++, C#, and HTML/CSS. His projects include a weather app, e-commerce site, grade management system, and more.");
+}
+
 // Chat API (under /api for consistency)
 app.post('/api/chat', async (req, res) => {
   console.log('--- /api/chat endpoint hit ---');
@@ -84,11 +104,12 @@ app.post('/api/chat', async (req, res) => {
   if (!process.env.OPENROUTER_API_KEY) {
     return res.status(500).json({ error: 'AI server misconfiguration: OPENROUTER_API_KEY is missing.' });
   }
+  if (isSensitivePersonalQuery(message)) {
+    return res.json({ reply: getPrivacySafeReply() });
+  }
   // Custom about-me reply
   if (/about (you|melkamu|yourself)/i.test(message) || /melkamu wako/i.test(message)) {
-    return res.json({
-      reply: "I'm Melkamu Wako's AI assistant. Melkamu Wako is a Computer Science and Engineering student and passionate fullstack developer from Ethiopia. He has experience with JavaScript, React, Python, Java, C++, C#, and HTML/CSS. His projects include a weather app, e-commerce site, grade management system, and more.\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com"
-    });
+    return res.json({ reply: getAboutProfileReply() });
   }
   try {
     const reply = await askOpenRouter(message);
@@ -309,6 +330,8 @@ Rules:
 - Answer questions about Melkamu, his projects, skills, and achievements accurately using the info above.
 - For general tech questions, answer helpfully as an AI assistant.
 - Be concise but thorough.
+- Never provide, infer, or fabricate family details, private-life details, personal addresses, or sensitive information.
+- If asked for private/family details, politely refuse and redirect to public portfolio topics.
 - At the end of every reply, add: "Created by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com"`;
 
 async function askOpenRouter(message) {
@@ -337,11 +360,7 @@ async function askOpenRouter(message) {
         }
       );
       let reply = response.data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response.";
-      const footer = "\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com";
-      if (!reply.includes("Created by Melkamu Wako")) {
-        reply += footer;
-      }
-      return reply;
+      return withChatFooter(reply);
     } catch (err) {
       console.error(`OpenRouter API error with model ${model}:`, err.response ? err.response.data : err.message);
       lastError = err;
@@ -361,11 +380,12 @@ app.post('/chat', async (req, res) => {
   if (!process.env.OPENROUTER_API_KEY) {
     return res.status(500).json({ error: 'AI server misconfiguration: OPENROUTER_API_KEY is missing.' });
   }
+  if (isSensitivePersonalQuery(message)) {
+    return res.json({ reply: getPrivacySafeReply() });
+  }
   // Custom about-me reply
   if (/about (you|melkamu|yourself)/i.test(message) || /melkamu wako/i.test(message)) {
-    return res.json({
-      reply: "I'm Melkamu Wako's AI assistant. Melkamu Wako is a Computer Science and Engineering student and passionate fullstack developer from Ethiopia. He has experience with JavaScript, React, Python, Java, C++, C#, and HTML/CSS. His projects include a weather app, e-commerce site, grade management system, and more.\n\nCreated by Melkamu Wako, Fullstack Developer. Contact: melkamuwako5@gmail.com"
-    });
+    return res.json({ reply: getAboutProfileReply() });
   }
   try {
     const reply = await askOpenRouter(message);
