@@ -1084,6 +1084,10 @@
                     <span class="badge badge-pill badge-primary">C#</span>
                     <span class="badge badge-pill badge-primary">HTML/CSS</span>
                 </div>
+                <div class="mb-2">
+                    <div id="sidebarWeather"></div>
+                    <input id="sidebarCityInput" type="text" placeholder="Enter city">
+                </div>
                 <div class="d-flex justify-content-center mt-auto mb-3 social-icons">
                     <a class="mx-2" href="https://t.me/kidn16" target="_blank" aria-label="Telegram"
                         data-toggle="tooltip" title="Telegram"><i class="fab fa-telegram"></i></a>
@@ -1774,11 +1778,6 @@
             </section>
             <!-- End Journey Timeline Section -->
 
-            <!-- Add AOS (Animate On Scroll) if not already included -->
-            <link rel="stylesheet" href="assets/lib/aos/aos.css">
-            <script src="assets/lib/aos/aos.js"></script>
-            <script>document.addEventListener('DOMContentLoaded', function () { if (window.AOS) { AOS.init({ once: true }); } });</script>
-
             <!-- My Certifications Section Start -->
             <div class="container bg-white py-5" id="certifications">
                 <div class="row px-3">
@@ -1813,7 +1812,7 @@
                         </script>
                         <!-- Download All Certificates as ZIP Button (green, below PDF) -->
                         <div class="mb-3 text-center">
-                            <a href="melkamu wako protfolio and landing page/all-certificates.zip" class="btn"
+                            <a href="all-certificates.zip" class="btn"
                                 style="background:#4caf50;color:#111;font-size:1.35rem;padding:16px 32px;border-radius:14px;display:inline-flex;align-items:center;gap:12px;">
                                 <i class="fas fa-file-archive" style="font-size:1.5rem;"></i> Download All Certificates
                                 (ZIP)
@@ -1894,7 +1893,7 @@
                                     </ul>
                                 </div>
                                 <div class="certification-footer">
-                                    <a href="assets/certificates/coursera-certificate.pdf" class="btn btn-primary mr-2"
+                                    <a href="melkamu wako protfolio and landing page/Coursera XPZHL0UYC5KT.pdf" class="btn btn-primary mr-2"
                                         target="_blank">View Certificate</a>
                                     <a href="https://www.coursera.org/account/accomplishments/verify/XPZHL0UYC5KT"
                                         class="btn btn-outline-primary" target="_blank">Verify</a>
@@ -1921,8 +1920,8 @@
                                     </ul>
                                 </div>
                                 <div class="certification-footer">
-                                    <a href="assets/certificates/cisco-cybersecurity.pdf" class="btn btn-primary mr-2"
-                                        target="_blank">View Certificate</a>
+                                    <a href="https://www.linkedin.com/in/melkamu-wako-2a5496228"
+                                        class="btn btn-primary mr-2" target="_blank">View Certificate</a>
                                     <a href="https://www.linkedin.com/in/melkamu-wako-2a5496228"
                                         class="btn btn-outline-primary" target="_blank">Verify on LinkedIn</a>
                                 </div>
@@ -4447,17 +4446,24 @@
                         const data = await res.json();
                         const icon = data.weather[0].icon;
                         const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
-                        document.getElementById('sidebarWeather').innerHTML =
-                            `<img src="${iconUrl}" style="width:18px;height:18px;vertical-align:middle;margin-right:4px;animation:weatherPulse 1.6s infinite;"> <b>${data.name}:</b> ${Math.round(data.main.temp)}°C, ${data.weather[0].main}`;
+                        const weatherEl = document.getElementById('sidebarWeather');
+                        if (weatherEl) {
+                            weatherEl.innerHTML =
+                                `<img src="${iconUrl}" style="width:18px;height:18px;vertical-align:middle;margin-right:4px;animation:weatherPulse 1.6s infinite;"> <b>${data.name}:</b> ${Math.round(data.main.temp)}°C, ${data.weather[0].main}`;
+                        }
                     } catch {
-                        document.getElementById('sidebarWeather').innerText = 'Unable to load weather.';
+                        const weatherEl = document.getElementById('sidebarWeather');
+                        if (weatherEl) weatherEl.innerText = 'Unable to load weather.';
                     }
                 }
                 document.addEventListener('DOMContentLoaded', function () {
                     fetchSidebarWeather();
-                    document.getElementById('sidebarCityInput').addEventListener('change', function () {
-                        fetchSidebarWeather(this.value);
-                    });
+                    const cityInput = document.getElementById('sidebarCityInput');
+                    if (cityInput) {
+                        cityInput.addEventListener('change', function () {
+                            fetchSidebarWeather(this.value);
+                        });
+                    }
                 });
             </script>
             <style>
@@ -4493,15 +4499,10 @@
                     width: 90px;
                 }
             </style>
-            <!-- Place these inside your sidebar/profile area -->
-            <div id="sidebarWeather"></div>
-            <input id="sidebarCityInput" type="text" placeholder="Enter city">
-
-
             <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    AOS.init({ duration: 900, once: true });
+                    if (window.AOS) AOS.init({ duration: 900, once: true });
                 });
             </script>
 
