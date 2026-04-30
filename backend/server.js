@@ -146,7 +146,7 @@ app.get('/api/company-autocomplete', async (req, res) => {
         out.push({
           name,
           domain,
-          logo: item.logo || `https://logo.clearbit.com/${domain}`
+          logo: item.logo || `https://logos-api.apistemic.com/domain:${domain}?fallback=404`
         });
       }
       return out.slice(0, 12);

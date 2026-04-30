@@ -705,7 +705,29 @@
         function buildLogoUrlFromDomain(domain) {
             const safe = sanitizeDomain(domain);
             if (!safe || !safe.includes('.')) return '';
-            return 'https://logo.clearbit.com/' + safe;
+            return 'https://logos-api.apistemic.com/domain:' + safe + '?fallback=404';
+        }
+
+        function buildLogoFallbackUrls(domain, preferredUrl = '') {
+            const safe = sanitizeDomain(domain);
+            const urls = [];
+            if (preferredUrl) urls.push(preferredUrl);
+            if (safe && safe.includes('.')) {
+                urls.push('https://logos-api.apistemic.com/domain:' + safe + '?fallback=404');
+                urls.push('https://www.google.com/s2/favicons?domain=' + safe + '&sz=128');
+                urls.push('https://icons.duckduckgo.com/ip3/' + safe + '.ico');
+            }
+            return [...new Set(urls.filter(Boolean))];
+        }
+
+        function attachImageFallback(imgEl, urls) {
+            if (!imgEl || !Array.isArray(urls) || urls.length === 0) return;
+            let index = 0;
+            imgEl.onerror = () => {
+                index += 1;
+                if (index < urls.length) imgEl.src = urls[index];
+            };
+            imgEl.src = urls[0];
         }
 
         function guessDomainFromCompanyName(name) {
@@ -829,7 +851,23 @@
                 previewEl.innerHTML = '<small class="text-muted">No logo selected yet.</small>';
                 return;
             }
-            previewEl.innerHTML = '<div class="d-flex align-items-center gap-2"><img src="' + escapeHtml(logoUrl) + '" alt="Logo preview" style="width:28px;height:28px;object-fit:contain;border-radius:4px;"><small class="text-muted">' + escapeHtml(labelText) + '</small></div>';
+            previewEl.innerHTML = '';
+            const wrap = document.createElement('div');
+            wrap.className = 'd-flex align-items-center gap-2';
+            const img = document.createElement('img');
+            img.alt = 'Logo preview';
+            img.style.width = '28px';
+            img.style.height = '28px';
+            img.style.objectFit = 'contain';
+            img.style.borderRadius = '4px';
+            const domain = sanitizeDomain(logoUrl) || sanitizeDomain((logoUrl.split('/domain:')[1] || '').split('?')[0]);
+            attachImageFallback(img, buildLogoFallbackUrls(domain, logoUrl));
+            const small = document.createElement('small');
+            small.className = 'text-muted';
+            small.textContent = labelText;
+            wrap.appendChild(img);
+            wrap.appendChild(small);
+            previewEl.appendChild(wrap);
         }
 
         async function renderCompanyLogoSuggestions(config, query) {
@@ -862,7 +900,19 @@
                 btn.className = 'company-suggestion-btn';
                 const logoUrl = candidate.logo || buildLogoUrlFromDomain(candidate.domain);
                 const hint = candidate.source === 'guess' ? 'Guessed domain' : candidate.domain;
-                btn.innerHTML = '<img src="' + escapeHtml(logoUrl) + '" alt="' + escapeHtml(candidate.name) + ' logo"><div><div>' + escapeHtml(candidate.name) + '</div><small class="text-muted">' + escapeHtml(hint) + '</small></div>';
+                const img = document.createElement('img');
+                img.alt = candidate.name + ' logo';
+                attachImageFallback(img, buildLogoFallbackUrls(candidate.domain, logoUrl));
+                const textWrap = document.createElement('div');
+                const nameEl = document.createElement('div');
+                nameEl.textContent = candidate.name;
+                const hintEl = document.createElement('small');
+                hintEl.className = 'text-muted';
+                hintEl.textContent = hint;
+                textWrap.appendChild(nameEl);
+                textWrap.appendChild(hintEl);
+                btn.appendChild(img);
+                btn.appendChild(textWrap);
                 btn.addEventListener('click', () => {
                     const companyEl = document.getElementById(config.companyInputId);
                     const imageEl = document.getElementById(config.imageInputId);
@@ -1238,7 +1288,19 @@
             const preview = document.getElementById('testimonialImagePreview');
             if (!preview) return;
             if (url) {
-                preview.innerHTML = '<img src="' + escapeHtml(url) + '" alt="Preview" class="rounded" style="width:100px;height:100px;object-fit:cover;">';
+                preview.innerHTML = '';
+                const img = document.createElement('img');
+                img.alt = 'Preview';
+                img.className = 'rounded';
+                img.style.width = '100px';
+                img.style.height = '100px';
+                img.style.objectFit = 'cover';
+                const parsedDomain = sanitizeDomain(url) || sanitizeDomain((url.split('/domain:')[1] || '').split('?')[0]);
+                const fallbackUrls = parsedDomain
+                    ? buildLogoFallbackUrls(parsedDomain, url)
+                    : [url, 'assets/img/portfolio-3.jpg'];
+                attachImageFallback(img, fallbackUrls);
+                preview.appendChild(img);
             } else {
                 preview.innerHTML = '';
             }
