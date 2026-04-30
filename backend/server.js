@@ -126,6 +126,71 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'healthy', timestamp: new Date() });
 });
 
+// Live company autocomplete (LinkedIn-style issuer search)
+app.get('/api/company-autocomplete', async (req, res) => {
+  try {
+    const query = String(req.query.query || '').trim();
+    if (!query || query.length < 2) {
+      return res.json([]);
+    }
+
+    const normalize = (items) => {
+      const seen = new Set();
+      const out = [];
+      for (const item of items) {
+        const name = String(item.name || '').trim();
+        const domain = String(item.domain || '').trim().toLowerCase();
+        if (!name || !domain) continue;
+        if (seen.has(domain)) continue;
+        seen.add(domain);
+        out.push({
+          name,
+          domain,
+          logo: item.logo || `https://logo.clearbit.com/${domain}`
+        });
+      }
+      return out.slice(0, 12);
+    };
+
+    // Source 1: Clearbit autocomplete
+    try {
+      const clearbitResp = await axios.get('https://autocomplete.clearbit.com/v1/companies/suggest', {
+        params: { query },
+        timeout: 6000
+      });
+      if (Array.isArray(clearbitResp.data) && clearbitResp.data.length > 0) {
+        const results = normalize(clearbitResp.data.map(item => ({
+          name: item.name,
+          domain: item.domain,
+          logo: item.logo
+        })));
+        if (results.length > 0) return res.json(results);
+      }
+    } catch (e) {
+      // Continue to fallback source
+    }
+
+    // Source 2: Clearout autocomplete fallback
+    try {
+      const clearoutResp = await axios.get('https://api.clearout.io/public/companies/autocomplete', {
+        params: { query },
+        timeout: 6000
+      });
+      const raw = Array.isArray(clearoutResp.data?.data) ? clearoutResp.data.data : [];
+      const results = normalize(raw.map(item => ({
+        name: item.name,
+        domain: item.domain,
+        logo: item.logo_url
+      })));
+      return res.json(results);
+    } catch (e) {
+      return res.json([]);
+    }
+  } catch (error) {
+    return res.status(500).json({ message: 'Company autocomplete failed' });
+  }
+});
+
 // Serve static files from parent directory (after API routes)
 app.use(express.static(path.join(__dirname, '..')));
 

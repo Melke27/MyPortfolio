@@ -107,6 +107,38 @@
             z-index: 9999;
         }
 
+        .company-suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 8px;
+        }
+
+        .company-suggestion-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background: #fff;
+            padding: 8px 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: 0.2s ease;
+        }
+
+        .company-suggestion-btn:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .company-suggestion-btn img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: #fff;
+        }
+
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .sidebar {
@@ -326,6 +358,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small id="lastUpdatedText" class="text-muted">Last updated: never</small>
+                            <button class="btn btn-outline-primary btn-sm" onclick="refreshData()"><i
+                                    class="fas fa-rotate me-1"></i>Refresh Data</button>
+                        </div>
                     </div>
 
                     <!-- Blogs Page -->
@@ -517,6 +554,7 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Company</th>
+                                                <th>Role</th>
                                                 <th>Rating</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -562,8 +600,8 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Database Status</label>
-                                            <div><span class="badge bg-success"><i
-                                                        class="fas fa-check-circle me-1"></i>Connected</span></div>
+                                            <div><span class="badge bg-secondary" id="dbStatusBadge"><i
+                                                        class="fas fa-circle-notch me-1"></i>Unknown</span></div>
                                         </div>
                                         <button class="btn btn-primary" onclick="saveApiSettings()"><i
                                                 class="fas fa-save me-2"></i>Save Settings</button>
@@ -634,18 +672,309 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        const DEFAULT_API_URL = 'https://melkamuwako27-backend.onrender.com/api';
+        const DEFAULT_ADMIN_USERNAME = 'admin';
+        const DEFAULT_ADMIN_PASSWORD = 'melkamu2025';
+        const endpoints = { blog: 'blogposts', project: 'projects', skill: 'skills', cert: 'certifications', exp: 'experiences', contact: 'contacts', sub: 'subscribers', testimonial: 'testimonials' };
+
         // Clear old cached localhost URL if exists
         const oldUrl = localStorage.getItem('blogAdminApiUrl');
         if (oldUrl && oldUrl.includes('localhost')) {
             localStorage.removeItem('blogAdminApiUrl');
         }
-        let apiUrl = 'https://melkamuwako27-backend.onrender.com/api', authToken = null, lastPage = 'dashboard', editingId = null;
+
+        let apiUrl = DEFAULT_API_URL;
+        let authToken = null;
+        let lastPage = 'dashboard';
+        let editingId = null;
+        let hasShownApiWarning = false;
+        let saveInProgress = false;
+        let activeLoadId = 0;
+        const companySuggestionCache = new Map();
+        const companySearchTimers = {};
+        const companySearchRequestIds = {};
+
+        function normalizeApiUrl(url) {
+            return (url || '').trim().replace(/\/+$/, '');
+        }
+
+        function sanitizeDomain(value) {
+            return (value || '').toLowerCase().trim().replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].replace(/[^a-z0-9.-]/g, '');
+        }
+
+        function buildLogoUrlFromDomain(domain) {
+            const safe = sanitizeDomain(domain);
+            if (!safe || !safe.includes('.')) return '';
+            return 'https://logo.clearbit.com/' + safe;
+        }
+
+        function guessDomainFromCompanyName(name) {
+            const cleaned = (name || '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+            if (!cleaned) return '';
+            const base = cleaned.split(' ').join('');
+            if (base.length < 2) return '';
+            return base + '.com';
+        }
+
+        function dedupeCompanySuggestions(items) {
+            const seen = new Set();
+            const output = [];
+            items.forEach(item => {
+                const key = sanitizeDomain(item.domain || '') || (item.name || '').toLowerCase();
+                if (!key || seen.has(key)) return;
+                seen.add(key);
+                output.push(item);
+            });
+            return output;
+        }
+
+        async function fetchCompanySuggestions(query) {
+            const q = (query || '').trim();
+            const cacheKey = q.toLowerCase();
+            if (!q) return [];
+            if (companySuggestionCache.has(cacheKey)) return companySuggestionCache.get(cacheKey);
+
+            let results = [];
+
+            // Primary source: backend proxy (best for CORS stability)
+            try {
+                const proxyRes = await fetch(apiUrl + '/company-autocomplete?query=' + encodeURIComponent(q));
+                if (proxyRes.ok) {
+                    const proxyData = await proxyRes.json();
+                    if (Array.isArray(proxyData)) {
+                        results = proxyData.map(item => ({
+                            name: item.name || '',
+                            domain: item.domain || '',
+                            logo: item.logo || buildLogoUrlFromDomain(item.domain || ''),
+                            source: 'proxy'
+                        }));
+                    }
+                }
+            } catch (e) {
+                // Continue to fallback source
+            }
+
+            // Fallback source 1: direct Clearbit autocomplete
+            if (results.length === 0) {
+                try {
+                    const clearbitRes = await fetch('https://autocomplete.clearbit.com/v1/companies/suggest?query=' + encodeURIComponent(q));
+                    if (clearbitRes.ok) {
+                        const clearbitData = await clearbitRes.json();
+                        if (Array.isArray(clearbitData)) {
+                            results = clearbitData.map(item => ({
+                                name: item.name || '',
+                                domain: item.domain || '',
+                                logo: item.logo || buildLogoUrlFromDomain(item.domain || ''),
+                                source: 'clearbit'
+                            }));
+                        }
+                    }
+                } catch (e) {
+                    // Continue to fallback source
+                }
+            }
+
+            // Fallback source 2: Clearout autocomplete
+            if (results.length === 0) {
+                try {
+                    const clearoutRes = await fetch('https://api.clearout.io/public/companies/autocomplete?query=' + encodeURIComponent(q));
+                    if (clearoutRes.ok) {
+                        const clearoutPayload = await clearoutRes.json();
+                        const clearoutData = Array.isArray(clearoutPayload?.data) ? clearoutPayload.data : [];
+                        results = clearoutData.map(item => ({
+                            name: item.name || '',
+                            domain: item.domain || '',
+                            logo: item.logo_url || buildLogoUrlFromDomain(item.domain || ''),
+                            source: 'clearout'
+                        }));
+                    }
+                } catch (e) {
+                    // Keep graceful no-result behavior
+                }
+            }
+
+            // Optional direct domain suggestion
+            const domainFromQuery = sanitizeDomain(q);
+            if (domainFromQuery.includes('.')) {
+                results.unshift({
+                    name: domainFromQuery,
+                    domain: domainFromQuery,
+                    logo: buildLogoUrlFromDomain(domainFromQuery),
+                    source: 'direct'
+                });
+            }
+
+            // Optional guessed domain fallback
+            if (results.length === 0) {
+                const guessed = guessDomainFromCompanyName(q);
+                if (guessed) {
+                    results.push({
+                        name: 'Try ' + guessed,
+                        domain: guessed,
+                        logo: buildLogoUrlFromDomain(guessed),
+                        source: 'guess'
+                    });
+                }
+            }
+
+            const finalResults = dedupeCompanySuggestions(results).slice(0, 12);
+            companySuggestionCache.set(cacheKey, finalResults);
+            return finalResults;
+        }
+
+        function previewCompanyLogo(previewId, logoUrl, labelText = 'Selected logo') {
+            const previewEl = document.getElementById(previewId);
+            if (!previewEl) return;
+            if (!logoUrl) {
+                previewEl.innerHTML = '<small class="text-muted">No logo selected yet.</small>';
+                return;
+            }
+            previewEl.innerHTML = '<div class="d-flex align-items-center gap-2"><img src="' + escapeHtml(logoUrl) + '" alt="Logo preview" style="width:28px;height:28px;object-fit:contain;border-radius:4px;"><small class="text-muted">' + escapeHtml(labelText) + '</small></div>';
+        }
+
+        async function renderCompanyLogoSuggestions(config, query) {
+            const suggestionsEl = document.getElementById(config.suggestionsId);
+            if (!suggestionsEl) return;
+            const trimmed = (query || '').trim();
+            const requestKey = config.suggestionsId;
+            companySearchRequestIds[requestKey] = (companySearchRequestIds[requestKey] || 0) + 1;
+            const requestId = companySearchRequestIds[requestKey];
+
+            suggestionsEl.innerHTML = '';
+
+            if (!trimmed) {
+                suggestionsEl.innerHTML = '<small class="text-muted">Type company name to search logos.</small>';
+                return;
+            }
+
+            suggestionsEl.innerHTML = '<small class="text-muted">Searching companies...</small>';
+            const candidates = await fetchCompanySuggestions(trimmed);
+            if (requestId !== companySearchRequestIds[requestKey]) return;
+
+            if (candidates.length === 0) {
+                suggestionsEl.innerHTML = '<small class="text-muted">No results found. Try a different spelling or use company domain (example: microsoft.com).</small>';
+                return;
+            }
+
+            candidates.forEach(candidate => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'company-suggestion-btn';
+                const logoUrl = candidate.logo || buildLogoUrlFromDomain(candidate.domain);
+                const hint = candidate.source === 'guess' ? 'Guessed domain' : candidate.domain;
+                btn.innerHTML = '<img src="' + escapeHtml(logoUrl) + '" alt="' + escapeHtml(candidate.name) + ' logo"><div><div>' + escapeHtml(candidate.name) + '</div><small class="text-muted">' + escapeHtml(hint) + '</small></div>';
+                btn.addEventListener('click', () => {
+                    const companyEl = document.getElementById(config.companyInputId);
+                    const imageEl = document.getElementById(config.imageInputId);
+                    const searchEl = document.getElementById(config.searchInputId);
+                    if (companyEl && candidate.source !== 'guess') companyEl.value = candidate.name;
+                    if (searchEl) searchEl.value = candidate.source === 'guess' ? trimmed : candidate.name;
+                    if (imageEl) imageEl.value = logoUrl;
+                    previewCompanyLogo(config.previewId, logoUrl, 'Logo applied from ' + candidate.domain);
+                    if (config.previewId === 'testimonialImagePreview') previewTestimonialImage(logoUrl);
+                });
+                suggestionsEl.appendChild(btn);
+            });
+        }
+
+        function setupCompanyLogoHelper(config) {
+            const searchEl = document.getElementById(config.searchInputId);
+            const companyEl = document.getElementById(config.companyInputId);
+            const imageEl = document.getElementById(config.imageInputId);
+            if (!searchEl || !companyEl || !imageEl) return;
+
+            const refreshSuggestions = () => {
+                const value = searchEl.value || companyEl.value || '';
+                const timerKey = config.suggestionsId;
+                clearTimeout(companySearchTimers[timerKey]);
+                companySearchTimers[timerKey] = setTimeout(() => {
+                    renderCompanyLogoSuggestions(config, value);
+                }, 250);
+            };
+
+            searchEl.addEventListener('input', refreshSuggestions);
+            companyEl.addEventListener('input', () => {
+                searchEl.value = companyEl.value;
+                refreshSuggestions();
+            });
+            imageEl.addEventListener('input', () => {
+                previewCompanyLogo(config.previewId, imageEl.value, 'Custom image URL');
+            });
+
+            previewCompanyLogo(config.previewId, imageEl.value, 'Current logo');
+            refreshSuggestions();
+        }
+
+        function getAdminPassword() {
+            const stored = localStorage.getItem('adminPassword');
+            if (!stored) return DEFAULT_ADMIN_PASSWORD;
+            try {
+                return atob(stored);
+            } catch (e) {
+                return DEFAULT_ADMIN_PASSWORD;
+            }
+        }
+
+        function formatDate(value) {
+            if (!value) return '-';
+            const d = new Date(value);
+            return Number.isNaN(d.getTime()) ? '-' : d.toLocaleDateString();
+        }
+
+        function toInputDate(value) {
+            if (!value) return '';
+            const d = new Date(value);
+            if (Number.isNaN(d.getTime())) return '';
+            return d.toISOString().slice(0, 10);
+        }
+
+        function formatPeriod(item) {
+            const start = formatDate(item.startDate);
+            if (item.current) return start + ' - Present';
+            const end = formatDate(item.endDate);
+            return end === '-' ? start : start + ' - ' + end;
+        }
+
+        function setDbStatus(mode, text) {
+            const badge = document.getElementById('dbStatusBadge');
+            if (!badge) return;
+            badge.className = 'badge';
+            if (mode === 'connected') badge.classList.add('bg-success');
+            else if (mode === 'degraded') badge.classList.add('bg-warning', 'text-dark');
+            else if (mode === 'error') badge.classList.add('bg-danger');
+            else badge.classList.add('bg-secondary');
+            badge.innerHTML = text;
+        }
+
+        function updateLastUpdated() {
+            const el = document.getElementById('lastUpdatedText');
+            if (!el) return;
+            el.textContent = 'Last updated: ' + new Date().toLocaleString();
+        }
+
+        function showLogin() {
+            authToken = null;
+            const loginScreen = document.getElementById('loginScreen');
+            const dashboard = document.getElementById('dashboard');
+            if (loginScreen) loginScreen.classList.remove('hidden');
+            if (dashboard) dashboard.classList.add('hidden');
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('blogAdminApiUrl');
+            const saved = normalizeApiUrl(localStorage.getItem('blogAdminApiUrl'));
             if (saved) apiUrl = saved;
+
+            const apiInput = document.getElementById('apiUrl');
+            if (apiInput) apiInput.value = apiUrl;
+
             const token = localStorage.getItem('blogAdminToken');
-            if (token) { authToken = token; showDashboard(); loadData(); }
+            if (token) {
+                authToken = token;
+                showDashboard();
+                loadData();
+            }
+
+            setDbStatus('unknown', '<i class="fas fa-circle-notch me-1"></i>Unknown');
 
             // Mobile sidebar toggle
             const hamburgerBtn = document.getElementById('hamburgerBtn');
@@ -669,39 +998,48 @@
             // Close sidebar when clicking nav link on mobile
             document.querySelectorAll('.sidebar .nav-link').forEach(link => {
                 link.addEventListener('click', () => {
-                    if (window.innerWidth <= 768) {
+                    if (window.innerWidth <= 768 && sidebar) {
                         sidebar.classList.remove('active');
                         if (sidebarOverlay) sidebarOverlay.classList.remove('active');
                     }
                 });
             });
-        });
 
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const u = document.getElementById('username').value, p = document.getElementById('password').value;
-            apiUrl = document.getElementById('apiUrl').value;
-            if (u === 'admin' && p === 'melkamu2025') {
-                authToken = btoa(u + ':' + p);
-                localStorage.setItem('blogAdminToken', authToken);
-                localStorage.setItem('blogAdminApiUrl', apiUrl);
-                showDashboard(); loadData(); showToast('Login successful!', 'success');
-            } else showToast('Invalid credentials', 'danger');
-        });
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const u = (document.getElementById('username')?.value || '').trim();
+                    const p = document.getElementById('password')?.value || '';
+                    const formApiUrl = normalizeApiUrl(document.getElementById('apiUrl')?.value || '');
+                    if (formApiUrl) apiUrl = formApiUrl;
+                    if (u === DEFAULT_ADMIN_USERNAME && p === getAdminPassword()) {
+                        authToken = btoa(u + ':' + Date.now());
+                        localStorage.setItem('blogAdminToken', authToken);
+                        localStorage.setItem('blogAdminApiUrl', apiUrl);
+                        showDashboard();
+                        loadData();
+                        showToast('Login successful!', 'success');
+                    } else {
+                        showToast('Invalid credentials', 'danger');
+                    }
+                });
+            }
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('blogAdminToken');
-            authToken = null;
-            const loginScreen = document.getElementById('loginScreen');
-            const dashboard = document.getElementById('dashboard');
-            if (loginScreen) loginScreen.classList.remove('hidden');
-            if (dashboard) dashboard.classList.add('hidden');
-        });
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    localStorage.removeItem('blogAdminToken');
+                    showLogin();
+                    showToast('Logged out successfully', 'info');
+                });
+            }
 
-        document.querySelectorAll('.nav-link[data-page]').forEach(l => l.addEventListener('click', e => {
-            e.preventDefault();
-            showPage(e.target.closest('.nav-link').dataset.page);
-        }));
+            document.querySelectorAll('.nav-link[data-page]').forEach(l => l.addEventListener('click', e => {
+                e.preventDefault();
+                showPage(e.target.closest('.nav-link').dataset.page);
+            }));
+        });
 
         function showPage(page) {
             lastPage = page;
@@ -710,7 +1048,10 @@
             ['dashboardPage', 'blogsPage', 'projectsPage', 'skillsPage', 'certsPage', 'expPage', 'contactsPage', 'subsPage', 'settingsPage', 'testimonialsPage', 'formPage'].forEach(p => document.getElementById(p)?.classList.add('hidden'));
             document.getElementById(page + 'Page')?.classList.remove('hidden');
             loadData();
-            if (page === 'settings') { loadSettings(); loadStats(); }
+            if (page === 'settings') {
+                loadSettings();
+                loadStats();
+            }
         }
 
         function showDashboard() {
@@ -721,79 +1062,169 @@
             showPage('dashboard');
         }
 
-        async function loadData() {
+        async function fetchCollection(endpointName) {
             try {
-                const [blogs, projects, skills, certs, exp, contacts, subs, testimonials] = await Promise.all([
-                    fetch(apiUrl + '/blogposts').then(r => r.ok ? r.json() : []),
-                    fetch(apiUrl + '/projects').then(r => r.ok ? r.json() : []),
-                    fetch(apiUrl + '/skills').then(r => r.ok ? r.json() : []),
-                    fetch(apiUrl + '/certifications').then(r => r.ok ? r.json() : []),
-                    fetch(apiUrl + '/experiences').then(r => r.ok ? r.json() : []),
-                    fetch(apiUrl + '/contacts').then(r => r.ok ? r.json() : []),
-                    fetch(apiUrl + '/subscribers').then(r => r.ok ? r.json() : []),
-                    fetch(apiUrl + '/testimonials').then(r => r.ok ? r.json() : [])
-                ]);
-                const countElements = {
-                    blogCount: blogs.length,
-                    projectCount: projects.length,
-                    skillCount: skills.length,
-                    certCount: certs.length,
-                    expCount: exp.length,
-                    contactCount: contacts.length
-                };
-                Object.entries(countElements).forEach(([id, value]) => {
-                    const el = document.getElementById(id);
-                    if (el) el.textContent = value;
-                });
+                const res = await fetch(apiUrl + '/' + endpointName);
+                if (!res.ok) return { data: [], ok: false };
+                const data = await res.json();
+                return { data: Array.isArray(data) ? data : [], ok: true };
+            } catch (e) {
+                return { data: [], ok: false };
+            }
+        }
 
-                renderTable('blogsTable', blogs, ['title', 'slug', 'date'], 'blog');
-                renderTable('projectsTable', projects, ['name', 'category'], 'project');
-                renderTable('skillsTable', skills, ['name', 'category', 'level'], 'skill');
-                renderTable('certsTable', certs, ['name', 'issuer', 'date'], 'cert');
-                renderTable('expTable', exp, ['title', 'company', 'startDate'], 'exp');
-                renderTable('contactsTable', contacts, ['name', 'email', 'subject', 'createdAt'], 'contact');
-                renderTable('subsTable', subs, ['email', 'subscribedAt'], 'sub');
-                renderTable('testimonialsTable', testimonials, ['name', 'company', 'role', 'rating'], 'testimonial');
-            } catch (e) { console.error(e); }
+        async function loadData(showWarningToast = false) {
+            const loadId = ++activeLoadId;
+            const [blogsRes, projectsRes, skillsRes, certsRes, expRes, contactsRes, subsRes, testimonialsRes] = await Promise.all([
+                fetchCollection('blogposts'),
+                fetchCollection('projects'),
+                fetchCollection('skills'),
+                fetchCollection('certifications'),
+                fetchCollection('experiences'),
+                fetchCollection('contacts'),
+                fetchCollection('subscribers'),
+                fetchCollection('testimonials')
+            ]);
+
+            const blogs = blogsRes.data;
+            const projects = projectsRes.data;
+            const skills = skillsRes.data;
+            const certs = certsRes.data;
+            const exp = expRes.data;
+            const contacts = contactsRes.data;
+            const subs = subsRes.data;
+            const testimonials = testimonialsRes.data;
+
+            // Ignore stale responses if a newer load started.
+            if (loadId !== activeLoadId) return false;
+
+            const countElements = {
+                blogCount: blogs.length,
+                projectCount: projects.length,
+                skillCount: skills.length,
+                certCount: certs.length,
+                expCount: exp.length,
+                contactCount: contacts.length
+            };
+            Object.entries(countElements).forEach(([id, value]) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            });
+
+            renderTable('blogsTable', blogs, ['title', 'slug', 'date'], 'blog');
+            renderTable('projectsTable', projects, ['name', 'category'], 'project');
+            renderTable('skillsTable', skills, ['name', 'category', 'level'], 'skill');
+            renderTable('certsTable', certs, ['name', 'issuer', 'date'], 'cert');
+            renderTable('expTable', exp, ['title', 'company', 'startDate'], 'exp');
+            renderTable('contactsTable', contacts, ['name', 'email', 'subject', 'createdAt'], 'contact');
+            renderTable('subsTable', subs, ['email', 'subscribedAt'], 'sub');
+            renderTable('testimonialsTable', testimonials, ['name', 'company', 'role', 'rating'], 'testimonial');
+            loadStats();
+            updateLastUpdated();
+
+            const allStates = [blogsRes, projectsRes, skillsRes, certsRes, expRes, contactsRes, subsRes, testimonialsRes];
+            const failedCount = allStates.filter(r => !r.ok).length;
+            if (failedCount > 0) {
+                setDbStatus('degraded', '<i class="fas fa-exclamation-triangle me-1"></i>Partial Connection');
+                if (!hasShownApiWarning || showWarningToast) {
+                    showToast('Some dashboard data failed to load. Check API URL or backend status.', 'warning');
+                    hasShownApiWarning = true;
+                }
+                return false;
+            }
+
+            hasShownApiWarning = false;
+            setDbStatus('connected', '<i class="fas fa-check-circle me-1"></i>Connected');
+            return true;
         }
 
         function renderTable(id, data, fields, type) {
             const tbody = document.getElementById(id);
             if (!tbody) return;
-            if (!data.length) { tbody.innerHTML = '<tr><td colspan="5" class="text-muted">No data</td></tr>'; return; }
-            tbody.innerHTML = data.map(d => '<tr>' + fields.map(f => '<td>' + (f === 'date' || f === 'createdAt' || f === 'startDate' ? new Date(d[f]).toLocaleDateString() : escapeHtml(d[f] || '-')) + '</td>').join('') +
-                '<td><button class="btn btn-sm btn-primary me-1" onclick="edit(\'' + type + '\',\'' + d._id + '\')"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="del(\'' + type + '\',\'' + d._id + '\')"><i class="fas fa-trash"></i></button></td></tr>').join('');
+            const colspan = fields.length + 1;
+            if (!Array.isArray(data) || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="' + colspan + '" class="text-muted">No data</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map(d => {
+                const rowFields = fields.map(field => {
+                    let value = '-';
+                    if (type === 'exp' && field === 'startDate') {
+                        value = formatPeriod(d);
+                    } else if (field === 'date' || field === 'createdAt' || field === 'startDate' || field === 'endDate') {
+                        value = formatDate(d[field]);
+                    } else if (field === 'subscribedAt') {
+                        value = formatDate(d.subscribedAt || d.createdAt);
+                    } else if (field === 'tags') {
+                        value = Array.isArray(d.tags) ? d.tags.join(', ') : '-';
+                    } else {
+                        value = d[field] == null || d[field] === '' ? '-' : d[field];
+                    }
+                    return '<td>' + escapeHtml(String(value)) + '</td>';
+                }).join('');
+
+                return '<tr>' + rowFields +
+                    '<td><button class="btn btn-sm btn-primary me-1" onclick="edit(\'' + type + '\',\'' + d._id + '\')"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="del(\'' + type + '\',\'' + d._id + '\')"><i class="fas fa-trash"></i></button></td></tr>';
+            }).join('');
         }
 
-        function showForm(type) {
-            editingId = null;
+        function showForm(type, isEditing = false) {
+            if (!isEditing) editingId = null;
             const lastPageEl = document.getElementById(lastPage + 'Page');
             const formPageEl = document.getElementById('formPage');
             if (lastPageEl) lastPageEl.classList.add('hidden');
             if (formPageEl) formPageEl.classList.remove('hidden');
             const titles = { blog: 'Blog Post', project: 'Project', skill: 'Skill', cert: 'Certification', exp: 'Experience', testimonial: 'Testimonial' };
             const formTitleEl = document.getElementById('formTitle');
-            if (formTitleEl) formTitleEl.textContent = 'New ' + titles[type];
+            if (formTitleEl) formTitleEl.textContent = (isEditing ? 'Edit ' : 'New ') + titles[type];
             const forms = {
                 blog: '<input type="hidden" id="editId"><div class="mb-3"><label>Title</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Slug</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f3" required></textarea></div><div class="mb-3"><label>Content</label><textarea class="form-control" id="f4" rows="5"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f5"></div><div class="mb-3"><label>Tags</label><input type="text" class="form-control" id="f6" placeholder="tag1, tag2"></div><button type="submit" class="btn btn-primary">Save</button>',
                 project: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Slug</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f3"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f4"></div><div class="mb-3"><label>Category</label><input type="text" class="form-control" id="f5"></div><div class="mb-3"><label>Live URL</label><input type="text" class="form-control" id="f6"></div><div class="mb-3"><label>GitHub URL</label><input type="text" class="form-control" id="f7"></div><button type="submit" class="btn btn-primary">Save</button>',
                 skill: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Category</label><input type="text" class="form-control" id="f2" placeholder="Frontend, Backend, etc."></div><div class="mb-3"><label>Level (0-100)</label><input type="number" class="form-control" id="f3" min="0" max="100"></div><button type="submit" class="btn btn-primary">Save</button>',
-                cert: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Issuer</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f3"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f4"></div><div class="mb-3"><label>Date</label><input type="date" class="form-control" id="f5"></div><div class="mb-3"><label>URL</label><input type="text" class="form-control" id="f6"></div><button type="submit" class="btn btn-primary">Save</button>',
+                cert: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Issuer</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Search Company Logo</label><input type="text" class="form-control" id="certLogoSearch" placeholder="Type company name like Cisco, Coursera, ALX"><div id="certLogoSuggestions" class="company-suggestions mt-2"></div><div id="certLogoPreview" class="mt-2"></div></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f3"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f4"></div><div class="mb-3"><label>Date</label><input type="date" class="form-control" id="f5"></div><div class="mb-3"><label>URL</label><input type="text" class="form-control" id="f6"></div><button type="submit" class="btn btn-primary">Save</button>',
                 exp: '<input type="hidden" id="editId"><div class="mb-3"><label>Title</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Company</label><input type="text" class="form-control" id="f2" required></div><div class="mb-3"><label>Location</label><input type="text" class="form-control" id="f3"></div><div class="mb-3"><label>Description</label><textarea class="form-control" id="f4"></textarea></div><div class="mb-3"><label>Start Date</label><input type="date" class="form-control" id="f5"></div><div class="mb-3"><label>End Date</label><input type="date" class="form-control" id="f6"></div><div class="mb-3"><label><input type="checkbox" id="f7"> Current Position</label></div><button type="submit" class="btn btn-primary">Save</button>',
-                testimonial: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Company</label><input type="text" class="form-control" id="f2"></div><div class="mb-3"><label>Role/Position</label><input type="text" class="form-control" id="f3"></div><div class="mb-3"><label>Rating (1-5)</label><input type="number" class="form-control" id="f4" min="1" max="5"></div><div class="mb-3"><label>Message</label><textarea class="form-control" id="f5" rows="4"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f6" onchange="previewTestimonialImage(this.value)"><div id="testimonialImagePreview" class="mt-2"></div></div><div class="mb-3"><label><input type="checkbox" id="f7"> Featured</label></div><button type="submit" class="btn btn-primary">Save</button>'
+                testimonial: '<input type="hidden" id="editId"><div class="mb-3"><label>Name</label><input type="text" class="form-control" id="f1" required></div><div class="mb-3"><label>Company</label><input type="text" class="form-control" id="f2"></div><div class="mb-3"><label>Search Company Logo</label><input type="text" class="form-control" id="testimonialLogoSearch" placeholder="Type company name like Google, Microsoft, OpenAI"><div id="testimonialLogoSuggestions" class="company-suggestions mt-2"></div></div><div class="mb-3"><label>Role/Position</label><input type="text" class="form-control" id="f3"></div><div class="mb-3"><label>Rating (1-5)</label><input type="number" class="form-control" id="f4" min="1" max="5"></div><div class="mb-3"><label>Message</label><textarea class="form-control" id="f5" rows="4"></textarea></div><div class="mb-3"><label>Image URL</label><input type="text" class="form-control" id="f6"><div id="testimonialImagePreview" class="mt-2"></div></div><div class="mb-3"><label><input type="checkbox" id="f7"> Featured</label></div><button type="submit" class="btn btn-primary">Save</button>'
             };
-            document.getElementById('dataForm').innerHTML = forms[type];
-            document.getElementById('dataForm')?.addEventListener('submit', (e) => { e.preventDefault(); save(type); });
+            const dataForm = document.getElementById('dataForm');
+            if (!dataForm) return;
+            dataForm.innerHTML = forms[type];
+            dataForm.onsubmit = (e) => {
+                e.preventDefault();
+                save(type);
+            };
 
             // Auto slug for blog/project
             if (type === 'blog' || type === 'project') {
-                document.getElementById('f1').oninput = () => {
-                    if (!editingId) document.getElementById('f2').value = document.getElementById('f1').value.toLowerCase().replace(/[^a-z0-9]/g, '-');
-                };
+                const nameInput = document.getElementById('f1');
+                const slugInput = document.getElementById('f2');
+                if (nameInput && slugInput) {
+                    nameInput.oninput = () => {
+                        if (!editingId) slugInput.value = nameInput.value.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                    };
+                }
             }
 
-            // Image preview for testimonial
+            // Company logo helper for certifications
+            if (type === 'cert') {
+                setupCompanyLogoHelper({
+                    searchInputId: 'certLogoSearch',
+                    companyInputId: 'f2',
+                    imageInputId: 'f4',
+                    suggestionsId: 'certLogoSuggestions',
+                    previewId: 'certLogoPreview'
+                });
+            }
+
+            // Company logo helper + image preview for testimonials
             if (type === 'testimonial') {
+                setupCompanyLogoHelper({
+                    searchInputId: 'testimonialLogoSearch',
+                    companyInputId: 'f2',
+                    imageInputId: 'f6',
+                    suggestionsId: 'testimonialLogoSuggestions',
+                    previewId: 'testimonialImagePreview'
+                });
                 const f6 = document.getElementById('f6');
                 if (f6) {
                     f6.addEventListener('input', function () {
@@ -807,97 +1238,177 @@
             const preview = document.getElementById('testimonialImagePreview');
             if (!preview) return;
             if (url) {
-                preview.innerHTML = `<img src="${url}" alt="Preview" class="rounded" style="width:100px;height:100px;object-fit:cover;">`;
+                preview.innerHTML = '<img src="' + escapeHtml(url) + '" alt="Preview" class="rounded" style="width:100px;height:100px;object-fit:cover;">';
             } else {
                 preview.innerHTML = '';
             }
         }
 
-        const endpoints = { blog: 'blogposts', project: 'projects', skill: 'skills', cert: 'certifications', exp: 'experiences', contact: 'contacts', sub: 'subscribers', testimonial: 'testimonials' };
         async function edit(type, id) {
-            console.log('Edit called with type:', type, 'id:', id);
-            const url = apiUrl + '/' + endpoints[type];
-            console.log('Fetching URL:', url);
-            const res = await fetch(url);
-            const data = await res.json();
-            const item = data.find(d => d._id === id);
-            if (!item) return;
+            try {
+                const url = apiUrl + '/' + endpoints[type];
+                const res = await fetch(url);
+                if (!res.ok) throw new Error('Failed to fetch item');
+                const data = await res.json();
+                const item = data.find(d => d._id === id);
+                if (!item) {
+                    showToast('Could not find the selected item', 'danger');
+                    return;
+                }
 
-            editingId = id;
-            const editLastPageEl = document.getElementById(lastPage + 'Page');
-            const editFormPageEl = document.getElementById('formPage');
-            if (editLastPageEl) editLastPageEl.classList.add('hidden');
-            if (editFormPageEl) editFormPageEl.classList.remove('hidden');
-            const titles = { blog: 'Edit Blog Post', project: 'Edit Project', skill: 'Edit Skill', cert: 'Edit Certification', exp: 'Edit Experience', testimonial: 'Edit Testimonial' };
-            const formTitleEl = document.getElementById('formTitle');
-            if (formTitleEl) formTitleEl.textContent = titles[type];
+                showForm(type, true);
+                editingId = id;
+                document.getElementById('editId').value = id;
 
-            // Reuse form but set values
-            showForm(type);
-            document.getElementById('editId').value = id;
-            const maps = {
-                blog: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'],
-                project: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7'],
-                skill: ['f1', 'f2', 'f3'],
-                cert: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'],
-                exp: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7'],
-                testimonial: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7']
-            };
-            const fields = { blog: ['title', 'slug', 'description', 'content', 'imageUrl', 'tags'], project: ['name', 'slug', 'description', 'imageUrl', 'category', 'liveUrl', 'githubUrl'], skill: ['name', 'category', 'level'], cert: ['name', 'issuer', 'description', 'imageUrl', 'date', 'url'], exp: ['title', 'company', 'location', 'description', 'startDate', 'endDate', 'current'], testimonial: ['name', 'company', 'role', 'rating', 'message', 'imageUrl', 'featured'] };
-            maps[type].forEach((f, i) => {
-                const val = item[fields[type][i]];
-                if (fields[type][i] === 'current' || fields[type][i] === 'featured') document.getElementById(f).checked = val;
-                else document.getElementById(f).value = val || '';
-            });
+                const maps = {
+                    blog: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'],
+                    project: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7'],
+                    skill: ['f1', 'f2', 'f3'],
+                    cert: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'],
+                    exp: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7'],
+                    testimonial: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7']
+                };
+                const fields = {
+                    blog: ['title', 'slug', 'description', 'content', 'imageUrl', 'tags'],
+                    project: ['name', 'slug', 'description', 'imageUrl', 'category', 'liveUrl', 'githubUrl'],
+                    skill: ['name', 'category', 'level'],
+                    cert: ['name', 'issuer', 'description', 'imageUrl', 'date', 'url'],
+                    exp: ['title', 'company', 'location', 'description', 'startDate', 'endDate', 'current'],
+                    testimonial: ['name', 'company', 'role', 'rating', 'message', 'imageUrl', 'featured']
+                };
 
-            // Show image preview for testimonial when editing
-            if (type === 'testimonial' && item.imageUrl) {
-                previewTestimonialImage(item.imageUrl);
+                maps[type].forEach((f, i) => {
+                    const fieldName = fields[type][i];
+                    const el = document.getElementById(f);
+                    if (!el) return;
+                    const val = item[fieldName];
+                    if (fieldName === 'current' || fieldName === 'featured') {
+                        el.checked = Boolean(val);
+                    } else if (fieldName === 'date' || fieldName === 'startDate' || fieldName === 'endDate') {
+                        el.value = toInputDate(val);
+                    } else if (fieldName === 'tags' && Array.isArray(val)) {
+                        el.value = val.join(', ');
+                    } else {
+                        el.value = val || '';
+                    }
+                });
+
+                if (type === 'cert') {
+                    const certSearchEl = document.getElementById('certLogoSearch');
+                    if (certSearchEl) certSearchEl.value = item.issuer || '';
+                    renderCompanyLogoSuggestions({
+                        searchInputId: 'certLogoSearch',
+                        companyInputId: 'f2',
+                        imageInputId: 'f4',
+                        suggestionsId: 'certLogoSuggestions',
+                        previewId: 'certLogoPreview'
+                    }, item.issuer || '');
+                    previewCompanyLogo('certLogoPreview', item.imageUrl || '', item.imageUrl ? 'Current logo' : 'No logo selected yet.');
+                }
+
+                if (type === 'testimonial') {
+                    const testimonialSearchEl = document.getElementById('testimonialLogoSearch');
+                    if (testimonialSearchEl) testimonialSearchEl.value = item.company || '';
+                    renderCompanyLogoSuggestions({
+                        searchInputId: 'testimonialLogoSearch',
+                        companyInputId: 'f2',
+                        imageInputId: 'f6',
+                        suggestionsId: 'testimonialLogoSuggestions',
+                        previewId: 'testimonialImagePreview'
+                    }, item.company || '');
+                    if (item.imageUrl) previewTestimonialImage(item.imageUrl);
+                }
+            } catch (e) {
+                showToast('Failed to load item for editing', 'danger');
             }
         }
 
         async function save(type) {
+            if (saveInProgress) return;
             const id = document.getElementById('editId')?.value;
             let data = {};
+            const submitBtn = document.querySelector('#dataForm button[type="submit"]');
 
             if (type === 'blog') {
                 data = { title: f('f1'), slug: f('f2'), description: f('f3'), content: f('f4'), imageUrl: f('f5'), tags: f('f6').split(',').map(t => t.trim()).filter(t => t) };
             } else if (type === 'project') {
                 data = { name: f('f1'), slug: f('f2'), description: f('f3'), imageUrl: f('f4'), category: f('f5'), liveUrl: f('f6'), githubUrl: f('f7') };
             } else if (type === 'skill') {
-                data = { name: f('f1'), category: f('f2'), level: parseInt(f('f3')) || 0 };
+                data = { name: f('f1'), category: f('f2'), level: parseInt(f('f3'), 10) || 0 };
             } else if (type === 'cert') {
                 data = { name: f('f1'), issuer: f('f2'), description: f('f3'), imageUrl: f('f4'), date: f('f5'), url: f('f6') };
             } else if (type === 'exp') {
                 data = { title: f('f1'), company: f('f2'), location: f('f3'), description: f('f4'), startDate: f('f5'), endDate: f('f6'), current: document.getElementById('f7')?.checked || false };
             } else if (type === 'testimonial') {
-                data = { name: f('f1'), company: f('f2'), role: f('f3'), rating: parseInt(f('f4')) || 5, message: f('f5'), imageUrl: f('f6'), featured: document.getElementById('f7')?.checked || false };
+                data = { name: f('f1'), company: f('f2'), role: f('f3'), rating: parseInt(f('f4'), 10) || 5, message: f('f5'), imageUrl: f('f6'), featured: document.getElementById('f7')?.checked || false };
             }
 
             const url = id ? apiUrl + '/' + endpoints[type] + '/' + id : apiUrl + '/' + endpoints[type];
             const method = id ? 'PUT' : 'POST';
 
-            const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-            if (res.ok) { showToast(id ? 'Updated!' : 'Created!', 'success'); showPage(lastPage); }
-            else showToast('Error', 'danger');
+            try {
+                saveInProgress = true;
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+                }
+                const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+                if (res.ok) {
+                    showToast(id ? 'Updated!' : 'Created!', 'success');
+                    editingId = null;
+                    showPage(lastPage);
+                } else {
+                    showToast('Could not save. Check required fields and API status.', 'danger');
+                }
+            } catch (e) {
+                showToast('Network error while saving data', 'danger');
+            } finally {
+                saveInProgress = false;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Save';
+                }
+            }
         }
 
-        function f(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+        function f(id) {
+            const el = document.getElementById(id);
+            return el ? el.value : '';
+        }
 
         async function del(type, id) {
-            if (!confirm('Delete?')) return;
-            await fetch(apiUrl + '/' + endpoints[type] + '/' + id, { method: 'DELETE' });
-            showToast('Deleted', 'success');
-            loadData();
+            if (!confirm('Delete this item?')) return;
+            try {
+                const res = await fetch(apiUrl + '/' + endpoints[type] + '/' + id, { method: 'DELETE' });
+                if (res.ok) {
+                    showToast('Deleted', 'success');
+                    loadData();
+                } else {
+                    showToast('Delete failed', 'danger');
+                }
+            } catch (e) {
+                showToast('Network error while deleting', 'danger');
+            }
         }
 
-        function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+        function escapeHtml(t) {
+            const d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
+        }
+
+        async function refreshData() {
+            const ok = await loadData(true);
+            showToast(ok ? 'Data refreshed' : 'Refresh completed with warnings', ok ? 'info' : 'warning');
+        }
 
         // Settings functions
         function updatePassword() {
-            const newPass = document.getElementById('adminNewPass').value;
+            const newPassEl = document.getElementById('adminNewPass');
+            const newPass = newPassEl ? newPassEl.value : '';
             if (newPass && newPass.length >= 6) {
                 localStorage.setItem('adminPassword', btoa(newPass));
+                if (newPassEl) newPassEl.value = '';
                 showToast('Password updated successfully!', 'success');
             } else {
                 showToast('Password must be at least 6 characters', 'danger');
@@ -905,17 +1416,26 @@
         }
 
         function saveApiSettings() {
-            const apiUrl = document.getElementById('settingsApiUrl').value;
-            if (apiUrl) {
+            const settingsApiUrlEl = document.getElementById('settingsApiUrl');
+            const newApiUrl = normalizeApiUrl(settingsApiUrlEl ? settingsApiUrlEl.value : '');
+            if (newApiUrl) {
+                apiUrl = newApiUrl;
                 localStorage.setItem('blogAdminApiUrl', apiUrl);
+                const loginApiUrlEl = document.getElementById('apiUrl');
+                if (loginApiUrlEl) loginApiUrlEl.value = apiUrl;
                 showToast('API settings saved!', 'success');
+                loadData(true);
+            } else {
+                showToast('Please enter a valid API URL', 'danger');
             }
         }
 
         function logoutAll() {
-            if (confirm('Logout from all devices?')) {
+            if (confirm('Logout from all sessions on this browser?')) {
                 localStorage.removeItem('blogAdminToken');
-                window.location.href = 'login.html';
+                localStorage.removeItem('blogAdminSession');
+                showLogin();
+                showToast('All sessions logged out', 'info');
             }
         }
 
@@ -929,11 +1449,10 @@
 
         function loadSettings() {
             const settingsApiUrlEl = document.getElementById('settingsApiUrl');
-            if (settingsApiUrlEl) settingsApiUrlEl.value = localStorage.getItem('blogAdminApiUrl') || 'https://melkamuwako27-backend.onrender.com/api';
+            if (settingsApiUrlEl) settingsApiUrlEl.value = apiUrl || DEFAULT_API_URL;
         }
 
         function loadStats() {
-            // Update settings page stats
             const statMappings = [
                 ['statBlogs', 'blogCount'],
                 ['statSkills', 'skillCount'],
@@ -946,11 +1465,14 @@
                 if (statEl && countEl) statEl.textContent = countEl.textContent;
             });
         }
+
         function showToast(m, t) {
+            const toastContainer = document.getElementById('toastContainer');
+            if (!toastContainer) return;
             const toast = document.createElement('div');
             toast.className = 'toast align-items-center text-white bg-' + (t || 'info') + ' border-0';
             toast.innerHTML = '<div class="d-flex"><div class="toast-body">' + m + '</div><button class="btn-close btn-close-white me-2" data-bs-dismiss="toast"></button></div>';
-            document.getElementById('toastContainer').appendChild(toast);
+            toastContainer.appendChild(toast);
             new bootstrap.Toast(toast).show();
             setTimeout(() => toast.remove(), 3000);
         }
